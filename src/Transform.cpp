@@ -2,9 +2,9 @@
 
 namespace CS418
 {
-	Transform::Transform(std::string name)
+	Transform::Transform(std::string name) : GameComponent(name)
 	{
-		GameComponent::GameComponent(name);
+
 	}
 
 	Transform::~Transform()

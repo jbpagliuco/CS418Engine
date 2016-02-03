@@ -237,5 +237,3 @@ _Pvt_Extensions
 .fake/
 
 *.cd
-*.vcxproj
-*.vcxproj.filters
