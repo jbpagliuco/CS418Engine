@@ -1,6 +1,9 @@
 #pragma once
 
 #include "Application.h"
+#include "GameObject.h"
+
+#include <vector>
 
 namespace CS418
 {
@@ -18,5 +21,8 @@ namespace CS418
 
 		/* Called once every frame */
 		void Update();
+
+	private:
+		std::vector<GameObject> m_gameObjects;
 	};
 }
