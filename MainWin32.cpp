@@ -1,16 +1,16 @@
 #include <Windows.h>
 
-#include "System.h"
+#include "Engine.h"
 #include <stdio.h>
 
 int main(int argc, char ** argv)
 {
-	CS418::System system;
+	CS418::Engine engine;
 
 	MSG msg;
 	ZeroMemory(&msg, sizeof(MSG));
 
-	system.Initialize();
+	engine.Initialize();
 
 	while (msg.message != WM_QUIT)
 	{
@@ -20,7 +20,7 @@ int main(int argc, char ** argv)
 			DispatchMessage(&msg);
 		}
 
-		system.Update();
+		engine.Update();
 	}
 
 	return 0;
