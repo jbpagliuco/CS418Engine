@@ -132,8 +132,13 @@
     <ClInclude Include="include\GameObject.h" />
     <ClInclude Include="include\GraphicsManager.h" />
     <ClInclude Include="include\MainWndProcWin32.h" />
+    <ClInclude Include="include\math\Math.h" />
+    <ClInclude Include="include\math\Matrix.h" />
+    <ClInclude Include="include\math\Quaternion.h" />
     <ClInclude Include="include\Transform.h" />
     <ClInclude Include="include\Util.h" />
+    <ClInclude Include="include\math\Vector.h" />
+    <ClInclude Include="include\math\VectorUtilMSVC.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp" />
@@ -145,7 +150,13 @@
     <ClCompile Include="src\GraphicsManagerOGL.cpp" />
     <ClCompile Include="src\MainWin32.cpp" />
     <ClCompile Include="src\MainWndProcWin32.cpp" />
+    <ClCompile Include="src\Math.cpp" />
+    <ClCompile Include="src\MatrixMSVC.cpp" />
+    <ClCompile Include="src\Quaternion.cpp" />
+    <ClCompile Include="src\QuaternionMSVC.cpp" />
     <ClCompile Include="src\Transform.cpp" />
+    <ClCompile Include="src\VectorMSVC.cpp" />
+    <ClCompile Include="src\VectorUtilMSVC.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
