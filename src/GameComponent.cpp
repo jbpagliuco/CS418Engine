@@ -11,4 +11,14 @@ namespace CS418
 	{
 
 	}
+
+	void GameComponent::Initialize()
+	{
+
+	}
+
+	void GameComponent::Update()
+	{
+
+	}
 }

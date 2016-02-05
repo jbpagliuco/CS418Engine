@@ -31,42 +31,6 @@ int main(int argc, char ** argv)
 
 	engine.Initialize();
 
-
-
-
-
-
-
-
-	Vector v1(1.0f, 5.0f, 9.0f, 13.0f);
-	Vector v2(2.0f, 6.0f, 10.0f, 14.0f);
-	Vector v3(3.0f, 7.0f, 11.0f, 15.0f);
-	Vector v4(4.0f, 8.0f, 12.0f, 16.0f);
-	Matrix m1(v1, v2, v3, v4);
-	
-	v1 = Vector(1.0f, 0.0f, 0.0f, 0.0f);
-	v2 = Vector(0.0f, 2.0f, 0.0f, 5.0f);
-	v3 = Vector(0.0f, 3.0f, 4.0f, 6.0f);
-	v4 = Vector(0.0f, 0.0f, 0.0f, 7.0f);
-	Matrix m2(v1, v2, v3, v4);
-
-	Matrix result = m1 * m2;
-	m2.invert(nullptr);
-	printmatrix(m2);
-	m2.transpose();
-	printmatrix(m2);
-
-
-
-
-
-
-
-
-
-
-
-
 	while (msg.message != WM_QUIT)
 	{
 		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
