@@ -62,7 +62,7 @@ void CS418::GraphicsManager::EndScene()
 void CS418::GraphicsManager::createWindow()
 {
 	CS418::WINDOW_DESC wd;
-	wd.caption = "Window Title";
+	wd.caption = "Engine Testing";
 	wd.position.X = wd.position.Y = 100;
 	wd.size.X = 800;
 	wd.size.Y = 600;

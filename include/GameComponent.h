@@ -10,6 +10,10 @@ namespace CS418
 		GameComponent(std::string name);
 		virtual ~GameComponent();
 
+		virtual void Initialize() = 0;
+		
+		virtual void Update() = 0;
+
 	private:
 		std::string m_name;
 	};
