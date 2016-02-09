@@ -6,6 +6,8 @@
 #include "math\Vector.h"
 #include "math\Matrix.h"
 
+#include "content\ContentManager.h"
+
 using namespace CS418;
 
 void printvector(const Vector &v)

@@ -19,6 +19,6 @@ namespace CS418
 
 	private:
 		std::string m_name;
-		std::vector<GameComponent> m_components;
+		std::vector<GameComponent*> m_components;
 	};
 }

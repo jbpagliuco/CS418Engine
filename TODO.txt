@@ -1,0 +1,17 @@
+Things TODO:
+
+Content Loader
+	- Organize loaded assets
+	- Implement better (binary??) search algorithm on loading loaded assets
+	- Debugging incorrect file extensions
+	
+File System
+	- Implement commented functions
+	- All files are currently read and write
+	- Truncation?
+	- File opening is assertation
+	- Binary files?
+	- ReadUntilEnd vs FileAsString implementations
+	
+Shader Program
+	- Deal with compilation errors
