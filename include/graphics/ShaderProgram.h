@@ -9,7 +9,7 @@ namespace CS418
 	public:
 		virtual ~ShaderProgram();
 
-		void SetProgram();
+		void SetProgram()const;
 
 	private:
 		U32 m_shaderProgram;

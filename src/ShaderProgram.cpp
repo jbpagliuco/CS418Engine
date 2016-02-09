@@ -9,7 +9,7 @@ namespace CS418
 		glDeleteShader(m_shaderProgram);
 	}
 
-	void ShaderProgram::SetProgram()
+	void ShaderProgram::SetProgram()const
 	{
 
 	}
