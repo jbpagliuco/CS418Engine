@@ -24,7 +24,7 @@ namespace CS418
 		v.z = sinThetaDiv2 * zAxis;
 	}
 
-	Quaternion::Quaternion(const VECTOR3 * pAxis, F32 angleInRadians)
+	Quaternion::Quaternion(const VECTOR3F * pAxis, F32 angleInRadians)
 	{
 		assert(FEquals(pAxis->x * pAxis->x + pAxis->y * pAxis->y + pAxis->z * pAxis->z, 1)); // Unit length!
 
@@ -75,7 +75,7 @@ namespace CS418
 		return *this;
 	}
 
-	VECTOR3 Quaternion::operator*(const VECTOR3 &vector)const
+	VECTOR3F Quaternion::operator*(const VECTOR3F &vector)const
 	{
 		Vector v1(v);
 		Vector v2(vector);

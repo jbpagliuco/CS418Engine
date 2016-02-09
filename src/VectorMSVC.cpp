@@ -22,35 +22,35 @@ namespace CS418
 		m_elems = _mm_load_ps(v);
 	}
 
-	Vector::Vector(const VECTOR2 &vector)
+	Vector::Vector(const VECTOR2F &vector)
 	{
 		__declspec(align(16)) F32 v[4] = { vector.x, vector.y, 0.0f, 0.0f };
 		m_elems = _mm_load_ps(v);
 	}
 
-	Vector::Vector(const VECTOR2A &vector)
+	Vector::Vector(const VECTOR2FA &vector)
 	{
 		m_elems = _mm_load_ps(&vector.x);
 	}
 
-	Vector::Vector(const VECTOR3 &vector)
+	Vector::Vector(const VECTOR3F &vector)
 	{
 		__declspec(align(16)) F32 v[4] = { vector.x, vector.y, vector.z, 0.0f };
 		m_elems = _mm_load_ps(v);
 	}
 
-	Vector::Vector(const VECTOR3A &vector)
+	Vector::Vector(const VECTOR3FA &vector)
 	{
 		m_elems = _mm_load_ps(&vector.x);
 	}
 
-	Vector::Vector(const VECTOR4 &vector)
+	Vector::Vector(const VECTOR4F &vector)
 	{
 		__declspec(align(16)) F32 v[4] = { vector.x, vector.y, vector.z, vector.w };
 		m_elems = _mm_load_ps(v);
 	}
 
-	Vector::Vector(const VECTOR4A &vector)
+	Vector::Vector(const VECTOR4FA &vector)
 	{
 		m_elems = _mm_load_ps(&vector.x);
 	}
@@ -64,46 +64,46 @@ namespace CS418
 
 
 
-	VECTOR2 Vector::asVector2()const
+	VECTOR2F Vector::asVector2()const
 	{
 		__declspec(align(16)) float vector[4];
 		_mm_store_ps(vector, m_elems);
-		return VECTOR2(vector);
+		return VECTOR2F(vector);
 	}
 
-	VECTOR2A Vector::asVector2A()const
+	VECTOR2FA Vector::asVector2A()const
 	{
 		__declspec(align(16)) float vector[4];
 		_mm_store_ps(vector, m_elems);
-		return VECTOR2A(vector);
+		return VECTOR2FA(vector);
 	}
 
-	VECTOR3 Vector::asVector3()const
+	VECTOR3F Vector::asVector3()const
 	{
 		__declspec(align(16)) float vector[4];
 		_mm_store_ps(vector, m_elems);
-		return VECTOR3(vector);
+		return VECTOR3F(vector);
 	}
 
-	VECTOR3A Vector::asVector3A()const
+	VECTOR3FA Vector::asVector3A()const
 	{
 		__declspec(align(16)) float vector[4];
 		_mm_store_ps(vector, m_elems);
-		return VECTOR3A(vector);
+		return VECTOR3FA(vector);
 	}
 
-	VECTOR4 Vector::asVector4()const
+	VECTOR4F Vector::asVector4()const
 	{
 		__declspec(align(16)) float vector[4];
 		_mm_store_ps(vector, m_elems);
-		return VECTOR4(vector);
+		return VECTOR4F(vector);
 	}
 
-	VECTOR4A Vector::asVector4A()const
+	VECTOR4FA Vector::asVector4A()const
 	{
 		__declspec(align(16)) float vector[4];
 		_mm_store_ps(vector, m_elems);
-		return VECTOR4A(vector);
+		return VECTOR4FA(vector);
 	}
 
 
@@ -142,164 +142,164 @@ namespace CS418
 
 
 
-	VECTOR2 Vector::v2equals(const Vector &other, F32 epsilon)const
+	VECTOR2F Vector::v2equals(const Vector &other, F32 epsilon)const
 	{
 		__declspec(align(16)) F32 vResult[4];
 		m128cmp(m_elems, other.m_elems, epsilon, vResult);
 
-		return VECTOR2(vResult[0] != 0, vResult[1] != 0);
+		return VECTOR2F(vResult[0] != 0, vResult[1] != 0);
 	}
 
-	VECTOR2 Vector::v2notEquals(const Vector &other, F32 epsilon)const
+	VECTOR2F Vector::v2notEquals(const Vector &other, F32 epsilon)const
 	{
 		__declspec(align(16)) F32 vResult[4];
 		m128cmp(m_elems, other.m_elems, epsilon, vResult);
 
-		return VECTOR2(vResult[0] == 0, vResult[1] == 0);
+		return VECTOR2F(vResult[0] == 0, vResult[1] == 0);
 	}
 
-	VECTOR3 Vector::v3equals(const Vector &other, F32 epsilon)const
+	VECTOR3F Vector::v3equals(const Vector &other, F32 epsilon)const
 	{
 		__declspec(align(16)) F32 vResult[4];
 		m128cmp(m_elems, other.m_elems, epsilon, vResult);
 
-		return VECTOR3(vResult[0] != 0, vResult[1] != 0, vResult[2] != 0);
+		return VECTOR3F(vResult[0] != 0, vResult[1] != 0, vResult[2] != 0);
 	}
 
-	VECTOR3 Vector::v3notEquals(const Vector &other, F32 epsilon)const
+	VECTOR3F Vector::v3notEquals(const Vector &other, F32 epsilon)const
 	{
 		__declspec(align(16)) F32 vResult[4];
 		m128cmp(m_elems, other.m_elems, epsilon, vResult);
 
-		return VECTOR3(vResult[0] == 0, vResult[1] == 0, vResult[2] == 0);
+		return VECTOR3F(vResult[0] == 0, vResult[1] == 0, vResult[2] == 0);
 	}
 
-	VECTOR4 Vector::v4equals(const Vector &other, F32 epsilon)const
+	VECTOR4F Vector::v4equals(const Vector &other, F32 epsilon)const
 	{
 		__declspec(align(16)) F32 vResult[4];
 		m128cmp(m_elems, other.m_elems, epsilon, vResult);
 
-		return VECTOR4(vResult[0] != 0, vResult[1] != 0, vResult[2] != 0, vResult[3] != 0);
+		return VECTOR4F(vResult[0] != 0, vResult[1] != 0, vResult[2] != 0, vResult[3] != 0);
 	}
 
-	VECTOR4 Vector::v4notEquals(const Vector &other, F32 epsilon)const
+	VECTOR4F Vector::v4notEquals(const Vector &other, F32 epsilon)const
 	{
 		__declspec(align(16)) F32 vResult[4];
 		m128cmp(m_elems, other.m_elems, epsilon, vResult);
 
-		return VECTOR4(vResult[0] == 0, vResult[1] == 0, vResult[2] == 0, vResult[3] == 0);
+		return VECTOR4F(vResult[0] == 0, vResult[1] == 0, vResult[2] == 0, vResult[3] == 0);
 	}
 
 
 
 
 
-	VECTOR2 Vector::v2less(const Vector &other)const
+	VECTOR2F Vector::v2less(const Vector &other)const
 	{
 		__m128 vResult = _mm_cmplt_ps(m_elems, other.m_elems);
 		__declspec(align(16)) float f[4];
 		_mm_store_ps(f, vResult);
 
-		return VECTOR2(f[0] != 0, f[1] != 0);
+		return VECTOR2F(f[0] != 0, f[1] != 0);
 	}
 
-	VECTOR2 Vector::v2lessEq(const Vector &other)const
+	VECTOR2F Vector::v2lessEq(const Vector &other)const
 	{
 		__m128 vResult = _mm_cmple_ps(m_elems, other.m_elems);
 		__declspec(align(16)) float f[4];
 		_mm_store_ps(f, vResult);
 
-		return VECTOR2(f[0] != 0, f[1] != 0);
+		return VECTOR2F(f[0] != 0, f[1] != 0);
 	}
 
-	VECTOR2 Vector::v2greater(const Vector &other)const
+	VECTOR2F Vector::v2greater(const Vector &other)const
 	{
 		__m128 vResult = _mm_cmpgt_ps(m_elems, other.m_elems);
 		__declspec(align(16)) float f[4];
 		_mm_store_ps(f, vResult);
 
-		return VECTOR2(f[0] != 0, f[1] != 0);
+		return VECTOR2F(f[0] != 0, f[1] != 0);
 	}
 
-	VECTOR2 Vector::v2greaterEq(const Vector &other)const
+	VECTOR2F Vector::v2greaterEq(const Vector &other)const
 	{
 		__m128 vResult = _mm_cmpge_ps(m_elems, other.m_elems);
 		__declspec(align(16)) float f[4];
 		_mm_store_ps(f, vResult);
 
-		return VECTOR2(f[0] != 0, f[1] != 0);
+		return VECTOR2F(f[0] != 0, f[1] != 0);
 	}
 
-	VECTOR3 Vector::v3less(const Vector &other)const
+	VECTOR3F Vector::v3less(const Vector &other)const
 	{
 		__m128 vResult = _mm_cmplt_ps(m_elems, other.m_elems);
 		__declspec(align(16)) float f[4];
 		_mm_store_ps(f, vResult);
 
-		return VECTOR3(f[0] != 0, f[1] != 0, f[2] != 0);
+		return VECTOR3F(f[0] != 0, f[1] != 0, f[2] != 0);
 	}
 
-	VECTOR3 Vector::v3lessEq(const Vector &other)const
+	VECTOR3F Vector::v3lessEq(const Vector &other)const
 	{
 		__m128 vResult = _mm_cmple_ps(m_elems, other.m_elems);
 		__declspec(align(16)) float f[4];
 		_mm_store_ps(f, vResult);
 
-		return VECTOR3(f[0] != 0, f[1] != 0, f[2] != 0);
+		return VECTOR3F(f[0] != 0, f[1] != 0, f[2] != 0);
 	}
 
-	VECTOR3 Vector::v3greater(const Vector &other)const
+	VECTOR3F Vector::v3greater(const Vector &other)const
 	{
 		__m128 vResult = _mm_cmpgt_ps(m_elems, other.m_elems);
 		__declspec(align(16)) float f[4];
 		_mm_store_ps(f, vResult);
 
-		return VECTOR3(f[0] != 0, f[1] != 0, f[2] != 0);
+		return VECTOR3F(f[0] != 0, f[1] != 0, f[2] != 0);
 	}
 
-	VECTOR3 Vector::v3greaterEq(const Vector &other)const
+	VECTOR3F Vector::v3greaterEq(const Vector &other)const
 	{
 		__m128 vResult = _mm_cmpge_ps(m_elems, other.m_elems);
 		__declspec(align(16)) float f[4];
 		_mm_store_ps(f, vResult);
 
-		return VECTOR3(f[0] != 0, f[1] != 0, f[2] != 0);
+		return VECTOR3F(f[0] != 0, f[1] != 0, f[2] != 0);
 	}
 
-	VECTOR4 Vector::v4less(const Vector &other)const
+	VECTOR4F Vector::v4less(const Vector &other)const
 	{
 		__m128 vResult = _mm_cmplt_ps(m_elems, other.m_elems);
 		__declspec(align(16)) float f[4];
 		_mm_store_ps(f, vResult);
 
-		return VECTOR4(f[0] != 0, f[1] != 0, f[2] != 0, f[3] != 0);
+		return VECTOR4F(f[0] != 0, f[1] != 0, f[2] != 0, f[3] != 0);
 	}
 
-	VECTOR4 Vector::v4lessEq(const Vector &other)const
+	VECTOR4F Vector::v4lessEq(const Vector &other)const
 	{
 		__m128 vResult = _mm_cmple_ps(m_elems, other.m_elems);
 		__declspec(align(16)) float f[4];
 		_mm_store_ps(f, vResult);
 
-		return VECTOR4(f[0] != 0, f[1] != 0, f[2] != 0, f[3] != 0);
+		return VECTOR4F(f[0] != 0, f[1] != 0, f[2] != 0, f[3] != 0);
 	}
 
-	VECTOR4 Vector::v4greater(const Vector &other)const
+	VECTOR4F Vector::v4greater(const Vector &other)const
 	{
 		__m128 vResult = _mm_cmpgt_ps(m_elems, other.m_elems);
 		__declspec(align(16)) float f[4];
 		_mm_store_ps(f, vResult);
 
-		return VECTOR4(f[0] != 0, f[1] != 0, f[2] != 0, f[3] != 0);
+		return VECTOR4F(f[0] != 0, f[1] != 0, f[2] != 0, f[3] != 0);
 	}
 
-	VECTOR4 Vector::v4greaterEq(const Vector &other)const
+	VECTOR4F Vector::v4greaterEq(const Vector &other)const
 	{
 		__m128 vResult = _mm_cmpge_ps(m_elems, other.m_elems);
 		__declspec(align(16)) float f[4];
 		_mm_store_ps(f, vResult);
 
-		return VECTOR4(f[0] != 0, f[1] != 0, f[2] != 0, f[3] != 0);
+		return VECTOR4F(f[0] != 0, f[1] != 0, f[2] != 0, f[3] != 0);
 	}
 
 

@@ -15,7 +15,7 @@ namespace CS418
 		Quaternion(F32 xAxis, F32 yAxis, F32 zAxis, F32 angleInRadians);
 		// Creates a quaternion, where axis is the unit vector to rotate about, and
 		// angleInRadians is the amount to rotate.
-		Quaternion(const VECTOR3 * pAxis, F32 angleInRadians);
+		Quaternion(const VECTOR3F * pAxis, F32 angleInRadians);
 		// Creates a quaternion from the rotation matrix.
 		Quaternion(const Matrix &rotMatrix);
 
@@ -30,7 +30,7 @@ namespace CS418
 		Quaternion & operator*=(const Quaternion &other);
 
 		// Rotates a vector about the quaternion and returns the resulting rotated vector.
-		VECTOR3 operator*(const VECTOR3 &vector)const;
+		VECTOR3F operator*(const VECTOR3F &vector)const;
 
 		// Linearly interpolates two quaternions by the amount t and returns the normalized quaternion.
 		Quaternion lerp(const Quaternion &other, F32 t)const;
@@ -46,7 +46,7 @@ namespace CS418
 		Quaternion interpolate(const Quaternion & q1, const Quaternion & q2, F32 weightA, F32 weightB)const;
 
 	private:
-		VECTOR3 v;
+		VECTOR3F v;
 		F32 w;
 
 		friend Matrix MatrixRotationQuaternion(const Quaternion & qRot);

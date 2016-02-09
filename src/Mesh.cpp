@@ -1,16 +1,17 @@
 #include "graphics\Mesh.h"
 
-#include <GL/glew.h>
+#include "math\Vector.h"
 
 namespace CS418
 {
-	Mesh::~Mesh()
+	typedef struct Vertex_t
+	{
+		VECTOR3 position;
+		
+	};
+
+	class Mesh
 	{
 
-	}
-
-	void Mesh::Draw()
-	{
-
-	}
+	};
 }
