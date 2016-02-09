@@ -3,7 +3,7 @@
 #include <assert.h>
 #include <algorithm>
 
-#include <GL\glew.h>
+#include <gl\glew.h>
 
 namespace CS418
 {
