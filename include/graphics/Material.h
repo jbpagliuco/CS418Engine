@@ -11,7 +11,12 @@ namespace CS418
 	public:
 		~Material();
 
-		ShaderProgram * GetShaderProgram();
+		// Initializes this material.
+		// - pShaderProgram: A pointer to this material's shader.
+		void Initialize(ShaderProgram * pShaderProgram);
+
+		// Returns a pointer to this material's reference.
+		ShaderProgram * GetShaderProgram()const;
 
 	private:
 		ShaderProgram* m_pShader;

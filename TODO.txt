@@ -4,6 +4,7 @@ Content Loader
 	- Organize loaded assets
 	- Implement better (binary??) search algorithm on loading loaded assets
 	- Debugging incorrect file extensions
+	- Reference counting on assets
 	
 File System
 	- Implement commented functions
@@ -18,6 +19,10 @@ Shader Program
 	
 Buffers
 	- Allow for dynamic vertices
+	
+RenderingComponent:
+	- Allow for padding to make vao faster
+	- Dont unbind vertex and index buffers for release
 	
 Other
 	- Make all necessary functions const

@@ -1,20 +1,20 @@
-#include "FileSystem.h"
+#include "FileReader.h"
 
 #include <assert.h>
 
 namespace CS418
 {
-	FileSystem::~FileSystem()
+	FileReader::~FileReader()
 	{
 		m_fstream.close();
 	}
 
-	void FileSystem::Initialize()
+	void FileReader::Initialize()
 	{
 
 	}
 
-	void FileSystem::Open(const std::string &file)
+	void FileReader::Open(const std::string &file)
 	{
 		if (m_fstream.is_open())
 			m_fstream.close();
@@ -25,12 +25,12 @@ namespace CS418
 		m_filename = file;
 	}
 
-	void FileSystem::Close()
+	void FileReader::Close()
 	{
 		m_fstream.close();
 	}
 
-	std::string FileSystem::GetFileExtension()
+	std::string FileReader::GetFileExtension()
 	{
 		size_t index = m_filename.find_last_of('.');
 		assert(index != std::string::npos); // Assert the file has a file extension at all.
@@ -38,7 +38,7 @@ namespace CS418
 		return m_filename.substr(index);
 	}
 
-	char FileSystem::ReadChar()
+	char FileReader::ReadChar()
 	{
 		if (m_fstream.is_open())
 		{
@@ -48,7 +48,7 @@ namespace CS418
 		return 0;
 	}
 
-	std::string FileSystem::ReadLine()
+	std::string FileReader::ReadLine()
 	{
 		if (m_fstream.is_open())
 		{
@@ -61,7 +61,7 @@ namespace CS418
 		return "";
 	}
 
-	std::string FileSystem::FileAsString()
+	std::string FileReader::FileAsString()
 	{
 		Reset();
 
@@ -78,7 +78,7 @@ namespace CS418
 		throw(errno);
 	}
 
-	void FileSystem::Reset()
+	void FileReader::Reset()
 	{
 		if (m_fstream.is_open())
 			m_fstream.seekg(std::ios::beg);

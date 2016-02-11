@@ -79,11 +79,11 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\Joe\Downloads\glew-1.13.0-win32\glew-1.13.0\include;$(ProjectDir)include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)glew-1.13.0/include;$(ProjectDir)include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>opengl32.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\Users\Joe\Downloads\glew-1.13.0-win32\glew-1.13.0\lib\Release\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)glew-1.13.0\lib\Release\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -135,11 +135,13 @@
     <ClInclude Include="include\GameComponent.h" />
     <ClInclude Include="include\GameObject.h" />
     <ClInclude Include="include\GraphicsManager.h" />
-    <ClInclude Include="include\graphics\MeshDesc.h" />
+    <ClInclude Include="include\graphics\IndexBuffer.h" />
+    <ClInclude Include="include\graphics\Material.h" />
     <ClInclude Include="include\graphics\Mesh.h" />
-    <ClInclude Include="include\graphics\Model.h" />
+    <ClInclude Include="include\graphics\Scene.h" />
     <ClInclude Include="include\graphics\ShaderProgram.h" />
-    <ClInclude Include="include\graphics\Vertex.h" />
+    <ClInclude Include="include\graphics\Texture2D.h" />
+    <ClInclude Include="include\graphics\VertexBuffer.h" />
     <ClInclude Include="include\MainWndProcWin32.h" />
     <ClInclude Include="include\math\Math.h" />
     <ClInclude Include="include\math\Matrix.h" />
@@ -153,7 +155,6 @@
     <ClCompile Include="src\ContentManager.cpp" />
     <ClCompile Include="src\FileSystem.cpp" />
     <ClCompile Include="src\Mesh.cpp" />
-    <ClCompile Include="src\Model.cpp" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\AppWindowWin32.cpp" />
     <ClCompile Include="src\Engine.cpp" />

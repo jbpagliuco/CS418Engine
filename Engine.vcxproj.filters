@@ -66,9 +66,6 @@
     <ClInclude Include="include\graphics\Mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\graphics\Model.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\graphics\ShaderProgram.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -78,10 +75,19 @@
     <ClInclude Include="include\content\ContentManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\graphics\Vertex.h">
+    <ClInclude Include="include\graphics\Texture2D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\graphics\MeshDesc.h">
+    <ClInclude Include="include\graphics\Material.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\graphics\Scene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\graphics\VertexBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\graphics\IndexBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -129,9 +135,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\VectorUtilMSVC.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Model.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\ShaderProgram.cpp">

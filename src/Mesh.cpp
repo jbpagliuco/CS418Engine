@@ -12,4 +12,14 @@ namespace CS418
 		m_vertices = vertices;
 		m_indices = indices;
 	}
+
+	const std::vector<Vertex_t> Mesh::GetVertices()const
+	{
+		return m_vertices;
+	}
+
+	const std::vector<Index_t> Mesh::GetIndices()const
+	{
+		return m_indices;
+	}
 }

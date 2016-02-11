@@ -6,10 +6,10 @@
 
 namespace CS418
 {
-	class FileSystem
+	class FileReader
 	{
 	public:
-		~FileSystem();
+		~FileReader();
 
 		// Initializes the file system.
 		void Initialize();

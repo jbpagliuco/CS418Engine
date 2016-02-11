@@ -13,7 +13,7 @@
 
 #include "Util.h"
 
-#include "FileSystem.h"
+#include "FileReader.h"
 
 #include "graphics\ShaderProgram.h"
 
@@ -36,7 +36,7 @@ namespace CS418
 		ShaderProgram loadGLSL(const char *vertexShaderData, const char *fragShaderData);
 
 	private:
-		FileSystem m_fileReader;
+		FileReader m_fileReader;
 
 		typedef std::map<Vector2<std::string>, ShaderProgram> ShaderArray_t;
 

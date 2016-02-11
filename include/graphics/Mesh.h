@@ -13,8 +13,8 @@ namespace CS418
 
 		virtual void Initialize(std::vector<Vertex_t> vertices, std::vector<Index_t> indices);
 
-		Vertex_t * GetVertices()const;
-		Index_t * GetIndices()const;
+		const std::vector<Vertex_t> GetVertices()const;
+		const std::vector<Index_t> GetIndices()const;
 
 	private:
 		std::vector<Vertex_t> m_vertices;

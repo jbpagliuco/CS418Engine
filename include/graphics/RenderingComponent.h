@@ -13,7 +13,7 @@ namespace CS418
 		RenderingComponent(std::string name);
 		virtual ~RenderingComponent();
 
-		virtual void Initialize(Mesh * mesh, Material * material);
+		virtual void Initialize(Mesh * pMesh, Material material);
 		
 		virtual void Update();
 
@@ -21,5 +21,7 @@ namespace CS418
 		U32 m_VB;
 		U32 m_IB;
 		U32 m_inputLayout;
+
+		Material m_material;
 	};
 }
