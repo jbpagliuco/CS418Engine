@@ -1,17 +1,15 @@
 #include "graphics\Mesh.h"
 
-#include "math\Vector.h"
-
 namespace CS418
 {
-	typedef struct Vertex_t
-	{
-		VECTOR3 position;
-		
-	};
-
-	class Mesh
+	Mesh::~Mesh()
 	{
 
-	};
+	}
+
+	void Mesh::Initialize(std::vector<Vertex_t> vertices, std::vector<Index_t> indices)
+	{
+		m_vertices = vertices;
+		m_indices = indices;
+	}
 }

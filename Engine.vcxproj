@@ -135,9 +135,11 @@
     <ClInclude Include="include\GameComponent.h" />
     <ClInclude Include="include\GameObject.h" />
     <ClInclude Include="include\GraphicsManager.h" />
+    <ClInclude Include="include\graphics\MeshDesc.h" />
     <ClInclude Include="include\graphics\Mesh.h" />
     <ClInclude Include="include\graphics\Model.h" />
     <ClInclude Include="include\graphics\ShaderProgram.h" />
+    <ClInclude Include="include\graphics\Vertex.h" />
     <ClInclude Include="include\MainWndProcWin32.h" />
     <ClInclude Include="include\math\Math.h" />
     <ClInclude Include="include\math\Matrix.h" />

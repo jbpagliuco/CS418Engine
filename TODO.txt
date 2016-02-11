@@ -16,5 +16,9 @@ File System
 Shader Program
 	- Deal with compilation errors
 	
+Buffers
+	- Allow for dynamic vertices
+	
 Other
 	- Make all necessary functions const
+	- Comment stuff
