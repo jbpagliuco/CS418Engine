@@ -100,6 +100,6 @@ namespace CS418
 				m_vertexDesc.colors++;
 
 			start = end + 1;
-		
+		}
 	}
 }
