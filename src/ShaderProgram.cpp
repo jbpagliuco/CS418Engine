@@ -29,8 +29,11 @@ namespace CS418
 
 	void ShaderProgram::compileShaders(std::string vertexShaderSource, std::string fragShaderSource)
 	{
+		const char * temp;
+
 		GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-		glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+		temp = vertexShaderSource.c_str();
+		glShaderSource(vertexShader, 1, &temp, NULL);
 		glCompileShader(vertexShader);
 		// Check for compile time errors
 		GLint success;
@@ -45,7 +48,8 @@ namespace CS418
 
 
 		GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-		glShaderSource(fragmentShader, 1, &fragShaderSource, NULL);
+		temp = fragShaderSource.c_str();
+		glShaderSource(fragmentShader, 1, &temp, NULL);
 		glCompileShader(fragmentShader);
 		// Check for compile time errors
 		glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
