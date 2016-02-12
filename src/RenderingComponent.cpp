@@ -14,6 +14,11 @@ namespace CS418
 
 	}
 
+	void RenderingComponent::Initialize()
+	{
+
+	}
+
 	void RenderingComponent::Initialize(Mesh * pMesh, Material material)
 	{
 		VertexDesc vertexDesc = material.GetShaderProgram()->GetVertexDesc();

@@ -2,6 +2,7 @@
 
 #include "GraphicsManager.h"
 #include "Game.h"
+#include "content\ContentManager.h"
 
 namespace CS418
 {
@@ -17,5 +18,7 @@ namespace CS418
 	private:
 		GraphicsManager m_gfx;
 		Game m_game;
+
+		ContentManager m_contentManager;
 	};
 }

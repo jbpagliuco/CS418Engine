@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Application.h"
+#include "content\ContentManager.h"
 #include "GameObject.h"
 
 #include <vector>
@@ -15,7 +16,7 @@ namespace CS418
 		/* Called once at startup for initialization */
 		void Initialize();
 		/* Called once at startup for loading content */
-		void LoadContent();
+		void LoadContent(ContentManager &contentManager);
 		/* Called once at the end for unloading content */
 		void UnloadContent();
 

@@ -69,9 +69,6 @@
     <ClInclude Include="include\graphics\ShaderProgram.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\FileSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\content\ContentManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -88,6 +85,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\graphics\IndexBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\FileReader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -149,7 +149,10 @@
     <ClCompile Include="src\GraphicsManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\FileSystem.cpp">
+    <ClCompile Include="src\FileReader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Material.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

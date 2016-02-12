@@ -13,6 +13,7 @@ namespace CS418
 		RenderingComponent(std::string name);
 		virtual ~RenderingComponent();
 
+		virtual void Initialize();
 		virtual void Initialize(Mesh * pMesh, Material material);
 		
 		virtual void Update();

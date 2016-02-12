@@ -16,6 +16,7 @@ File System
 	
 Shader Program
 	- Deal with compilation errors
+	- Default shader
 	
 Buffers
 	- Allow for dynamic vertices
@@ -27,3 +28,4 @@ RenderingComponent:
 Other
 	- Make all necessary functions const
 	- Comment stuff
+	- FPS and timer

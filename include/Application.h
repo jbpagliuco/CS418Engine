@@ -1,5 +1,7 @@
 #pragma once
 
+#include "content\ContentManager.h"
+
 namespace CS418
 {
 	/* Provides functions for initialization and game logic, */
@@ -19,7 +21,7 @@ namespace CS418
 		/* Called once at startup for initialization */
 		virtual void Initialize() = 0;
 		/* Called once at startup for loading content */
-		virtual void LoadContent() = 0;
+		virtual void LoadContent(ContentManager &contentManager) = 0;
 		/* Called once at the end for unloading content */
 		virtual void UnloadContent() = 0;
 
