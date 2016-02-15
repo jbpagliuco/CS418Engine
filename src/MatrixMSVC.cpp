@@ -593,4 +593,29 @@ namespace CS418
 
 		return m;
 	}
+
+	Matrix MatrixRotationEuler(F32 x, F32 y, F32 z)
+	{
+		Matrix m;
+
+		F32 cX = cosf(x);
+		F32 cY = cosf(y);
+		F32 cZ = cosf(z);
+
+		F32 sX = sinf(x);
+		F32 sY = sinf(y);
+		F32 sZ = sinf(z);
+
+		CS418_ALIGN_MS(16) F32 col0[4] CS418_ALIGN_GCC(16) = {cY * cX, cY * sX, -sY, 0.0f };
+		CS418_ALIGN_MS(16) F32 col1[4] CS418_ALIGN_GCC(16) = { -(cZ * sX) + (sZ * sY * cX), (cZ * cX) + (sZ * sY * sX), sZ * cY, 0.0f };
+		CS418_ALIGN_MS(16) F32 col2[4] CS418_ALIGN_GCC(16) = { (sZ * sX) + (cZ * sY * cX), -(sZ * cY) + (cZ * sY * sX), cZ * cY, 0.0f };
+		CS418_ALIGN_MS(16) F32 col3[4] CS418_ALIGN_GCC(16) = { 0.0f, 0.0f, 0.0f, 1.0f };
+
+		m.m_cols[0] = _mm_load_ps(col0);
+		m.m_cols[1] = _mm_load_ps(col1);
+		m.m_cols[2] = _mm_load_ps(col2);
+		m.m_cols[3] = _mm_load_ps(col3);
+
+		return m;
+	}
 }

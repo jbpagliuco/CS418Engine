@@ -10,11 +10,13 @@ namespace CS418
 		GameComponent(std::string name);
 		virtual ~GameComponent();
 
+		// Initializes this game component.
 		virtual void Initialize() = 0;
 
-		virtual void Update() = 0;
+		// Returns the type of this component.
+		virtual std::string GetType() = 0;
 
-	private:
+	protected:
 		std::string m_name;
 	};
 }

@@ -42,6 +42,8 @@ int main(int argc, char ** argv)
 		}
 
 		engine.Update();
+
+		engine.Draw();
 	}
 
 	return 0;

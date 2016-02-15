@@ -36,7 +36,8 @@ namespace CS418
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IB);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Index_t) * pMesh->GetIndices().size(), &(pMesh->GetIndices().at(0)), GL_STATIC_DRAW);
-		
+		m_indicesCount = pMesh->GetIndices().size();
+
 		U32 count = 0;
 		U32 offset = 0;
 		for (U8 i = 0; i < vertexDesc.positions; i++)
@@ -80,8 +81,8 @@ namespace CS418
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
 
-	void RenderingComponent::Update()
-	{
-
+	std::string RenderingComponent::GetType()const
+	{ 
+		return "RenderingComponent"; 
 	}
 }

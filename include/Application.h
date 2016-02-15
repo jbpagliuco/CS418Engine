@@ -1,5 +1,6 @@
 #pragma once
 
+#include "GraphicsManager.h"
 #include "content\ContentManager.h"
 
 namespace CS418
@@ -19,7 +20,7 @@ namespace CS418
 
 	protected:
 		/* Called once at startup for initialization */
-		virtual void Initialize() = 0;
+		virtual void Initialize(GraphicsManager &gfxManager) = 0;
 		/* Called once at startup for loading content */
 		virtual void LoadContent(ContentManager &contentManager) = 0;
 		/* Called once at the end for unloading content */

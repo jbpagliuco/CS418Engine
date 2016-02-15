@@ -17,11 +17,6 @@ namespace CS418
 		createInputLayout(vertexShaderSource);
 	}
 
-	void ShaderProgram::SetProgram()const
-	{
-
-	}
-
 	VertexDesc ShaderProgram::GetVertexDesc()const
 	{
 		return m_vertexDesc;

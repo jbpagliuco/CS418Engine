@@ -102,11 +102,11 @@ namespace CS418
 		while (std::getline(stream, line))
 		{
 			Vertex_t vCurr;
-			bool readVertex;
+			bool readVertex = false;
 			if (line.find_first_of("v ") == 0)
 			{
 				readVertex = true;
-				std::stringstream ss(line);
+				std::stringstream ss(line.substr(2));
 				ss >> vCurr.position.x >> vCurr.position.y >> vCurr.position.z;
 			}
 

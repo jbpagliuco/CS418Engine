@@ -4,9 +4,10 @@
 #include <Windows.h>
 #endif
 
+#include "graphics\Renderer.h"
+
 namespace CS418
 {
-
 	/*
 	* Initializes and manages the settings of the graphics state.
 	*/
@@ -19,10 +20,15 @@ namespace CS418
 		/* Initializes the graphics device */
 		void Initialize();
 
+		/* Sets the scene to render */
+		void SetScene(Scene * pScene);
+
 		/* Prepares the scene for drawing */
 		void BeginScene();
 		/* Presents the rendering result */
 		void EndScene();
+
+		void Draw();
 
 	private:
 		void createWindow();
@@ -33,6 +39,8 @@ namespace CS418
 		HDC m_hDC;
 		HGLRC m_hRC;
 #endif
+
+		Renderer m_renderer;
 	};
 
 }

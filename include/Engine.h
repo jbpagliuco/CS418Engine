@@ -13,7 +13,9 @@ namespace CS418
 		virtual ~Engine();
 
 		void Initialize();
+
 		int Update();
+		void Draw();
 
 	private:
 		GraphicsManager m_gfx;

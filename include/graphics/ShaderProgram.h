@@ -24,8 +24,6 @@ namespace CS418
 
 		VertexDesc GetVertexDesc()const;
 
-		void SetProgram()const;
-
 	private:
 		void compileShaders(std::string vertexShaderSource, std::string fragShaderSource);
 		void createInputLayout(std::string vertexShaderSource);
@@ -33,5 +31,7 @@ namespace CS418
 	private:
 		U32 m_shaderProgram;
 		VertexDesc m_vertexDesc;
+
+		friend class Renderer;
 	};
 }

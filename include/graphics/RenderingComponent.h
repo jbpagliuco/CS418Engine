@@ -15,14 +15,17 @@ namespace CS418
 
 		virtual void Initialize();
 		virtual void Initialize(Mesh * pMesh, Material material);
-		
-		virtual void Update();
+
+		virtual std::string GetType()const;
 
 	private:
 		U32 m_VB;
 		U32 m_IB;
 		U32 m_inputLayout;
+		U32 m_indicesCount;
 
 		Material m_material;
+
+		friend class Renderer;
 	};
 }
