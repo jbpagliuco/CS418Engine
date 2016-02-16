@@ -4,8 +4,12 @@
 #include <string>
 #include <vector>
 
-#include "MeshLoader.h"
-#include "ShaderLoader.h"
+#include "util\Util.h"
+#include "util\RefCount.h"
+
+#include "graphics\Scene.h"
+#include "graphics\Mesh.h"
+#include "graphics\ShaderProgram.h"
 
 namespace CS418
 {
@@ -14,6 +18,25 @@ namespace CS418
 	public:
 		virtual ~AssetManager();
 
+		Scene * LoadScene(AssetManager * assetManager, const std::string &sceneFilepath);
 
+		Mesh * LoadMesh(const std::string &meshFilepath);
+		ShaderProgram * LoadShader(const std::string &vertexShaderFilepath, const std::string &fragShaderFilepath);
+
+	private:
+		template <typename T>
+		struct AssetContainer
+		{
+			T * Asset;
+			RefCount<U32> Count;
+		};
+
+		typedef std::map<std::string, AssetContainer<Scene>> SceneContainer_t;
+		typedef std::map<std::string, AssetContainer<Mesh>> MeshContainer_t;
+		typedef std::map<std::string, AssetContainer<ShaderProgram>> ShaderContainer_t;
+
+		SceneContainer_t m_scenes;
+		MeshContainer_t m_meshes;
+		ShaderContainer_t m_shaders;
 	};
 }
