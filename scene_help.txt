@@ -1,8 +1,17 @@
-Name [ Type Parameters ] [ Components Parameters ]
+Name 
+- [ Components Parameters ]
+> Child Game Object
+>> GrandChild Game Object
 
-Type:           | Parameters:
-----------------|-------------------------------------------------------------------------------------
-Mesh            | Mesh filepath
-				| Vertex shader filepath
-				| Fragment shader filepath
-				| 
+Component:                      | Parameters:
+--------------------------------|-------------------------------------------------------------------------------------
+Transform						| Vector3f: Position
+								| Vector3f: Rotation in rads
+								| Vector3f: Scale
+								| ## Transform (10.0, 5.0, 10.0) (PI, 0.0, PI) (1.0, 0.0, 2.0)
+								| ## Types of PI: PI, 2PI, PIDIV2, PIDIV3, PIDIV4, PIDIV6, 3PIDIV2
+--------------------------------|-----------------------------------------------------------------							
+RenderingComponent				| string: Mesh filepath
+								| string: Vertex shader filepath
+								| string: Fragment shader filepath
+								| ## RenderingComponent assets/Mesh.obj assets/vs.vert assets/fr.frag

@@ -11,6 +11,7 @@ namespace CS418
 	const F32 PI_DIV4 = PI / 4.0f;
 	const F32 PI_DIV6 = PI / 6.0f;
 	const F32 PI_MUL2 = PI * 2.0f;
+	const F32 PI_3DIV2 = 3.0f * PI / 2.0f;
 
 	const F32 FLOAT_EPSILON = 1E-5f;
 	const D64 DOUBLE_EPSILON = 1E-9;

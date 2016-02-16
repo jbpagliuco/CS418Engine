@@ -18,6 +18,9 @@ Shader Program
 	- Deal with compilation errors
 	- Default shader
 	
+Scene
+	- Give scene a name?
+	
 Buffers
 	- Allow for dynamic vertices
 	
