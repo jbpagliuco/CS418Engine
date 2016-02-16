@@ -10,6 +10,7 @@
 
 namespace CS418
 {
+	F32 StringToFloat(const std::string &line);
 	VECTOR3F LoadVector3f(std::string line);
 	GameComponent * LoadComponent(AssetManager *pAssetManager, std::string line);
 
@@ -24,7 +25,7 @@ namespace CS418
 		if (fileReader.GetFileExtension() == ".cs418scene")
 		{
 			std::string sceneData = fileReader.FileAsString();
-			pScene = LoadCS418Scene(assetManager, sceneData);
+			pScene = LoadCS418Scene(pAssetManager, sceneData);
 		}
 		else
 			pScene = nullptr;
@@ -64,51 +65,42 @@ namespace CS418
 		}
 	}
 
+	F32 StringToFloat(const std::string &line)
+	{
+		F32 value;
+
+		if (line == "PI")
+			value = PI;
+		else if (line == "2PI")
+			value = PI_MUL2;
+		else if (line == "PIDIV2")
+			value = PI_DIV2;
+		else if (line == "PIDIV3")
+			value = PI_DIV3;
+		else if (line == "PIDIV4")
+			value = PI_DIV4;
+		else if (line == "PIDIV6")
+			value = PI_DIV6;
+		else if (line == "3PIDIV2")
+			value = PI_3DIV2;
+		else
+			value = stof(line);
+
+		return value;
+	}
+
+	// line == (X, Y, Z)
 	VECTOR3F LoadVector3f(std::string line)
 	{
 		VECTOR3F v;
 
-		size_t pos;
-		std::string token;
-		size_t i = 0;
-		while ((pos = line.find(',')) != std::string::npos) 
-		{
-			token = line.substr(0, pos);
+		std::string x = line.substr(1, line.find_first_of(','));
+		std::string y = line.substr(line.find_first_of(',') + 2, line.find_last_of(','));
+		std::string z = line.substr(line.find_last_of(',') + 2, line.length() - 1);
 
-			F32 value;
-			if (token.find("PI"))
-			{
-				if (token == "PI")
-					value = PI;
-				else if (token == "2PI")
-					value = PI_MUL2;
-				else if (token == "PIDIV2")
-					value = PI_DIV2;
-				else if (token == "PIDIV3")
-					value = PI_DIV3;
-				else if (token == "PIDIV4")
-					value = PI_DIV4;
-				else if (token == "PIDIV6")
-					value = PI_DIV6;
-				else if (token == "3PIDIV2")
-					value = PI_3DIV2;
-			}
-			else
-			{
-				// Just a number
-				value = std::stof(token);
-			}
-
-			if (i == 0)
-				v.x = value;
-			else if (i == 1)
-				v.y = value;
-			else if (i == 2)
-				v.z = value;
-			i++;
-
-			line.erase(0, pos + 1); // 1 for ','
-		}
+		v.x = StringToFloat(x);
+		v.y = StringToFloat(y);
+		v.z = StringToFloat(z);
 
 		return v;
 	}
