@@ -1,6 +1,6 @@
-#include "content\ShaderLoader.h"
+#include "content/ShaderLoader.h"
 
-#include "util\FileReader.h"
+#include "util/FileReader.h"
 
 namespace CS418
 {

@@ -18,10 +18,12 @@ namespace CS418
 	public:
 		virtual ~AssetManager();
 
-		Scene * LoadScene(AssetManager * assetManager, const std::string &sceneFilepath);
+		Scene * LoadScene(const std::string &sceneFilepath);
 
 		Mesh * LoadMesh(const std::string &meshFilepath);
 		ShaderProgram * LoadShader(const std::string &vertexShaderFilepath, const std::string &fragShaderFilepath);
+
+		void UnloadContent();
 
 	private:
 		template <typename T>

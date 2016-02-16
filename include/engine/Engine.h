@@ -1,8 +1,8 @@
 #pragma once
 
-#include "GraphicsManager.h"
+#include "graphics/GraphicsManager.h"
 #include "Game.h"
-#include "content\ContentManager.h"
+#include "content/AssetManager.h"
 
 namespace CS418
 {
@@ -21,6 +21,6 @@ namespace CS418
 		GraphicsManager m_gfx;
 		Game m_game;
 
-		ContentManager m_contentManager;
+		AssetManager m_assetManager;
 	};
 }

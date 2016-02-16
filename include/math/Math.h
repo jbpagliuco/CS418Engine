@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Util.h"
+#include "util/Util.h"
 #include <math.h>
 
 namespace CS418

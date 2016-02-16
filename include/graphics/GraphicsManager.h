@@ -4,7 +4,7 @@
 #include <Windows.h>
 #endif
 
-#include "graphics\Renderer.h"
+#include "graphics/Renderer.h"
 
 namespace CS418
 {

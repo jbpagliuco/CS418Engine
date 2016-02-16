@@ -1,12 +1,12 @@
-#include "content\SceneLoader.h"
+#include "content/SceneLoader.h"
 
-#include "util\FileReader.h"
+#include "util/FileReader.h"
 #include <sstream>
 
-#include "game\GameObject.h"
+#include "game/GameObject.h"
 
-#include "game\Transform.h"
-#include "graphics\RenderingComponent.h"
+#include "game/Transform.h"
+#include "graphics/RenderingComponent.h"
 
 namespace CS418
 {
@@ -24,7 +24,7 @@ namespace CS418
 		if (fileReader.GetFileExtension() == ".cs418scene")
 		{
 			std::string sceneData = fileReader.FileAsString();
-			pScene = LoadCS418Scene(assetManager, sceneData);
+			pScene = LoadCS418Scene(pAssetManager, sceneData);
 		}
 		else
 			pScene = nullptr;
@@ -41,13 +41,16 @@ namespace CS418
 		std::string line;
 		
 		Scene * pScene = new Scene;
-		GameObject * pGO;
-		size_t pos;
+		GameObject * pGO = nullptr;
 		
 		while (std::getline(stream, line))
 		{
-			if (line.at(0) != '-' || line.at(0) != '>')
+			if (line.at(0) != '-' && line.at(0) != '>')
 			{
+				// If this is a new game object, add the old one to the scene.
+				if (pGO)
+					pScene->AddGameObject(pGO);
+
 				// Create game object and give it a name (line == name in this case).
 				pGO = new GameObject(line);
 
@@ -55,13 +58,16 @@ namespace CS418
 			else if (line.at(0) == '-')
 			{
 				// This is a game component for the object.
-				pGO->AddComponent(LoadComponent(pAssetManager, line.substr(1))); // No hyphen	
+				if (pGO)
+					pGO->AddComponent(LoadComponent(pAssetManager, line.substr(2))); // No hyphen or space
 			}
 			else if (line.at(0) == '>')
 			{
 				// This is for a child game 
 			}
 		}
+
+		return pScene;
 	}
 
 	VECTOR3F LoadVector3f(std::string line)
@@ -76,7 +82,7 @@ namespace CS418
 			token = line.substr(0, pos);
 
 			F32 value;
-			if (token.find("PI"))
+			if (token.find("PI") != std::string::npos)
 			{
 				if (token == "PI")
 					value = PI;
@@ -103,8 +109,6 @@ namespace CS418
 				v.x = value;
 			else if (i == 1)
 				v.y = value;
-			else if (i == 2)
-				v.z = value;
 			i++;
 
 			line.erase(0, pos + 1); // 1 for ','
@@ -115,14 +119,14 @@ namespace CS418
 
 	GameComponent * LoadComponent(AssetManager *pAssetManager, std::string line)
 	{
-		GameComponent * pGC;
+		GameComponent * pGC = nullptr;
 
 		std::string componentType = line.substr(0, line.find(' '));
 		std::string arguments = line.substr(line.find(' ') + 1);
 
 		if (componentType == "Transform")
 		{
-			std::string position = arguments.substr(arguments.find_first_of("(") + 1, arguments.find_first_of(")"));
+			std::string position = arguments.substr(arguments.find_first_of("(") + 1, arguments.find_first_of(")") - 1);
 			std::string rotation = arguments.substr(arguments.find_first_of(")") + 3, arguments.find_last_of("(") - 3);
 			std::string scale = arguments.substr(arguments.find_last_of("(") + 1, arguments.find_last_of(")"));
 

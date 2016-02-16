@@ -1,33 +1,17 @@
-#include "content\AssetManager.h"
+#include "content/AssetManager.h"
 
-#include "content\SceneLoader.h"
-#include "content\MeshLoader.h"
-#include "content\ShaderLoader.h"
+#include "content/SceneLoader.h"
+#include "content/MeshLoader.h"
+#include "content/ShaderLoader.h"
 
 namespace CS418
 {
 	AssetManager::~AssetManager()
 	{
-		for (SceneContainer_t::iterator it = m_scenes.begin(); it != m_scenes.end(); ++it)
-		{
-			delete it->second.Asset;
-			it->second.Asset = nullptr;
-		}
-
-		for (MeshContainer_t::iterator it = m_meshes.begin(); it != m_meshes.end(); ++it)
-		{
-			delete it->second.Asset;
-			it->second.Asset = nullptr;
-		}
-
-		for (ShaderContainer_t::iterator it = m_shaders.begin(); it != m_shaders.end(); ++it)
-		{
-			delete it->second.Asset;
-			it->second.Asset = nullptr;
-		}
+		
 	}
 
-	Scene * AssetManager::LoadScene(AssetManager * assetManager, const std::string &sceneFilepath)
+	Scene * AssetManager::LoadScene(const std::string &sceneFilepath)
 	{
 		// Check if scene has already been loaded.
 		for (SceneContainer_t::iterator it = m_scenes.begin(); it != m_scenes.end(); ++it)
@@ -40,7 +24,7 @@ namespace CS418
 		}
 
 		// Otherwise load the scene.
-		Scene * pScene = LoadScene(this, sceneFilepath);
+		Scene * pScene = CS418::LoadScene(this, sceneFilepath);
 		
 		// Add scene to list.
 		AssetContainer<Scene> sceneContainer;
@@ -97,5 +81,26 @@ namespace CS418
 		m_shaders[(vertexShaderFilepath + fragShaderFilepath)] = shaderContainer;
 
 		return pShader;
+	}
+
+	void AssetManager::UnloadContent()
+	{
+		for (SceneContainer_t::iterator it = m_scenes.begin(); it != m_scenes.end(); ++it)
+		{
+			delete it->second.Asset;
+			it->second.Asset = nullptr;
+		}
+
+		for (MeshContainer_t::iterator it = m_meshes.begin(); it != m_meshes.end(); ++it)
+		{
+			delete it->second.Asset;
+			it->second.Asset = nullptr;
+		}
+
+		for (ShaderContainer_t::iterator it = m_shaders.begin(); it != m_shaders.end(); ++it)
+		{
+			delete it->second.Asset;
+			it->second.Asset = nullptr;
+		}
 	}
 }

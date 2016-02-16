@@ -1,9 +1,9 @@
 /* A graphics manager for OpenGL. */
-#include "GraphicsManager.h"
+#include "graphics/GraphicsManager.h"
 
 #include <Windows.h>
 
-#include "AppWindow.h"
+#include "engine/AppWindow.h"
 
 CS418::GraphicsManager::GraphicsManager()
 {

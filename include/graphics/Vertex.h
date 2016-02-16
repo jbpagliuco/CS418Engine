@@ -1,6 +1,6 @@
 #pragma once
 
-#include "math\Vector.h"
+#include "math/Vector.h"
 
 namespace CS418
 {

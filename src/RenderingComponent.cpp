@@ -1,6 +1,6 @@
-#include "graphics\RenderingComponent.h"
+#include "graphics/RenderingComponent.h"
 
-#include <GL\glew.h>
+#include <GL/glew.h>
 
 namespace CS418
 {

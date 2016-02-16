@@ -1,6 +1,6 @@
-#include "AppWindow.h"
+#include "engine/AppWindow.h"
 
-#include "MainWndProcWin32.h"
+#include "engine/MainWndProcWin32.h"
 
 CS418::WindowHandle CS418::CreateApplicationWindow(const CS418::WINDOW_DESC &wd)
 {

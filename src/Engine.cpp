@@ -1,11 +1,11 @@
-#include "Engine.h"
+#include "engine/Engine.h"
 
 namespace CS418
 {
 	Engine::~Engine()
 	{
 		m_game.UnloadContent();
-		m_contentManager.UnloadContent();
+		m_assetManager.UnloadContent();
 	}
 
 	void Engine::Initialize()
@@ -13,7 +13,7 @@ namespace CS418
 		m_gfx.Initialize();
 		m_game.Initialize(m_gfx);
 
-		m_game.LoadContent(m_contentManager);
+		m_game.LoadContent(m_assetManager);
 	}
 
 	int Engine::Update()

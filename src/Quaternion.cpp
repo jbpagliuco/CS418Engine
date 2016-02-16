@@ -1,9 +1,9 @@
-#include "math\Quaternion.h"
+#include "math/Quaternion.h"
 
-#include "math\Math.h"
+#include "math/Math.h"
 #include <assert.h>
 
-#include "Util.h"
+#include "util/Util.h"
 
 namespace CS418
 {

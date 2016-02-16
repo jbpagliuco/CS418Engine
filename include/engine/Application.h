@@ -1,7 +1,7 @@
 #pragma once
 
-#include "GraphicsManager.h"
-#include "content\ContentManager.h"
+#include "graphics/GraphicsManager.h"
+#include "content/AssetManager.h"
 
 namespace CS418
 {
@@ -22,7 +22,7 @@ namespace CS418
 		/* Called once at startup for initialization */
 		virtual void Initialize(GraphicsManager &gfxManager) = 0;
 		/* Called once at startup for loading content */
-		virtual void LoadContent(ContentManager &contentManager) = 0;
+		virtual void LoadContent(AssetManager &assetManager) = 0;
 		/* Called once at the end for unloading content */
 		virtual void UnloadContent() = 0;
 

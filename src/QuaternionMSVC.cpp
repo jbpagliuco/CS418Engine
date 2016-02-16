@@ -1,6 +1,6 @@
-#include "math\Quaternion.h"
+#include "math/Quaternion.h"
 
-#include "math\Math.h"
+#include "math/Math.h"
 
 namespace CS418
 {

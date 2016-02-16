@@ -1,4 +1,4 @@
-#include "graphics\Mesh.h"
+#include "graphics/Mesh.h"
 
 namespace CS418
 {

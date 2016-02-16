@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Application.h"
-#include "content\ContentManager.h"
-#include "Scene.h"
+#include "engine/Application.h"
+#include "content/AssetManager.h"
+#include "graphics/Scene.h"
 
 #include <vector>
 
@@ -16,7 +16,7 @@ namespace CS418
 		/* Called once at startup for initialization */
 		void Initialize(GraphicsManager &gfxManager);
 		/* Called once at startup for loading content */
-		void LoadContent(ContentManager &contentManager);
+		void LoadContent(AssetManager &assetManager);
 		/* Called once at the end for unloading content */
 		void UnloadContent();
 

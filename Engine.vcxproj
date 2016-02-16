@@ -175,7 +175,6 @@
     <ClCompile Include="src\MeshLoader.cpp" />
     <ClCompile Include="src\Quaternion.cpp" />
     <ClCompile Include="src\QuaternionMSVC.cpp" />
-    <ClCompile Include="src\RefCount.cpp" />
     <ClCompile Include="src\Renderer.cpp" />
     <ClCompile Include="src\RenderingComponent.cpp" />
     <ClCompile Include="src\Scene.cpp" />

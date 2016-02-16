@@ -1,8 +1,8 @@
-#include "graphics\Renderer.h"
+#include "graphics/Renderer.h"
 
-#include <GL\glew.h>
+#include <GL/glew.h>
 
-#include "graphics\RenderingComponent.h"
+#include "graphics/RenderingComponent.h"
 
 namespace CS418
 {

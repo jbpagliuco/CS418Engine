@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GameObject.h"
+#include "game/GameObject.h"
 
 namespace CS418
 {

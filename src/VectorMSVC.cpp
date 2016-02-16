@@ -2,7 +2,7 @@
 
 #include "math/VectorUtilMSVC.h"
 
-#include "math\Math.h"
+#include "math/Math.h"
 
 namespace CS418
 {
