@@ -128,7 +128,10 @@
   <ItemGroup>
     <ClInclude Include="include\Application.h" />
     <ClInclude Include="include\AppWindow.h" />
-    <ClInclude Include="include\content\ContentManager.h" />
+    <ClInclude Include="include\content\AssetManager.h" />
+    <ClInclude Include="include\content\MeshLoader.h" />
+    <ClInclude Include="include\content\SceneLoader.h" />
+    <ClInclude Include="include\content\ShaderLoader.h" />
     <ClInclude Include="include\Engine.h" />
     <ClInclude Include="include\FileReader.h" />
     <ClInclude Include="include\Game.h" />
@@ -151,9 +154,10 @@
     <ClInclude Include="include\Util.h" />
     <ClInclude Include="include\math\Vector.h" />
     <ClInclude Include="include\math\VectorUtilMSVC.h" />
+    <ClInclude Include="include\util\RefCount.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\ContentManager.cpp" />
+    <ClCompile Include="src\AssetManager.cpp" />
     <ClCompile Include="src\FileReader.cpp" />
     <ClCompile Include="src\Material.cpp" />
     <ClCompile Include="src\Mesh.cpp" />
@@ -168,11 +172,15 @@
     <ClCompile Include="src\MainWndProcWin32.cpp" />
     <ClCompile Include="src\Math.cpp" />
     <ClCompile Include="src\MatrixMSVC.cpp" />
+    <ClCompile Include="src\MeshLoader.cpp" />
     <ClCompile Include="src\Quaternion.cpp" />
     <ClCompile Include="src\QuaternionMSVC.cpp" />
+    <ClCompile Include="src\RefCount.cpp" />
     <ClCompile Include="src\Renderer.cpp" />
     <ClCompile Include="src\RenderingComponent.cpp" />
     <ClCompile Include="src\Scene.cpp" />
+    <ClCompile Include="src\SceneLoader.cpp" />
+    <ClCompile Include="src\ShaderLoader.cpp" />
     <ClCompile Include="src\ShaderProgram.cpp" />
     <ClCompile Include="src\Transform.cpp" />
     <ClCompile Include="src\VectorMSVC.cpp" />
