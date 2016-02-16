@@ -18,6 +18,8 @@ namespace CS418
 
 	int Engine::Update()
 	{
+		m_game.Update();
+
 		return 0;
 	}
 

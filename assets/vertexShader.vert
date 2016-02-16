@@ -1,4 +1,4 @@
-// POSITION
+// POSITION,
 
 #version 330 core
 

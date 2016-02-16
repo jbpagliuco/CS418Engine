@@ -9,7 +9,7 @@ namespace CS418
 	class Transform : public GameComponent
 	{
 	public:
-		Transform(std::string name);
+		Transform();
 		virtual ~Transform();
 
 		// Initializes this transform to location (0, 0, 0), no rotation, and no scale.
@@ -22,8 +22,6 @@ namespace CS418
 
 		const Matrix & createWorldMatrix();
 		const Matrix & getWorldMatrix()const;
-
-		virtual std::string GetType()const;
 
 	public:
 		VECTOR3F Position;

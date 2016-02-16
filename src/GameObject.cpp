@@ -4,7 +4,7 @@
 
 namespace CS418
 {
-	GameObject::GameObject(std::string name) : m_transform(name + " Transform")
+	GameObject::GameObject(std::string name) : m_transform()
 	{
 		m_name = name;
 	}
@@ -32,7 +32,7 @@ namespace CS418
 		return m_components;
 	}
 
-	const std::vector<GameComponent*> & GameObject::GetComponentsOfType(const std::string &type)const
+	std::vector<GameComponent*> GameObject::GetComponentsOfType(const std::string &type)const
 	{
 		std::vector<GameComponent*> gameObjects;
 

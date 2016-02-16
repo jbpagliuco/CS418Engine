@@ -20,7 +20,7 @@ namespace CS418
 		void RemoveComponent(GameComponent *component);
 
 		const std::vector<GameComponent*> & GetComponents()const;
-		const std::vector<GameComponent*> & GetComponentsOfType(const std::string &type)const;
+		std::vector<GameComponent*> GetComponentsOfType(const std::string &type)const;
 		//const std::vector<GameComponent*> & GetComponentsByname(const std::string &name)const;
 
 	private:

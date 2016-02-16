@@ -21,7 +21,7 @@ namespace CS418
 		Material material;
 		material.Initialize(pBasicShader);
 
-		RenderingComponent *rendComp = new RenderingComponent("Basic Rendering Component");
+		RenderingComponent *rendComp = new RenderingComponent;
 		rendComp->Initialize(pMeshTriangle, material);
 		
 		GameObject gameObject("Game Object");

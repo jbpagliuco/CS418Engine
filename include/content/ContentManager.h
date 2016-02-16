@@ -19,6 +19,7 @@
 
 #include "graphics\ShaderProgram.h"
 #include "graphics\Mesh.h"
+#include "Scene.h"
 
 namespace CS418
 {
@@ -35,22 +36,30 @@ namespace CS418
 		// Processes and loads a mesh.
 		// - filename: The file path of the mesh.
 		virtual Mesh * LoadMesh(const std::string &filepath);
+
+		// Processes and loads a scene.
+		// - filename: The file path of the scene.
+		virtual Scene * LoadScene(const std::string &filepath);
 		
 		// Disposes all data that has been loaded by this content manager.
 		virtual void UnloadContent();
 
 	protected:
-		ShaderProgram loadGLSL(const char *vertexShaderData, const char *fragShaderData);
+		ShaderProgram loadGLSL(const std::string &vertexShaderData, const std::string &fragShaderData);
 		
 		Mesh loadOBJ(const std::string &meshData);
+
+		Scene loadScene(const std::string &sceneData);
 
 	private:
 		FileReader m_fileReader;
 
 		typedef std::map<std::string, ShaderProgram> ShaderArray_t;
 		typedef std::map<std::string, Mesh> MeshArray_t;
+		typedef std::map<std::string, Scene> SceneArray_t;
 
 		ShaderArray_t m_shaders;
 		MeshArray_t m_meshes;
+		SceneArray_t m_scenes;
 	};
 }

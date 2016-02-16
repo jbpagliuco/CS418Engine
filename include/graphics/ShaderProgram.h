@@ -8,6 +8,10 @@ namespace CS418
 {
 	typedef struct VertexDesc
 	{
+		VertexDesc()
+		{
+			positions = normals = texCoords = tangents = colors = 0;
+		}
 		U8 positions;
 		U8 normals;
 		U8 texCoords;

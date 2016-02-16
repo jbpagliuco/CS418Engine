@@ -7,16 +7,16 @@ namespace CS418
 	class GameComponent
 	{
 	public:
-		GameComponent(std::string name);
+		GameComponent(std::string type);
 		virtual ~GameComponent();
 
 		// Initializes this game component.
 		virtual void Initialize() = 0;
 
 		// Returns the type of this component.
-		virtual std::string GetType() = 0;
+		std::string GetType()const;
 
 	protected:
-		std::string m_name;
+		std::string m_type;
 	};
 }

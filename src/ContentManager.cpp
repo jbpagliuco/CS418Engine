@@ -36,13 +36,13 @@ namespace CS418
 		m_fileReader.Open(fragShaderFilepath);
 		if (m_fileReader.GetFileExtension() == ".frag")
 		{
-			vertexShaderData = m_fileReader.FileAsString();
-			if (vertexShaderData.empty())
+			fragShaderData = m_fileReader.FileAsString();
+			if (fragShaderData.empty())
 				return nullptr;
 		}
 		m_fileReader.Close();
 
-		ShaderProgram shader = loadGLSL(vertexShaderData.c_str(), fragShaderData.c_str());
+		ShaderProgram shader = loadGLSL(vertexShaderData, fragShaderData);
 
 		std::string key = (vertexShaderFilepath + fragShaderFilepath);
 		m_shaders[key] = shader;
@@ -71,7 +71,36 @@ namespace CS418
 				Mesh mesh = loadOBJ(meshData);
 				m_meshes[filepath] = mesh;
 
+				m_fileReader.Close();
 				return &(m_meshes[filepath]);
+			}
+		}
+		m_fileReader.Close();
+
+		return nullptr;
+	}
+
+	Scene * ContentManager::LoadScene(const std::string &filepath)
+	{
+		for (SceneArray_t::iterator it = m_scenes.begin(); it != m_scenes.end(); ++it)
+		{
+			if (it->first == filepath)
+				return &(it->second);
+		}
+
+		m_fileReader.Open(filepath);
+		if (m_fileReader.GetFileExtension() == ".scene")
+		{
+			std::string sceneData = m_fileReader.FileAsString();
+			if (sceneData.empty())
+				return nullptr;
+			else
+			{
+				Scene scene = loadScene(sceneData);
+				m_scenes[filepath] = scene;
+
+				m_fileReader.Close();
+				return &(m_scenes[filepath]);
 			}
 		}
 		m_fileReader.Close();
@@ -84,7 +113,7 @@ namespace CS418
 
 	}
 
-	ShaderProgram ContentManager::loadGLSL(const char *vertexShaderData, const char *fragShaderData)
+	ShaderProgram ContentManager::loadGLSL(const std::string &vertexShaderData, const std::string &fragShaderData)
 	{
 		ShaderProgram shader;
 		shader.Initialize(vertexShaderData, fragShaderData);
@@ -128,5 +157,13 @@ namespace CS418
 		mesh.Initialize(vertices, indices);
 
 		return mesh;
+	}
+
+	Scene ContentManager::loadScene(const std::string &sceneData)
+	{
+		std::istringstream stream(sceneData);
+		std::string line;
+
+		
 	}
 }

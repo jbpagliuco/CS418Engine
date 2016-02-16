@@ -2,7 +2,7 @@
 
 namespace CS418
 {
-	Transform::Transform(std::string name) : GameComponent(name)
+	Transform::Transform() : GameComponent("Transform")
 	{
 
 	}
@@ -47,10 +47,5 @@ namespace CS418
 	const Matrix & Transform::getWorldMatrix()const
 	{
 		return m_worldMat;
-	}
-
-	std::string Transform::GetType()const
-	{ 
-		return "Transform"; 
 	}
 }

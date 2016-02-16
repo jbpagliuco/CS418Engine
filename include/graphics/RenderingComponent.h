@@ -10,13 +10,11 @@ namespace CS418
 	class RenderingComponent : public GameComponent
 	{
 	public:
-		RenderingComponent(std::string name);
+		RenderingComponent();
 		virtual ~RenderingComponent();
 
 		virtual void Initialize();
 		virtual void Initialize(Mesh * pMesh, Material material);
-
-		virtual std::string GetType()const;
 
 	private:
 		U32 m_VB;

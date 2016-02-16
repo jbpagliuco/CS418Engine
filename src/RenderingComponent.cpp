@@ -4,7 +4,7 @@
 
 namespace CS418
 {
-	RenderingComponent::RenderingComponent(std::string name) : GameComponent(name)
+	RenderingComponent::RenderingComponent() : GameComponent("RenderingComponent")
 	{
 
 	}
@@ -21,6 +21,8 @@ namespace CS418
 
 	void RenderingComponent::Initialize(Mesh * pMesh, Material material)
 	{
+		m_material = material;
+
 		VertexDesc vertexDesc = material.GetShaderProgram()->GetVertexDesc();
 		U32 vertexStride = (3 * vertexDesc.positions) + (3 * vertexDesc.normals) + (2 * vertexDesc.texCoords) + (3 * vertexDesc.tangents) + (4 * vertexDesc.colors);
 		vertexStride *= sizeof(F32);
@@ -79,10 +81,5 @@ namespace CS418
 		glBindVertexArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	}
-
-	std::string RenderingComponent::GetType()const
-	{ 
-		return "RenderingComponent"; 
 	}
 }

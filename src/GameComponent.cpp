@@ -2,13 +2,18 @@
 
 namespace CS418
 {
-	GameComponent::GameComponent(std::string name)
+	GameComponent::GameComponent(std::string type)
 	{
-		m_name = name;
+		m_type = type;
 	}
 
 	GameComponent::~GameComponent()
 	{
 
+	}
+
+	std::string GameComponent::GetType()const
+	{
+		return m_type;
 	}
 }
