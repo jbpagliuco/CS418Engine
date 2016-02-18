@@ -1,8 +1,8 @@
 #pragma once
 
 #include "GameComponent.h"
-#include "math\Vector.h"
-#include "math\Matrix.h"
+#include "math/Vector.h"
+#include "math/Matrix.h"
 
 namespace CS418
 {

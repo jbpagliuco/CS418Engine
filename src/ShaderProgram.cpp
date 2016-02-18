@@ -1,4 +1,4 @@
-#include "graphics\ShaderProgram.h"
+#include "graphics/ShaderProgram.h"
 
 #include <GL\glew.h>
 #include <stdio.h>
@@ -59,6 +59,7 @@ namespace CS418
 		GLuint shaderProgram = glCreateProgram();
 		glAttachShader(shaderProgram, vertexShader);
 		glAttachShader(shaderProgram, fragmentShader);
+		//glBindAttribLocation(shaderProgram, 0, "position");
 		glLinkProgram(shaderProgram);
 		// Check for linking errors
 		glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
@@ -84,15 +85,15 @@ namespace CS418
 			std::string curr = vertexShaderSource.substr(start + 1, end - (start + 1));
 
 			if (curr == "POSITION")
-				m_vertexDesc.positions++;
+				m_vertexDesc.positions = true;
 			else if (curr == "NORMAL")
-				m_vertexDesc.normals++;
+				m_vertexDesc.normals = true;
 			else if (curr == "TEXCOORD")
-				m_vertexDesc.texCoords++;
+				m_vertexDesc.texCoords = true;
 			else if (curr == "TANGENT")
-				m_vertexDesc.tangents++;
+				m_vertexDesc.tangents = true;
 			else if (curr == "COLOR")
-				m_vertexDesc.colors++;
+				m_vertexDesc.colors = true;
 
 			start = end + 1;
 		}

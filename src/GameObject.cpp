@@ -1,17 +1,17 @@
-#include "GameObject.h"
+#include "game/GameObject.h"
 
 #include <algorithm>
 
 namespace CS418
 {
-	GameObject::GameObject(std::string name) : m_transform()
+	GameObject::GameObject(std::string name) : m_pTransform()
 	{
 		m_name = name;
 	}
 
 	GameObject::~GameObject()
 	{
-		for (const_comp_it it = m_components.begin(); it != m_components.end(); it++)
+		for (const_comp_it it = m_pComponents.begin(); it != m_pComponents.end(); it++)
 		{
 			delete (*it);
 		}
@@ -19,24 +19,24 @@ namespace CS418
 
 	void GameObject::AddComponent(GameComponent *component)
 	{
-		m_components.push_back(component);
+		m_pComponents.push_back(component);
 	}
 
 	void GameObject::RemoveComponent(GameComponent *component)
 	{
-		std::find(m_components.begin(), m_components.end(), component);
+		std::find(m_pComponents.begin(), m_pComponents.end(), component);
 	}
 
 	const std::vector<GameComponent*> & GameObject::GetComponents()const
 	{
-		return m_components;
+		return m_pComponents;
 	}
 
 	std::vector<GameComponent*> GameObject::GetComponentsOfType(const std::string &type)const
 	{
 		std::vector<GameComponent*> gameObjects;
 
-		for (const_comp_it it = m_components.begin(); it != m_components.end(); it++)
+		for (const_comp_it it = m_pComponents.begin(); it != m_pComponents.end(); it++)
 		{
 			if ((*it)->GetType() == type)
 			{
@@ -45,5 +45,15 @@ namespace CS418
 		}
 
 		return gameObjects;
+	}
+
+	void GameObject::SetTransform(Transform *transform)
+	{
+		m_pTransform = transform;
+	}
+
+	Transform * GameObject::GetTransform()const
+	{
+		return m_pTransform;
 	}
 }

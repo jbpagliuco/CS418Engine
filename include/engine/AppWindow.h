@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Util.h"
+#include "util/Util.h"
 
 #if defined(WIN32) || defined(_WIN32)
 #include <Windows.h>
@@ -19,6 +19,7 @@ namespace CS418
 		Vector2<unsigned int> position;
 		Vector2<unsigned int> size;
 		const char * caption;
+		bool isFullscreen;
 	} WINDOW_DESC;
 
 	/* Creates a window and returns the handle based on platform */

@@ -1,92 +1,187 @@
-/* A graphics manager for OpenGL. */
-#include "GraphicsManager.h"
+#include "graphics/GraphicsManager.h"
 
 #include <Windows.h>
 
-#include "AppWindow.h"
+#include "engine/AppWindow.h"
 
-CS418::GraphicsManager::GraphicsManager()
+namespace CS418
 {
-	m_hWnd = nullptr;
-	m_hDC = nullptr;
-	m_hRC = nullptr;
-}
-
-CS418::GraphicsManager::~GraphicsManager()
-{
-	if (m_hRC)
+	GraphicsManager::GraphicsManager()
 	{
-		wglMakeCurrent(nullptr, nullptr);
-		wglDeleteContext(m_hRC);
-	}
-	if (m_hWnd && m_hDC)
-	{
-		ReleaseDC(m_hWnd, m_hDC);
+		m_hWnd = nullptr;
+		m_hDC = nullptr;
+		m_hRC = nullptr;
 	}
 
-	m_hWnd = nullptr;
-	m_hDC = nullptr;
-	m_hRC = nullptr;
-}
+	GraphicsManager::~GraphicsManager()
+	{
+		if (m_hRC)
+		{
+			wglMakeCurrent(nullptr, nullptr);
+			wglDeleteContext(m_hRC);
+		}
+		if (m_hWnd && m_hDC)
+		{
+			ReleaseDC(m_hWnd, m_hDC);
+		}
 
-void CS418::GraphicsManager::Initialize()
-{
-	createWindow();
+		m_hWnd = nullptr;
+		m_hDC = nullptr;
+		m_hRC = nullptr;
+	}
 
-	m_renderer.Initialize();
-}
+	void GraphicsManager::Initialize()
+	{
+		m_wWidth = 800;
+		m_wHeight = 600;
+		m_wPosX = 500;
+		m_wPosY = 200;
+		m_fullscreen = false;
+		m_wWindowTitle = "Window Title";
 
-void CS418::GraphicsManager::SetScene(Scene * pScene)
-{
-	m_renderer.SetScene(pScene);
-}
+		createWindow();
 
-void CS418::GraphicsManager::BeginScene()
-{
-	wglMakeCurrent(m_hDC, m_hRC);
-}
+		m_renderer.Initialize();
+	}
 
-void CS418::GraphicsManager::Draw()
-{
-	m_renderer.Draw();
-}
+	void GraphicsManager::SetScene(Scene * pScene)
+	{
+		m_renderer.SetScene(pScene);
+	}
 
-void CS418::GraphicsManager::EndScene()
-{
-	// Swap front and back buffers
-	SwapBuffers(m_hDC);
-}
+	void GraphicsManager::BeginScene()
+	{
+		wglMakeCurrent(m_hDC, m_hRC);
+	}
 
-void CS418::GraphicsManager::createWindow()
-{
-	CS418::WINDOW_DESC wd;
-	wd.caption = "Engine Testing";
-	wd.position.X = wd.position.Y = 100;
-	wd.size.X = 800;
-	wd.size.Y = 600;
+	void GraphicsManager::Draw()
+	{
+		m_renderer.Draw();
+	}
 
-	m_hWnd = CreateApplicationWindow(wd);
+	void GraphicsManager::EndScene()
+	{
+		// Swap front and back buffers
+		SwapBuffers(m_hDC);
+	}
 
-	// get the device context (DC)
-	m_hDC = GetDC(m_hWnd);
+	void GraphicsManager::SetWindowWidth(U32 width)
+	{
+		m_wWidth = width;
 
-	// set the pixel format for the DC
-	PIXELFORMATDESCRIPTOR pfd;
-	ZeroMemory(&pfd, sizeof(pfd));
-	pfd.nSize = sizeof(pfd);
-	pfd.nVersion = 1;
-	pfd.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL |
-		PFD_DOUBLEBUFFER;
-	pfd.iPixelType = PFD_TYPE_RGBA;
-	pfd.cColorBits = 24;
-	pfd.cDepthBits = 16;
-	pfd.iLayerType = PFD_MAIN_PLANE;
-	int format = ChoosePixelFormat(m_hDC, &pfd);
-	SetPixelFormat(m_hDC, format, &pfd);
+		if (m_hWnd)
+			SetWindowPos(m_hWnd, nullptr, m_wPosX, m_wPosY, m_wWidth, m_wHeight, 0);
+	}
+	void GraphicsManager::SetWindowHeight(U32 height)
+	{
+		m_wHeight = height;
 
-	// create the render context (RC)
-	m_hRC = wglCreateContext(m_hDC);
+		if (m_hWnd)
+			SetWindowPos(m_hWnd, nullptr, m_wPosX, m_wPosY, m_wWidth, m_wHeight, 0);
+	}
+	void GraphicsManager::SetWindowDimensions(U32 width, U32 height)
+	{
+		m_wWidth = width;
+		m_wHeight = height;
 
-	// make it the current render context
-	wglMakeCurrent(m_hDC, m_hRC);
+		if (m_hWnd)
+			SetWindowPos(m_hWnd, nullptr, m_wPosX, m_wPosY, m_wWidth, m_wHeight, 0);
+	}
+	Vector2<U32> GraphicsManager::GetWindowDimensions()const
+	{
+		return Vector2<U32>(m_wWidth, m_wHeight);
+	}
+
+	void GraphicsManager::SetWindowPositionX(U32 x)
+	{
+		m_wPosX = x;
+
+		if (m_hWnd)
+			SetWindowPos(m_hWnd, nullptr, m_wPosX, m_wPosY, m_wWidth, m_wHeight, 0);
+	}
+	void GraphicsManager::SetWindowPositionY(U32 y)
+	{
+		m_wPosY = y;
+
+		if (m_hWnd)
+			SetWindowPos(m_hWnd, nullptr, m_wPosX, m_wPosY, m_wWidth, m_wHeight, 0);
+	}
+	void GraphicsManager::SetWindowPosition(U32 x, U32 y)
+	{
+		m_wPosX = x;
+		m_wPosY = y;
+
+		if (m_hWnd)
+			SetWindowPos(m_hWnd, nullptr, m_wPosX, m_wPosY, m_wWidth, m_wHeight, 0);
+	}
+	Vector2<U32> GraphicsManager::GetWindowPosition()const
+	{
+		return Vector2<U32>(m_wPosX, m_wPosY);
+	}
+
+	void GraphicsManager::SetFullscreen(bool fullscreen)
+	{
+
+	}
+	bool GraphicsManager::IsFullscreen()const
+	{
+		return m_fullscreen;
+	}
+	
+	void GraphicsManager::SetWindowTitle(const std::string &title)
+	{
+		m_wWindowTitle = std::string(title);
+
+		if (m_hWnd)
+			SetWindowText(m_hWnd, m_wWindowTitle.c_str());
+	}
+	std::string GraphicsManager::GetWindowTitle()const
+	{
+		return m_wWindowTitle;
+	}
+
+	void GraphicsManager::SetClearColor(const VECTOR4F &color)
+	{
+		m_renderer.SetClearColor(color);
+	}
+	void GraphicsManager::SetClearColor(const std::string &color)
+	{
+		m_renderer.SetClearColor(color);
+	}
+
+	void GraphicsManager::createWindow()
+	{
+		WINDOW_DESC wd;
+		wd.caption = m_wWindowTitle.c_str();
+		wd.position.X = m_wPosX;
+		wd.position.Y = m_wPosY;
+		wd.size.X = m_wWidth;
+		wd.size.Y = m_wHeight;
+		wd.isFullscreen = m_fullscreen;
+
+		m_hWnd = CreateApplicationWindow(wd);
+
+		// get the device context (DC)
+		m_hDC = GetDC(m_hWnd);
+
+		// set the pixel format for the DC
+		PIXELFORMATDESCRIPTOR pfd;
+		ZeroMemory(&pfd, sizeof(pfd));
+		pfd.nSize = sizeof(pfd);
+		pfd.nVersion = 1;
+		pfd.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL |
+			PFD_DOUBLEBUFFER;
+		pfd.iPixelType = PFD_TYPE_RGBA;
+		pfd.cColorBits = 24;
+		pfd.cDepthBits = 16;
+		pfd.iLayerType = PFD_MAIN_PLANE;
+		int format = ChoosePixelFormat(m_hDC, &pfd);
+		SetPixelFormat(m_hDC, format, &pfd);
+
+		// create the render context (RC)
+		m_hRC = wglCreateContext(m_hDC);
+
+		// make it the current render context
+		wglMakeCurrent(m_hDC, m_hRC);
+	}
 }

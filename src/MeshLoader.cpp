@@ -1,6 +1,6 @@
-#include "content\MeshLoader.h"
+#include "content/MeshLoader.h"
 
-#include "util\FileReader.h"
+#include "util/FileReader.h"
 
 #include <sstream>
 
@@ -51,7 +51,7 @@ namespace CS418
 			if (line.find_first_of("f ") == 0)
 			{
 				Index_t index1, index2, index3;
-				std::stringstream ss(line);
+				std::stringstream ss(line.substr(2));
 				ss >> index1 >> index2 >> index3;
 				indices.push_back(index1);
 				indices.push_back(index2);

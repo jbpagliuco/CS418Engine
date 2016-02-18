@@ -1,4 +1,4 @@
-#include "Scene.h"
+#include "graphics/Scene.h"
 
 namespace CS418
 {

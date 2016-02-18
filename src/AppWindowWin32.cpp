@@ -1,6 +1,6 @@
-#include "AppWindow.h"
+#include "engine/AppWindow.h"
 
-#include "MainWndProcWin32.h"
+#include "engine/MainWndProcWin32.h"
 
 CS418::WindowHandle CS418::CreateApplicationWindow(const CS418::WINDOW_DESC &wd)
 {
@@ -22,14 +22,15 @@ CS418::WindowHandle CS418::CreateApplicationWindow(const CS418::WINDOW_DESC &wd)
 	
 	if (!RegisterClassExA(&wc))
 	{
-		OutputDebugStringA("Failed to register class");
+		DWORD error = GetLastError();
+		OutputDebugStringA("Failed to register class!\n");
 		PostQuitMessage(0);
 	}
 
 	hwnd = CreateWindowA(wc.lpszClassName, wd.caption, WS_OVERLAPPEDWINDOW, wd.position.X, wd.position.Y, wd.size.X, wd.size.Y, nullptr, nullptr, wc.hInstance, 0);
 	if (!hwnd)
 	{
-		OutputDebugStringA("Failed to create window");
+		OutputDebugStringA("Failed to create window!\n");
 		PostQuitMessage(0);
 	}
 

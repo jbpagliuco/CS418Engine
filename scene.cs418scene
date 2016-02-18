@@ -1,3 +1,0 @@
-Triangle_GO 
-- Transform
-- RenderingComponent assets/triangle.obj assets/vertexShader.vert assets/fragShader.frag

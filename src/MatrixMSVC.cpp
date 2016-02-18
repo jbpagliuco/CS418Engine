@@ -1,12 +1,12 @@
-#include "math\Matrix.h"
+#include "math/Matrix.h"
 
-#include "math\Vector.h"
-#include "math\Quaternion.h"
+#include "math/Vector.h"
+#include "math/Quaternion.h"
 
-#include "math\VectorUtilMSVC.h"
+#include "math/VectorUtilMSVC.h"
 
 #include <assert.h>
-#include "math\Math.h"
+#include "math/Math.h"
 
 namespace CS418
 {

@@ -1,4 +1,4 @@
-#include "GameComponent.h"
+#include "game/GameComponent.h"
 
 namespace CS418
 {

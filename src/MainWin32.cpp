@@ -1,12 +1,10 @@
 #include <Windows.h>
 
-#include "Engine.h"
+#include "engine/Engine.h"
 #include <stdio.h>
 
-#include "math\Vector.h"
-#include "math\Matrix.h"
-
-#include "content\ContentManager.h"
+#include "math/Vector.h"
+#include "math/Matrix.h"
 
 using namespace CS418;
 

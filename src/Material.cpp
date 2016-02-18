@@ -1,4 +1,4 @@
-#include "graphics\Material.h"
+#include "graphics/Material.h"
 
 namespace CS418
 {

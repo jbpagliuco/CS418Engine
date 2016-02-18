@@ -1,5 +1,9 @@
 Things TODO:
 
+Graphics Manager:
+	- Full screen stuff
+	- Update window dimesnions and position
+
 Content Loader
 	- Organize loaded assets
 	- Implement better (binary??) search algorithm on loading loaded assets

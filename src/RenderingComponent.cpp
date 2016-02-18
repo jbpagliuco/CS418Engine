@@ -1,6 +1,6 @@
-#include "graphics\RenderingComponent.h"
+#include "graphics/RenderingComponent.h"
 
-#include <GL\glew.h>
+#include <GL/glew.h>
 
 namespace CS418
 {
@@ -27,6 +27,44 @@ namespace CS418
 		U32 vertexStride = (3 * vertexDesc.positions) + (3 * vertexDesc.normals) + (2 * vertexDesc.texCoords) + (3 * vertexDesc.tangents) + (4 * vertexDesc.colors);
 		vertexStride *= sizeof(F32);
 
+		// Generate packed vertices list
+		U32 vSize = vertexStride / sizeof(F32) * pMesh->GetVertices().size();
+		float * vertices = new float[vSize];
+		U32 vertexIndex = 0;
+		for (U32 i =  0; vertexIndex < vSize; i++)
+		{
+			if (vertexDesc.positions)
+			{
+				vertices[vertexIndex++] = pMesh->GetVertices().at(i).position.x;
+				vertices[vertexIndex++] = pMesh->GetVertices().at(i).position.y;
+				vertices[vertexIndex++] = pMesh->GetVertices().at(i).position.z;
+			}
+			if (vertexDesc.normals)
+			{
+				vertices[vertexIndex++] = pMesh->GetVertices().at(i).normal.x;
+				vertices[vertexIndex++] = pMesh->GetVertices().at(i).normal.y;
+				vertices[vertexIndex++] = pMesh->GetVertices().at(i).normal.z;
+			}
+			if (vertexDesc.texCoords)
+			{
+				vertices[vertexIndex++] = pMesh->GetVertices().at(i).texCoord.x;
+				vertices[vertexIndex++] = pMesh->GetVertices().at(i).texCoord.y;
+			}
+			if (vertexDesc.tangents)
+			{
+				vertices[vertexIndex++] = pMesh->GetVertices().at(i).tangent.x;
+				vertices[vertexIndex++] = pMesh->GetVertices().at(i).tangent.y;
+				vertices[vertexIndex++] = pMesh->GetVertices().at(i).tangent.z;
+			}
+			if (vertexDesc.colors)
+			{
+				vertices[vertexIndex++] = pMesh->GetVertices().at(i).color.x;
+				vertices[vertexIndex++] = pMesh->GetVertices().at(i).color.y;
+				vertices[vertexIndex++] = pMesh->GetVertices().at(i).color.z;
+				vertices[vertexIndex++] = pMesh->GetVertices().at(i).color.w;
+			}
+		}
+		
 		glGenVertexArrays(1, &m_inputLayout);
 		glGenBuffers(1, &m_VB);
 		glGenBuffers(1, &m_IB);
@@ -34,7 +72,7 @@ namespace CS418
 		glBindVertexArray(m_inputLayout);
 
 		glBindBuffer(GL_ARRAY_BUFFER, m_VB);
-		glBufferData(GL_ARRAY_BUFFER, vertexStride * pMesh->GetVertices().size(), &(pMesh->GetVertices().at(0)), GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, vertexStride * pMesh->GetVertices().size(), vertices, GL_STATIC_DRAW);
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IB);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Index_t) * pMesh->GetIndices().size(), &(pMesh->GetIndices().at(0)), GL_STATIC_DRAW);
@@ -42,44 +80,46 @@ namespace CS418
 
 		U32 count = 0;
 		U32 offset = 0;
-		for (U8 i = 0; i < vertexDesc.positions; i++)
+		if (vertexDesc.positions)
 		{
+			glEnableVertexAttribArray(count);
 			glVertexAttribPointer(count, 3, GL_FLOAT, GL_FALSE, vertexStride, (GLvoid*)offset);
 			offset += (3 * sizeof(F32));
-			glEnableVertexAttribArray(count);
 			count++;
 		}
-		for (U8 i = 0; i < vertexDesc.normals; i++)
+		if (vertexDesc.normals)
 		{
+			glEnableVertexAttribArray(count);
 			glVertexAttribPointer(count, 3, GL_FLOAT, GL_FALSE, vertexStride, (GLvoid*)offset);
 			offset += (3 * sizeof(F32));
-			glEnableVertexAttribArray(count);
 			count++;
 		}
-		for (U8 i = 0; i < vertexDesc.texCoords; i++)
+		if (vertexDesc.texCoords)
 		{
+			glEnableVertexAttribArray(count);
 			glVertexAttribPointer(count, 2, GL_FLOAT, GL_FALSE, vertexStride, (GLvoid*)offset);
 			offset += (2 * sizeof(F32));
-			glEnableVertexAttribArray(count);
 			count++;
 		}
-		for (U8 i = 0; i < vertexDesc.tangents; i++)
+		if (vertexDesc.tangents)
 		{
+			glEnableVertexAttribArray(count);
 			glVertexAttribPointer(count, 3, GL_FLOAT, GL_FALSE, vertexStride, (GLvoid*)offset);
 			offset += (3 * sizeof(F32));
-			glEnableVertexAttribArray(count);
 			count++;
 		}
-		for (U8 i = 0; i < vertexDesc.colors; i++)
+		if (vertexDesc.colors)
 		{
+			glEnableVertexAttribArray(count);
 			glVertexAttribPointer(count, 4, GL_FLOAT, GL_FALSE, vertexStride, (GLvoid*)offset);
 			offset += (4 * sizeof(F32));
-			glEnableVertexAttribArray(count);
 			count++;
 		}
 
-		glBindVertexArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		glBindVertexArray(0);
+		//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+		delete[] vertices;
 	}
 }

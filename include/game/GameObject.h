@@ -23,12 +23,15 @@ namespace CS418
 		std::vector<GameComponent*> GetComponentsOfType(const std::string &type)const;
 		//const std::vector<GameComponent*> & GetComponentsByname(const std::string &name)const;
 
+		void SetTransform(Transform *transform);
+		Transform * GetTransform()const;
+
 	private:
 		typedef std::vector<GameComponent*>::iterator comp_it;
 		typedef std::vector<GameComponent*>::const_iterator const_comp_it;
 
 		std::string m_name;
-		std::vector<GameComponent*> m_components;
-		Transform m_transform;
+		std::vector<GameComponent*> m_pComponents;
+		Transform *m_pTransform;
 	};
 }

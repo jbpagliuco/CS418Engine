@@ -3,7 +3,7 @@
 #pragma once
 
 #include <xmmintrin.h>
-#include "Util.h"
+#include "util/Util.h"
 
 #ifndef _MM_SHUFFLE_PARAM
 #define _MM_SHUFFLE_PARAM(x, y, z, w) ((x) | (y << 2) | (z << 4) | (w << 6))

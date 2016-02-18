@@ -41,6 +41,8 @@ namespace CS418
 	template <typename T>
 	struct Vector2
 	{
+		Vector2<T>() {}
+		Vector2<T>(T x, T y) { X = x; Y = y; }
 		T X;
 		T Y;
 	};
@@ -49,6 +51,8 @@ namespace CS418
 	template <typename T>
 	struct Vector3
 	{
+		Vector3<T>() {}
+		Vector3<T>(T x, T y, T z) { X = x; Y = y; Z = z; }
 		T X;
 		T Y;
 		T Z;
@@ -58,6 +62,8 @@ namespace CS418
 	template <typename T>
 	struct Vector4
 	{
+		Vector4<T>() {}
+		Vector4<T>(T x, T y, T z, T w) { X = x; Y = y; Z = z; W = w; }
 		T X;
 		T Y;
 		T Z;

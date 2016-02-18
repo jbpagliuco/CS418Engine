@@ -1,4 +1,4 @@
-#include "FileReader.h"
+#include "util/FileReader.h"
 
 #include <assert.h>
 
@@ -30,7 +30,7 @@ namespace CS418
 		m_fstream.close();
 	}
 
-	std::string FileReader::GetFileExtension()
+	std::string FileReader::GetFileExtension()const
 	{
 		size_t index = m_filename.find_last_of('.');
 		assert(index != std::string::npos); // Assert the file has a file extension at all.
@@ -82,5 +82,10 @@ namespace CS418
 	{
 		if (m_fstream.is_open())
 			m_fstream.seekg(std::ios::beg);
+	}
+
+	bool FileReader::EndOfFile()const
+	{
+		return m_fstream.eof();
 	}
 }

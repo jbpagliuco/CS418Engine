@@ -1,8 +1,7 @@
 #pragma once
 
-#include "GraphicsManager.h"
-#include "Game.h"
-#include "content\ContentManager.h"
+#include "graphics/GraphicsManager.h"
+#include "content/AssetManager.h"
 
 namespace CS418
 {
@@ -18,9 +17,11 @@ namespace CS418
 		void Draw();
 
 	private:
-		GraphicsManager m_gfx;
-		Game m_game;
+		void readConfigFile();
+		void dispatchKeyAndValue(const std::string &key, const std::string &value);
 
-		ContentManager m_contentManager;
+	private:
+		GraphicsManager m_gfx;
+		AssetManager m_assetManager;
 	};
 }

@@ -4,7 +4,7 @@
 #include <Windows.h>
 #endif
 
-#include "graphics\Renderer.h"
+#include "graphics/Renderer.h"
 
 namespace CS418
 {
@@ -30,6 +30,25 @@ namespace CS418
 
 		void Draw();
 
+		void SetWindowWidth(U32 width);
+		void SetWindowHeight(U32 height);
+		void SetWindowDimensions(U32 width, U32 height);
+		Vector2<U32> GetWindowDimensions()const;
+
+		void SetWindowPositionX(U32 x);
+		void SetWindowPositionY(U32 y);
+		void SetWindowPosition(U32 x, U32 y);
+		Vector2<U32> GetWindowPosition()const;
+
+		void SetFullscreen(bool fullscreen);
+		bool IsFullscreen()const;
+
+		void SetWindowTitle(const std::string &title);
+		std::string GetWindowTitle()const;
+
+		void SetClearColor(const VECTOR4F &color);
+		void SetClearColor(const std::string &color);
+
 	private:
 		void createWindow();
 
@@ -39,6 +58,11 @@ namespace CS418
 		HDC m_hDC;
 		HGLRC m_hRC;
 #endif
+
+		U32 m_wWidth, m_wHeight;
+		U32 m_wPosX, m_wPosY;
+		bool m_fullscreen;
+		std::string m_wWindowTitle;
 
 		Renderer m_renderer;
 	};

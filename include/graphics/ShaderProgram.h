@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include "Util.h"
+#include "util/Util.h"
 
 namespace CS418
 {
@@ -10,13 +10,13 @@ namespace CS418
 	{
 		VertexDesc()
 		{
-			positions = normals = texCoords = tangents = colors = 0;
+			positions = normals = texCoords = tangents = colors = false;
 		}
-		U8 positions;
-		U8 normals;
-		U8 texCoords;
-		U8 tangents;
-		U8 colors;
+		bool positions;
+		bool normals;
+		bool texCoords;
+		bool tangents;
+		bool colors;
 	}VertexDesc;
 
 	class ShaderProgram
