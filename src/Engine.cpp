@@ -1,6 +1,7 @@
 #include "engine/Engine.h"
 
 #include "util/ConfigFileReader.h"
+#include <sstream>
 
 namespace CS418
 {
@@ -12,10 +13,39 @@ namespace CS418
 	{
 		m_gfx.Initialize();
 		readConfigFile();
+
+		m_gameTimer.Reset();
+		m_gameTimer.Resume();
 	}
 
 	int Engine::Update()
 	{
+		static U32 frameCount = 0;
+		static F32 baseTime = 0.0f;
+		frameCount++;
+
+		m_gameTimer.Tick();
+
+		if ((m_gameTimer.GetTotalGameTime() - baseTime) >= 1.0f)
+		{
+			F32 fps = (F32)frameCount;
+			F32 mspf = 1000.0f / fps;
+
+			std::string frameStats;
+			std::ostringstream out;
+			out << "FPS: " << fps << ", Milliseconds Per Frame: " << mspf << "\n";
+			frameStats = out.str();
+			printf("%s", frameStats.c_str());
+			
+			std::ostringstream out2;
+			out2 << m_gameTimer.GetElapsedTimeInMillis();
+			printf("%s\n", out2.str().c_str());
+			printf("-------------------------------------------------------------\n");
+
+			frameCount = 0;
+			baseTime += 1.0f;
+		}
+
 		return 0;
 	}
 

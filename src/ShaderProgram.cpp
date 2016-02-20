@@ -1,8 +1,9 @@
 #include "graphics/ShaderProgram.h"
 
-#include <GL\glew.h>
+#include <GL/glew.h>
 #include <stdio.h>
 #include <vector>
+#include <sstream>
 
 namespace CS418
 {
@@ -11,18 +12,48 @@ namespace CS418
 		glDeleteShader(m_shaderProgram);
 	}
 
-	void ShaderProgram::Initialize(std::string vertexShaderSource, std::string fragShaderSource)
+	bool ShaderProgram::Initialize(std::string vertexShaderSource, std::string fragShaderSource)
 	{
-		compileShaders(vertexShaderSource, fragShaderSource);
+		if (!compileShaders(vertexShaderSource, fragShaderSource))
+			return false;
+
 		createInputLayout(vertexShaderSource);
+		getUniformIDs(vertexShaderSource);
+
+		return true;
+	}
+
+	void ShaderProgram::SetFloat(const std::string &name, F32 value)
+	{
+		glUniform1f(m_uniforms.find(name)->second, value);
+	}
+
+	void ShaderProgram::SetVec2f(const std::string &name, VECTOR2F value)
+	{
+		glUniform2f(m_uniforms.find(name)->second, value.x, value.y);
+	}
+
+	void ShaderProgram::SetVec3f(const std::string &name, VECTOR3F value)
+	{
+		glUniform3f(m_uniforms.find(name)->second, value.x, value.y, value.z);
+	}
+
+	void ShaderProgram::SetVec4f(const std::string &name, VECTOR4F value)
+	{
+		glUniform4f(m_uniforms.find(name)->second, value.x, value.y, value.z, value.w);
+	}
+
+	void ShaderProgram::SetMatrix4x4(const std::string &name, const Matrix &value)
+	{
+		glUniformMatrix4fv(m_uniforms.find(name)->second, 1, GL_FALSE, &(value.AsFloatArray().at(0)));
 	}
 
 	VertexDesc ShaderProgram::GetVertexDesc()const
 	{
 		return m_vertexDesc;
 	}
-
-	void ShaderProgram::compileShaders(std::string vertexShaderSource, std::string fragShaderSource)
+	
+	bool ShaderProgram::compileShaders(std::string vertexShaderSource, std::string fragShaderSource)
 	{
 		const char * temp;
 
@@ -38,6 +69,7 @@ namespace CS418
 		{
 			glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
 			printf("Vertex Shader Compilation Failed: %s\n", infoLog);
+			return false;
 		}
 
 
@@ -52,6 +84,7 @@ namespace CS418
 		{
 			glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
 			printf("Fragment Shader Compilation Failed: %s\n", infoLog);
+			return false;
 		}
 
 
@@ -66,11 +99,14 @@ namespace CS418
 		if (!success) {
 			glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
 			printf("Shader Linking Failed: %s\n", infoLog);
+			return false;
 		}
 		glDeleteShader(vertexShader);
 		glDeleteShader(fragmentShader);
 
 		m_shaderProgram = shaderProgram;
+
+		return true;
 	}
 
 	void ShaderProgram::createInputLayout(std::string vertexShaderSource)
@@ -96,6 +132,25 @@ namespace CS418
 				m_vertexDesc.colors = true;
 
 			start = end + 1;
+		}
+	}
+
+	void ShaderProgram::getUniformIDs(const std::string &vertexShaderSource)
+	{
+		std::istringstream f(vertexShaderSource);
+		std::string line;
+
+		while (std::getline(f, line))
+		{
+			if (line.find_first_of("uniform ") == 0)
+			{
+				std::istringstream ss(line);
+				std::string trash, name;
+				ss >> trash >> trash >> name;
+				name = name.substr(0, name.length() - 1); // Remove semicolon
+				U32 id = glGetUniformLocation(m_shaderProgram, name.c_str());
+				m_uniforms[name] = id;
+			}
 		}
 	}
 }

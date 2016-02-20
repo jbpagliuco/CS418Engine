@@ -14,15 +14,18 @@ namespace CS418
 
 	}
 
-	void FileReader::Open(const std::string &file)
+	bool FileReader::Open(const std::string &file)
 	{
 		if (m_fstream.is_open())
 			m_fstream.close();
 
-		m_fstream.open(file.c_str(), std::ios::in | std::ios::out);
-		assert(m_fstream.is_open());
+		m_fstream.open(file.c_str(), std::ios::in);
+		if (!m_fstream.is_open())
+			return false;
 
 		m_filename = file;
+
+		return true;
 	}
 
 	void FileReader::Close()

@@ -1,3 +1,5 @@
+#include <vld.h>
+
 #include <Windows.h>
 
 #include "engine/Engine.h"
@@ -21,6 +23,7 @@ void printmatrix(const Matrix &m)
 	}
 	printf("\n");
 }
+
 
 int main(int argc, char ** argv)
 {
@@ -46,3 +49,30 @@ int main(int argc, char ** argv)
 
 	return 0;
 }
+
+/*
+int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrev, PSTR cmdLine, int nCmdShow)
+{
+	CS418::Engine engine;
+
+	MSG msg;
+	ZeroMemory(&msg, sizeof(MSG));
+
+	engine.Initialize();
+
+	while (msg.message != WM_QUIT)
+	{
+		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+		{
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+
+		engine.Update();
+
+		engine.Draw();
+	}
+
+	return 0;
+}
+*/

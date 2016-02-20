@@ -34,6 +34,35 @@ namespace CS418
 
 
 
+	std::vector<F32> Matrix::AsFloatArray()const
+	{
+		std::vector<F32> v;
+		v.reserve(16);
+		v.resize(16);
+
+		__declspec(align(16)) F32 f[4];
+
+		_mm_store_ps(f, m_cols[0]);
+		for (int i = 0; i < 4; i++)
+			v[i] = f[i];
+
+		_mm_store_ps(f, m_cols[1]);
+		for (int i = 0; i < 4; i++)
+			v[4 + i] = f[i];
+
+		_mm_store_ps(f, m_cols[2]);
+		for (int i = 0; i < 4; i++)
+			v[8 + i] = f[i];
+
+		_mm_store_ps(f, m_cols[3]);
+		for (int i = 0; i < 4; i++)
+			v[12 + i] = f[i];
+
+		return v;
+	}
+
+
+
 
 	F32 Matrix::operator()(U8 x, U8 y)const
 	{
@@ -426,25 +455,25 @@ namespace CS418
 		Matrix mView;
 
 		Vector zaxis = (target - position).v3Normalize();
-		Vector xaxis = (zaxis.v3Cross(up)).v3Normalize();
+		Vector xaxis = (up.v3Cross(zaxis)).v3Normalize();
 		Vector yaxis = zaxis.v3Cross(xaxis);
 
-		F32 m30 = -(xaxis.v4Dot(position));
-		F32 m31 = -(yaxis.v4Dot(position));
-		F32 m32 = -(zaxis.v4Dot(position));
+		F32 m03 = -(xaxis.v4Dot(position));
+		F32 m13 = -(yaxis.v4Dot(position));
+		F32 m23 = -(zaxis.v4Dot(position));
 
-		_declspec(align(16)) F32 col0[4];
-		_declspec(align(16)) F32 col1[4];
-		_declspec(align(16)) F32 col2[4];
-		_declspec(align(16)) F32 col3[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+		__declspec(align(16)) F32 fX[4];
+		__declspec(align(16)) F32 fY[4];
+		__declspec(align(16)) F32 fZ[4];
 
-		_mm_store_ps(col0, xaxis.m_elems);
-		_mm_store_ps(col1, yaxis.m_elems);
-		_mm_store_ps(col2, zaxis.m_elems);
+		_mm_store_ps(fX, xaxis.m_elems);
+		_mm_store_ps(fY, yaxis.m_elems);
+		_mm_store_ps(fZ, zaxis.m_elems);
 
-		col0[3] = m30;
-		col1[3] = m31;
-		col2[3] = m32;
+		_declspec(align(16)) F32 col0[4] = { fX[0], fY[0], fZ[0], 0.0f };
+		_declspec(align(16)) F32 col1[4] = { fX[1], fY[1], fZ[1], 0.0f };
+		_declspec(align(16)) F32 col2[4] = { fX[2], fY[2], fZ[2], 0.0f };
+		_declspec(align(16)) F32 col3[4] = { m03, m13, m23, 1.0f };
 
 		mView.m_cols[0] = _mm_load_ps(col0);
 		mView.m_cols[1] = _mm_load_ps(col1);
@@ -463,8 +492,8 @@ namespace CS418
 
 		_declspec(align(16)) F32 col0[4] = { (1.0f / aspectRatio) * rTanFOVDiv2, 0.0f, 0.0f, 0.0f };
 		_declspec(align(16)) F32 col1[4] = { 0.0f, rTanFOVDiv2, 0.0f, 0.0f };
-		_declspec(align(16)) F32 col2[4] = { 0.0f, 0.0f, far / fminusn, -(near * far) / fminusn };
-		_declspec(align(16)) F32 col3[4] = { 0.0f, 0.0f, 1.0f, 0.0f };
+		_declspec(align(16)) F32 col2[4] = { 0.0f, 0.0f, far / fminusn, 1.0f };
+		_declspec(align(16)) F32 col3[4] = { 0.0f, 0.0f, -(far * near) / fminusn, 0.0f };
 
 		mProj.m_cols[0] = _mm_load_ps(col0);
 		mProj.m_cols[1] = _mm_load_ps(col1);
@@ -478,13 +507,12 @@ namespace CS418
 	{
 		Matrix mTrans;
 
-		_declspec(align(16)) F32 translationAsFloats[4];
-		_mm_store_ps(translationAsFloats, translation.m_elems);
+		VECTOR3F t = translation.asVector3();
 
 		_declspec(align(16)) F32 col0[4] = { 1.0f, 0.0f, 0.0f, 0.0f };
 		_declspec(align(16)) F32 col1[4] = { 0.0f, 1.0f, 0.0f, 0.0f };
 		_declspec(align(16)) F32 col2[4] = { 0.0f, 0.0f, 1.0f, 0.0f };
-		_declspec(align(16)) F32 col3[4] = { translationAsFloats[0], translationAsFloats[1], translationAsFloats[2], 1.0f };
+		_declspec(align(16)) F32 col3[4] = { t.x, t.y, t.z, 1.0f };
 
 		mTrans.m_cols[0] = _mm_load_ps(col0);
 		mTrans.m_cols[1] = _mm_load_ps(col1);
@@ -502,6 +530,11 @@ namespace CS418
 		_declspec(align(16)) F32 col1[4] = { 0.0f, scaling.getY(), 0.0f, 0.0f };
 		_declspec(align(16)) F32 col2[4] = { 0.0f, 0.0f, scaling.getZ(), 0.0f };
 		_declspec(align(16)) F32 col3[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+
+		mScale.m_cols[0] = _mm_load_ps(col0);
+		mScale.m_cols[1] = _mm_load_ps(col1);
+		mScale.m_cols[2] = _mm_load_ps(col2);
+		mScale.m_cols[3] = _mm_load_ps(col3);
 
 		return mScale;
 	}

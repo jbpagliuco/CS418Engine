@@ -3,6 +3,8 @@
 #include "graphics/GraphicsManager.h"
 #include "content/AssetManager.h"
 
+#include "util/GameTimer.h"
+
 namespace CS418
 {
 	/* Manages all subsystems of the engine */
@@ -23,5 +25,7 @@ namespace CS418
 	private:
 		GraphicsManager m_gfx;
 		AssetManager m_assetManager;
+
+		GameTimer m_gameTimer;
 	};
 }

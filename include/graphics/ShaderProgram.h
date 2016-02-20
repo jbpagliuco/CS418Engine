@@ -1,8 +1,12 @@
 #pragma once
 
 #include <string>
+#include <map>
 
 #include "util/Util.h"
+
+#include "math/Vector.h"
+#include "math/Matrix.h"
 
 namespace CS418
 {
@@ -24,17 +28,28 @@ namespace CS418
 	public:
 		~ShaderProgram();
 
-		void Initialize(std::string vertexShaderSource, std::string fragShaderSource);
+		// Initializes this shader program. Returns false if bad vertex or fragment shader source.
+		bool Initialize(std::string vertexShaderSource, std::string fragShaderSource);
 
 		VertexDesc GetVertexDesc()const;
 
+		void SetFloat(const std::string &name, F32 value);
+		void SetVec2f(const std::string &name, VECTOR2F value);
+		void SetVec3f(const std::string &name, VECTOR3F value);
+		void SetVec4f(const std::string &name, VECTOR4F value);
+
+		void SetMatrix4x4(const std::string &name, const Matrix &value);
+
 	private:
-		void compileShaders(std::string vertexShaderSource, std::string fragShaderSource);
+		bool compileShaders(std::string vertexShaderSource, std::string fragShaderSource);
 		void createInputLayout(std::string vertexShaderSource);
+		void getUniformIDs(const std::string &vertexShaderSource);
 
 	private:
 		U32 m_shaderProgram;
 		VertexDesc m_vertexDesc;
+
+		std::map<std::string, U32> m_uniforms;
 
 		friend class Renderer;
 	};

@@ -20,8 +20,8 @@ namespace CS418
 		// - scale: Scale of this transform.
 		virtual void Initialize(const VECTOR3F &position, const VECTOR3F &rotation, const VECTOR3F &scale);
 
-		const Matrix & createWorldMatrix();
-		const Matrix & getWorldMatrix()const;
+		const Matrix & CreateWorldMatrix();
+		const Matrix & GetWorldMatrix()const;
 
 	public:
 		VECTOR3F Position;

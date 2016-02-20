@@ -79,7 +79,8 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)glew-1.13.0/include;$(ProjectDir)include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\Visual Leak Detector\include;$(ProjectDir)glew-1.13.0/include;$(ProjectDir)include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>opengl32.lib;glew32.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -101,6 +102,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>C:\Users\Joe\Downloads\glew-1.13.0-win32\glew-1.13.0\include;$(ProjectDir)include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -155,6 +157,7 @@
     <ClInclude Include="include\math\VectorUtilMSVC.h" />
     <ClInclude Include="include\util\ColorDefs.h" />
     <ClInclude Include="include\util\ConfigFileReader.h" />
+    <ClInclude Include="include\util\GameTimer.h" />
     <ClInclude Include="include\util\RefCount.h" />
   </ItemGroup>
   <ItemGroup>
@@ -162,6 +165,7 @@
     <ClCompile Include="src\ColorDefs.cpp" />
     <ClCompile Include="src\ConfigFileReader.cpp" />
     <ClCompile Include="src\FileReader.cpp" />
+    <ClCompile Include="src\GameTimer.cpp" />
     <ClCompile Include="src\Material.cpp" />
     <ClCompile Include="src\Mesh.cpp" />
     <ClCompile Include="src\AppWindowWin32.cpp" />

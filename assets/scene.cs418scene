@@ -1,3 +1,7 @@
 Triangle_GO 
-- Transform (10.0 5.0 10.0),(PI 0.0 PI),(1.0 0.0 2.0)
-- RenderingComponent assets/triangle.obj,assets/vertexShader.vert,assets/fragShader.frag
+- Transform (0.0 0.0 0.0),(0.0 0.0 0.0),(1.0 1.0 1.0)
+- RenderingComponent assets/cube.obj,assets/vertexShader.vert,assets/fragShader.frag
+
+Triangle_GO2 
+- Transform (1.0 3.0 0.0),(PIDIV4 0.0 0.0),(0.5 0.5 0.5)
+- RenderingComponent assets/cube.obj,assets/vertexShader.vert,assets/fragShader.frag

@@ -41,14 +41,14 @@ namespace CS418
 		{
 			Vertex_t vCurr;
 			bool readVertex = false;
-			if (line.find_first_of("v ") == 0)
+			if (line.find_first_of("v") == 0)
 			{
 				readVertex = true;
 				std::stringstream ss(line.substr(2));
 				ss >> vCurr.position.x >> vCurr.position.y >> vCurr.position.z;
 			}
 
-			if (line.find_first_of("f ") == 0)
+			if (line.find_first_of("f") == 0)
 			{
 				Index_t index1, index2, index3;
 				std::stringstream ss(line.substr(2));

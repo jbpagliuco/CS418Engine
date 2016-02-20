@@ -12,7 +12,6 @@ Content Loader
 	
 File System
 	- Implement commented functions
-	- All files are currently read and write
 	- Truncation?
 	- File opening is assertation
 	- Binary files?
@@ -31,15 +30,12 @@ Buffers
 RenderingComponent:
 	- Allow for padding to make vao faster
 	- Dont unbind vertex and index buffers for release
+	- Allow for multiple positions <etc></etc>
 	
 Transform:
 	- createLocalMatrix should use only one matrix.
 	- Might need to reverse order of matrix multiplications
-	
-Renderer:
-	- Consider moving opengl initialization from GraphicsManager to here
-	
+
 Other
 	- Make all necessary functions const
 	- Comment stuff
-	- FPS and timer

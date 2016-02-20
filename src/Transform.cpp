@@ -27,10 +27,10 @@ namespace CS418
 		Rotation = rotation;
 		Scale = scale;
 
-		createWorldMatrix();
+		CreateWorldMatrix();
 	}
 
-	const Matrix & Transform::createWorldMatrix()
+	const Matrix & Transform::CreateWorldMatrix()
 	{
 		Vector vTrans(Position);
 		Vector vScale(Scale);
@@ -39,12 +39,12 @@ namespace CS418
 		Matrix mRot = MatrixRotationEuler(Rotation.x, Rotation.y, Rotation.z);
 		Matrix mScale = MatrixScaling(vScale);
 
-		m_worldMat = mScale * mRot * mTrans;
+		m_worldMat = mTrans * mRot * mScale;
 		
 		return m_worldMat;
 	}
 
-	const Matrix & Transform::getWorldMatrix()const
+	const Matrix & Transform::GetWorldMatrix()const
 	{
 		return m_worldMat;
 	}

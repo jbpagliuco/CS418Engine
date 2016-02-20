@@ -3,6 +3,8 @@
 #include "util/Util.h"
 #include "math/Math.h"
 
+#include <vector>
+
 #ifdef _MSC_VER
 #include <xmmintrin.h>
 #endif
@@ -36,6 +38,8 @@ namespace CS418
 		Matrix & operator=(const Matrix & other) = default;
 
 		~Matrix() = default;
+
+		std::vector<F32> AsFloatArray()const;
 
 		// Returns the elements at (x, y).
 		F32 operator()(U8 x, U8 y)const;

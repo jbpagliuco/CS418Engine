@@ -16,7 +16,8 @@ namespace CS418
 		
 		// Opens a file.
 		// - file: the file path to open.
-		virtual void Open(const std::string &file);
+		// Returns true if the file was succesfully opened, false otherwise.
+		virtual bool Open(const std::string &file);
 		// Closes the opened file.
 		virtual void Close();
 

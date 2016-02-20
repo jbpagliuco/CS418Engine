@@ -53,6 +53,9 @@ namespace CS418
 
 		while (std::getline(stream, line))
 		{
+			if (line.empty())
+				continue;
+
 			if (line.at(0) != '-' && line.at(0) != '>')
 			{
 				// If this is a new game object, add the old one to the scene.
