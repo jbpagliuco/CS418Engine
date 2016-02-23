@@ -140,6 +140,7 @@
     <ClInclude Include="include\content\SceneLoader.h" />
     <ClInclude Include="include\content\ShaderLoader.h" />
     <ClInclude Include="include\Engine.h" />
+    <ClInclude Include="include\engine\LuaManager.h" />
     <ClInclude Include="include\FileReader.h" />
     <ClInclude Include="include\GameComponent.h" />
     <ClInclude Include="include\GameObject.h" />
@@ -172,6 +173,7 @@
     <ClCompile Include="src\content\ShaderLoader.cpp" />
     <ClCompile Include="src\engine\AppWindowWin32.cpp" />
     <ClCompile Include="src\engine\Engine.cpp" />
+    <ClCompile Include="src\engine\LuaManager.cpp" />
     <ClCompile Include="src\engine\MainWin32.cpp" />
     <ClCompile Include="src\engine\MainWndProcWin32.cpp" />
     <ClCompile Include="src\components\GameComponent.cpp" />

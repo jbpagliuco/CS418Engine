@@ -2,6 +2,7 @@
 
 #include <GL/glew.h>
 
+#include "graphics/GraphicsManager.h"
 #include "components/RenderingComponent.h"
 
 #include "util\ColorDefs.h"
@@ -14,7 +15,7 @@ namespace CS418
 
 	}
 
-	void Renderer::Initialize()
+	void Renderer::Initialize(GraphicsManager * gfxManager)
 	{
 		glClearColor(m_clearColor.x, m_clearColor.y, m_clearColor.z, m_clearColor.w);
 		// Set polygon mode to fill
@@ -24,7 +25,8 @@ namespace CS418
 
 		glewInit();
 
-		glViewport(0, 0, 800, 600);
+		Vector2<U32> dim = gfxManager->GetWindowDimensions();
+		glViewport(0, 0, dim.X, dim.Y);
 
 			/*
 		// Function pointer for the wgl extention function we need to enable/disable

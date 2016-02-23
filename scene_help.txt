@@ -10,10 +10,13 @@ Transform						| Vector3f: Position
 								| Vector3f: Scale
 								| ## Transform (10.0 5.0 10.0),(PI 0.0 PI),(1.0 1.0 2.0)
 								| ## Types of PI: PI, 2PI, PIDIV2, PIDIV3, PIDIV4, PIDIV6, 3PIDIV2
---------------------------------|-----------------------------------------------------------------							
+--------------------------------|-------------------------------------------------------------------------------------	
 RenderingComponent				| string: Mesh filepath
 								| string: Vertex shader filepath
 								| string: Fragment shader filepath
 								| [ array(string, ...): Material properities - (name, value) ]
 								| ## RenderingComponent assets/Mesh.obj,assets/vs.vert,assets/fr.frag,(color:Blue)
 								| ## All shaders will have the transform matrix already, so there is no need to specify that here
+--------------------------------|-------------------------------------------------------------------------------------	
+Script							| string: Script filepath
+								| ## Script assets/scripts/Moving.lua

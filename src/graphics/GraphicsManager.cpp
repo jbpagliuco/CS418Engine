@@ -32,16 +32,9 @@ namespace CS418
 
 	void GraphicsManager::Initialize()
 	{
-		m_wWidth = 800;
-		m_wHeight = 600;
-		m_wPosX = 500;
-		m_wPosY = 200;
-		m_fullscreen = false;
-		m_wWindowTitle = "Window Title";
-
 		createWindow();
 
-		m_renderer.Initialize();
+		m_renderer.Initialize(this);
 	}
 
 	void GraphicsManager::SetScene(Scene * pScene)

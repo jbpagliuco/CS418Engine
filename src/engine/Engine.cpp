@@ -11,8 +11,9 @@ namespace CS418
 
 	void Engine::Initialize()
 	{
+		readConfigFile("startup.config");
 		m_gfx.Initialize();
-		readConfigFile();
+		readConfigFile("startup.graphics.config");
 
 		m_gameTimer.Reset();
 		m_gameTimer.Resume();
@@ -56,10 +57,10 @@ namespace CS418
 		m_gfx.EndScene();
 	}
 
-	void Engine::readConfigFile()
+	void Engine::readConfigFile(const std::string &file)
 	{
 		ConfigFileReader reader;
-		reader.Open("startup.config");
+		reader.Open(file);
 
 		std::string line;
 		while (!reader.EndOfFile())

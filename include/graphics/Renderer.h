@@ -4,12 +4,14 @@
 
 namespace CS418
 {
+	class GraphicsManager;
+
 	class Renderer
 	{
 	public:
 		virtual ~Renderer();
 
-		virtual void Initialize();
+		virtual void Initialize(GraphicsManager * gfxManager);
 		
 		virtual void SetScene(Scene * pScene);
 

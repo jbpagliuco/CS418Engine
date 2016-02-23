@@ -19,7 +19,7 @@ namespace CS418
 		void Draw();
 
 	private:
-		void readConfigFile();
+		void readConfigFile(const std::string &file);
 		void dispatchKeyAndValue(const std::string &key, const std::string &value);
 
 	private:
