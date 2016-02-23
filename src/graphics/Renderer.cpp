@@ -88,7 +88,7 @@ namespace CS418
 					float radius = 3.0f;
 					float height = 0.5f;
 					static float dt = 0.0f;
-					dt += 0.01f;
+					dt += 0.0f;
 					Matrix m = (*gameObject)->GetTransform()->CreateWorldMatrix();
 					Vector cameraPos(radius * cosf(dt), height, radius * sinf(dt), 1.0f);
 					Vector lookAt(0.0f, 0.0f, 0.0f, 1.0f);
