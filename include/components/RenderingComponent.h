@@ -1,9 +1,9 @@
 #pragma once
 
-#include "game/GameComponent.h"
+#include "GameComponent.h"
 
-#include "Mesh.h"
-#include "Material.h"
+#include "graphics/Mesh.h"
+#include "graphics/Material.h"
 
 namespace CS418
 {

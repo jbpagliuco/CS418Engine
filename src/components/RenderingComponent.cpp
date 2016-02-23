@@ -1,4 +1,4 @@
-#include "graphics/RenderingComponent.h"
+#include "components/RenderingComponent.h"
 
 #include <GL/glew.h>
 
@@ -33,35 +33,36 @@ namespace CS418
 		U32 vertexIndex = 0;
 		for (U32 i =  0; vertexIndex < vSize; i++)
 		{
+			Vertex_t curr = pMesh->GetVertices().at(i);
 			if (vertexDesc.positions)
 			{
-				vertices[vertexIndex++] = pMesh->GetVertices().at(i).position.x;
-				vertices[vertexIndex++] = pMesh->GetVertices().at(i).position.y;
-				vertices[vertexIndex++] = pMesh->GetVertices().at(i).position.z;
+				vertices[vertexIndex++] = curr.position.x;
+				vertices[vertexIndex++] = curr.position.y;
+				vertices[vertexIndex++] = curr.position.z;
 			}
 			if (vertexDesc.normals)
 			{
-				vertices[vertexIndex++] = pMesh->GetVertices().at(i).normal.x;
-				vertices[vertexIndex++] = pMesh->GetVertices().at(i).normal.y;
-				vertices[vertexIndex++] = pMesh->GetVertices().at(i).normal.z;
+				vertices[vertexIndex++] = curr.normal.x;
+				vertices[vertexIndex++] = curr.normal.y;
+				vertices[vertexIndex++] = curr.normal.z;
 			}
 			if (vertexDesc.texCoords)
 			{
-				vertices[vertexIndex++] = pMesh->GetVertices().at(i).texCoord.x;
-				vertices[vertexIndex++] = pMesh->GetVertices().at(i).texCoord.y;
+				vertices[vertexIndex++] = curr.texCoord.x;
+				vertices[vertexIndex++] = curr.texCoord.y;
 			}
 			if (vertexDesc.tangents)
 			{
-				vertices[vertexIndex++] = pMesh->GetVertices().at(i).tangent.x;
-				vertices[vertexIndex++] = pMesh->GetVertices().at(i).tangent.y;
-				vertices[vertexIndex++] = pMesh->GetVertices().at(i).tangent.z;
+				vertices[vertexIndex++] = curr.tangent.x;
+				vertices[vertexIndex++] = curr.tangent.y;
+				vertices[vertexIndex++] = curr.tangent.z;
 			}
 			if (vertexDesc.colors)
 			{
-				vertices[vertexIndex++] = pMesh->GetVertices().at(i).color.x;
-				vertices[vertexIndex++] = pMesh->GetVertices().at(i).color.y;
-				vertices[vertexIndex++] = pMesh->GetVertices().at(i).color.z;
-				vertices[vertexIndex++] = pMesh->GetVertices().at(i).color.w;
+				vertices[vertexIndex++] = curr.color.x;
+				vertices[vertexIndex++] = curr.color.y;
+				vertices[vertexIndex++] = curr.color.z;
+				vertices[vertexIndex++] = curr.color.w;
 			}
 		}
 		

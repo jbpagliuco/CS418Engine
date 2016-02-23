@@ -5,8 +5,8 @@
 
 #include "game/GameObject.h"
 
-#include "game/Transform.h"
-#include "graphics/RenderingComponent.h"
+#include "components/Transform.h"
+#include "components/RenderingComponent.h"
 
 namespace CS418
 {

@@ -2,7 +2,7 @@
 
 #include <GL/glew.h>
 
-#include "graphics/RenderingComponent.h"
+#include "components/RenderingComponent.h"
 
 #include "util\ColorDefs.h"
 #include <Windows.h>
@@ -85,8 +85,12 @@ namespace CS418
 					RenderingComponent *rc = (RenderingComponent*)(*renderable);
 					glUseProgram(rc->m_material.GetShaderProgram()->m_shaderProgram);
 
+					float radius = 3.0f;
+					float height = 0.5f;
+					static float dt = 0.0f;
+					dt += 0.01f;
 					Matrix m = (*gameObject)->GetTransform()->CreateWorldMatrix();
-					Vector cameraPos(0.0f, 0.5f, -10.0f, 1.0f);
+					Vector cameraPos(radius * cosf(dt), height, radius * sinf(dt), 1.0f);
 					Vector lookAt(0.0f, 0.0f, 0.0f, 1.0f);
 					Vector up(0.0f, 1.0f, 0.0f, 0.0f);
 					Matrix v = MatrixLookAtLH(cameraPos, lookAt, up);

@@ -1,5 +1,3 @@
-#include <vld.h>
-
 #include <Windows.h>
 
 #include "engine/Engine.h"

@@ -1,11 +1,11 @@
 #pragma once
 
-#include "GameComponent.h"
+#include "components/GameComponent.h"
 
 #include <string>
 #include <vector>
 
-#include "Transform.h"
+#include "components/Transform.h"
 
 namespace CS418
 {
@@ -16,12 +16,10 @@ namespace CS418
 		virtual ~GameObject();
 
 		void AddComponent(GameComponent *component);
-		//void RemoveComponent(const std::string &name);
 		void RemoveComponent(GameComponent *component);
 
 		const std::vector<GameComponent*> & GetComponents()const;
 		std::vector<GameComponent*> GetComponentsOfType(const std::string &type)const;
-		//const std::vector<GameComponent*> & GetComponentsByname(const std::string &name)const;
 
 		void SetTransform(Transform *transform);
 		Transform * GetTransform()const;
