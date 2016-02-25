@@ -87,7 +87,7 @@ namespace CS418
 		return m_isPaused;
 	}
 
-	D64 GameTimer::GetPlayingTime()const
+	F32 GameTimer::GetPlayingTime()const
 	{
 		__int64 count;
 		if (m_isPaused)
@@ -102,19 +102,19 @@ namespace CS418
 		return ((count - m_startCount) - m_pausedCounts) * m_secondsPerCount;
 	}
 
-	D64 GameTimer::GetTotalGameTime()const
+	F32 GameTimer::GetTotalGameTime()const
 	{
 		LARGE_INTEGER largeInt;
 		QueryPerformanceCounter(&largeInt);
 		return (largeInt.QuadPart - m_startCount) * m_secondsPerCount;
 	}
 
-	D64 GameTimer::GetElapsedTimeInSeconds()const
+	F32 GameTimer::GetElapsedTimeInSeconds()const
 	{
-		return m_elapsedCounts * m_secondsPerCount;
+		return (F32)(m_elapsedCounts * m_secondsPerCount);
 	}
 
-	D64 GameTimer::GetElapsedTimeInMillis()const
+	F32 GameTimer::GetElapsedTimeInMillis()const
 	{
 		return m_elapsedCounts * m_secondsPerCount * 1000;
 	}

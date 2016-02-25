@@ -15,7 +15,7 @@ namespace CS418
 
 		virtual void Initialize(LuaManager * pLuaManager, const std::string &scriptFile);
 
-		virtual void Update(const GameTimer &gameTimer);
+		virtual void Update(const GameTimer *gameTimer);
 
 	private:
 		LuaManager * m_pLuaManager;

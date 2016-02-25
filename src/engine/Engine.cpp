@@ -51,7 +51,7 @@ namespace CS418
 			baseTime += 1.0f;
 		}
 
-		m_gfx.Update(m_gameTimer);
+		m_gfx.Update(&m_gameTimer);
 
 		return 0;
 	}

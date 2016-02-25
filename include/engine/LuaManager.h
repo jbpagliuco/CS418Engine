@@ -20,7 +20,6 @@ namespace CS418
 
 		luabridge::LuaRef GetGlobal(const std::string name);
 
-
 	private:
 		void registerClasses();
 

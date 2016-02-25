@@ -23,19 +23,12 @@ namespace CS418
 		m_scriptFile = scriptFile;
 	}
 
-	void ScriptComponent::Update(const GameTimer &gameTimer)
+	void ScriptComponent::Update(const GameTimer *gameTimer)
 	{
 		m_pLuaManager->Push("gameObject", (*m_pGameObject));
-		m_pLuaManager->Push("gameTimer", gameTimer);
 
 		m_pLuaManager->ExecuteFile(m_scriptFile);
-		luabridge::LuaRef update = m_pLuaManager->GetGlobal("Update");
-		
-		try {
-			update();
-		}
-		catch (luabridge::LuaException const& e) {
-			printf("%s\n", e.what());
-		}
+
+		m_pLuaManager->GetGlobal("Update")((*gameTimer));
 	}
 }

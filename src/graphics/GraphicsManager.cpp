@@ -43,7 +43,7 @@ namespace CS418
 		m_renderer.SetScene(pScene);
 	}
 
-	void GraphicsManager::Update(const GameTimer &gameTimer)
+	void GraphicsManager::Update(const GameTimer *gameTimer)
 	{
 		m_pScene->Update(gameTimer);
 	}

@@ -43,25 +43,25 @@ namespace CS418
 		Calculates the time since the GameTimer was reset, not including
 		time where the GameTimer was paused.
 		*/
-		D64 GetPlayingTime()const;
+		F32 GetPlayingTime()const;
 
 		/*
 		Calculates the total amount of time since the GameTimer was reset,
 		including times where the GameTimer was paused.
 		*/
-		D64 GetTotalGameTime()const;
+		F32 GetTotalGameTime()const;
 
 		/*
 		Calculated the time (in seconds) of the elapsed time between the last
 		two successive GameTimer.tick() calls.
 		*/
-		D64 GetElapsedTimeInSeconds()const;
+		F32 GetElapsedTimeInSeconds()const;
 
 		/*
 		Calculates the time (in milliseconds) of the elapsed time between the last
 		two successive GameTimer.tick() calls.
 		*/
-		D64 GetElapsedTimeInMillis()const;
+		F32 GetElapsedTimeInMillis()const;
 
 	private:
 		bool m_isPaused;

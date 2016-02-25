@@ -24,7 +24,7 @@ namespace CS418
 		/* Sets the scene to render */
 		void SetScene(Scene * pScene);
 
-		void Update(const GameTimer &gameTimer);
+		void Update(const GameTimer *gameTimer);
 
 		/* Prepares the scene for drawing */
 		void BeginScene();

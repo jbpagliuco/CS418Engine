@@ -16,7 +16,7 @@ namespace CS418
 
 		virtual void AddGameObject(GameObject *gameObject);
 
-		virtual void Update(const GameTimer &gameTimer);
+		virtual void Update(const GameTimer *gameTimer);
 		
 	private:
 		std::vector<GameObject*> m_gameObjects;

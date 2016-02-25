@@ -27,7 +27,7 @@ namespace CS418
 		m_gameObjects.push_back(gameObject);
 	}
 
-	void Scene::Update(const GameTimer &gameTimer)
+	void Scene::Update(const GameTimer *gameTimer)
 	{
 		for (GO_It it = m_gameObjects.begin(); it != m_gameObjects.end(); it++)
 		{
