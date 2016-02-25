@@ -11,9 +11,13 @@ namespace CS418
 
 	void Engine::Initialize()
 	{
+		m_luaManager.Initialize();
+		m_assetManager.Initialize(&m_luaManager);
+		
 		readConfigFile("startup.config");
 		m_gfx.Initialize();
 		readConfigFile("startup.graphics.config");
+
 
 		m_gameTimer.Reset();
 		m_gameTimer.Resume();
@@ -46,6 +50,8 @@ namespace CS418
 			frameCount = 0;
 			baseTime += 1.0f;
 		}
+
+		m_gfx.Update(m_gameTimer);
 
 		return 0;
 	}

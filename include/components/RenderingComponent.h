@@ -10,7 +10,7 @@ namespace CS418
 	class RenderingComponent : public GameComponent
 	{
 	public:
-		RenderingComponent();
+		RenderingComponent(const std::string &type = "RenderingComponent");
 		virtual ~RenderingComponent();
 
 		virtual void Initialize();

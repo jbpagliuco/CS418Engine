@@ -11,6 +11,11 @@ namespace CS418
 		
 	}
 
+	void AssetManager::Initialize(LuaManager * pLuaManager)
+	{
+		m_pLuaManager = pLuaManager;
+	}
+
 	Scene * AssetManager::LoadScene(const std::string &sceneFilepath)
 	{
 		// Check if scene has already been loaded.
@@ -24,7 +29,7 @@ namespace CS418
 		}
 
 		// Otherwise load the scene.
-		Scene * pScene = CS418::LoadScene(this, sceneFilepath);
+		Scene * pScene = CS418::LoadScene(this, sceneFilepath, m_pLuaManager);
 		
 		// Add scene to list.
 		AssetContainer<Scene> sceneContainer;

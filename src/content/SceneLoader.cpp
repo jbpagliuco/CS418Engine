@@ -7,6 +7,9 @@
 
 #include "components/Transform.h"
 #include "components/RenderingComponent.h"
+#include "components/ScriptComponent.h"
+
+#include "util/Memory.h"
 
 namespace CS418
 {
@@ -14,16 +17,16 @@ namespace CS418
 	VECTOR3F LoadVector3f(std::string line);
 
 	std::vector<std::string> GetArguments(const std::string &line);
-	GameComponent * LoadComponent(AssetManager *pAssetManager, std::string line);
+	GameComponent * LoadComponent(AssetManager *pAssetManager, std::string line, LuaManager * pLuaManager);
 
-	Scene * LoadCS418Scene(AssetManager * assetManager, const std::string &sceneData);
+	Scene * LoadCS418Scene(AssetManager * assetManager, const std::string &sceneData, LuaManager * pLuaManager);
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	Scene * LoadScene(AssetManager * pAssetManager, const std::string &sceneFilepath)
+	Scene * LoadScene(AssetManager * pAssetManager, const std::string &sceneFilepath, LuaManager * pLuaManager)
 	{
 		FileReader fileReader;
 		Scene * pScene;
@@ -32,7 +35,7 @@ namespace CS418
 		if (fileReader.GetFileExtension() == ".cs418scene")
 		{
 			std::string sceneData = fileReader.FileAsString();
-			pScene = LoadCS418Scene(pAssetManager, sceneData);
+			pScene = LoadCS418Scene(pAssetManager, sceneData, pLuaManager);
 		}
 		else
 			pScene = nullptr;
@@ -43,7 +46,7 @@ namespace CS418
 	}
 
 
-	Scene * LoadCS418Scene(AssetManager * pAssetManager, const std::string &sceneData)
+	Scene * LoadCS418Scene(AssetManager * pAssetManager, const std::string &sceneData, LuaManager * pLuaManager)
 	{
 		std::istringstream stream(sceneData);
 		std::string line;
@@ -71,11 +74,13 @@ namespace CS418
 				// This is a game component for the object.
 				if (pGO)
 				{
-					GameComponent * gc = LoadComponent(pAssetManager, line.substr(2));
+					GameComponent * gc = LoadComponent(pAssetManager, line.substr(2), pLuaManager);
 					if (line.find("- Transform") == 0)
 						pGO->SetTransform((Transform*)gc);
 					else
 						pGO->AddComponent(gc); // No hyphen or space
+
+					gc->SetGameObject(pGO);
 				}
 			}
 			else if (line.at(0) == '>')
@@ -156,7 +161,7 @@ namespace CS418
 	}
 
 
-	GameComponent * LoadComponent(AssetManager *pAssetManager, std::string line)
+	GameComponent * LoadComponent(AssetManager *pAssetManager, std::string line, LuaManager * pLuaManager)
 	{
 		GameComponent * pGC = nullptr;
 
@@ -169,7 +174,7 @@ namespace CS418
 			std::string rotation = arguments.at(1);
 			std::string scale = arguments.at(2);
 
-			pGC = new Transform;
+			pGC = (GameComponent*)AllocateAligned(sizeof(Transform), 16);
 			((Transform*)pGC)->Position = LoadVector3f(position);
 			((Transform*)pGC)->Rotation = LoadVector3f(rotation);
 			((Transform*)pGC)->Scale = LoadVector3f(scale);
@@ -184,6 +189,11 @@ namespace CS418
 
 			pGC = new RenderingComponent;
 			((RenderingComponent*)pGC)->Initialize(pMesh, mat);
+		}
+		else if (componentType == "ScriptComponent")
+		{
+			pGC = new ScriptComponent;
+			((ScriptComponent*)pGC)->Initialize(pLuaManager, arguments.at(0));
 		}
 
 		return pGC;

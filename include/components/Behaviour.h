@@ -7,9 +7,13 @@ namespace CS418
 	class Behaviour : public GameComponent
 	{
 	public:
-		virtual ~Behaviour() = 0;
+		Behaviour(const std::string &type = "Behaviour");
+		virtual ~Behaviour();
 
 	public:
 		bool Enabled;
+
+	protected:
+		std::string m_type;
 	};
 }

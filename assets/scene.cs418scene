@@ -1,3 +1,4 @@
 Triangle_GO 
 - Transform (0.0 0.0 0.0),(0.0 0.0 0.0),(0.5 0.5 0.5)
 - RenderingComponent assets/cube2.cs418mesh,assets/vertexShader.vert,assets/fragShader.frag
+- ScriptComponent assets/scripts/test.lua

@@ -5,6 +5,7 @@
 #endif
 
 #include "graphics/Renderer.h"
+#include "util/GameTimer.h"
 
 namespace CS418
 {
@@ -22,6 +23,8 @@ namespace CS418
 
 		/* Sets the scene to render */
 		void SetScene(Scene * pScene);
+
+		void Update(const GameTimer &gameTimer);
 
 		/* Prepares the scene for drawing */
 		void BeginScene();
@@ -63,6 +66,8 @@ namespace CS418
 		U32 m_wPosX, m_wPosY;
 		bool m_fullscreen;
 		std::string m_wWindowTitle;
+
+		Scene * m_pScene;
 
 		Renderer m_renderer;
 	};

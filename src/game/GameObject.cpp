@@ -1,6 +1,7 @@
 #include "game/GameObject.h"
 
 #include <algorithm>
+#include "util/Memory.h"
 
 namespace CS418
 {
@@ -15,6 +16,8 @@ namespace CS418
 		{
 			delete (*it);
 		}
+		
+		FreeAlignedMemory(m_pTransform);
 	}
 
 	void GameObject::AddComponent(GameComponent *component)
@@ -55,5 +58,17 @@ namespace CS418
 	Transform * GameObject::GetTransform()const
 	{
 		return m_pTransform;
+	}
+
+
+	void GameObject::Lua_SetTransform(const Transform &transform)
+	{
+		printf("In here!");
+		(*m_pTransform) = Transform(transform);
+	}
+
+	Transform & GameObject::Lua_GetTransform()const
+	{
+		return *m_pTransform;
 	}
 }

@@ -4,7 +4,7 @@
 
 namespace CS418
 {
-	RenderingComponent::RenderingComponent() : GameComponent("RenderingComponent")
+	RenderingComponent::RenderingComponent(const std::string &type) : GameComponent(type)
 	{
 
 	}

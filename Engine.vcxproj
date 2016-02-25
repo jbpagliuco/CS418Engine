@@ -133,7 +133,7 @@
     <ClInclude Include="include\components\Behaviour.h" />
     <ClInclude Include="include\components\GameComponent.h" />
     <ClInclude Include="include\components\RenderingComponent.h" />
-    <ClInclude Include="include\components\ScriptObject.h" />
+    <ClInclude Include="include\components\ScriptComponent.h" />
     <ClInclude Include="include\components\Transform.h" />
     <ClInclude Include="include\content\AssetManager.h" />
     <ClInclude Include="include\content\MeshLoader.h" />
@@ -164,9 +164,12 @@
     <ClInclude Include="include\util\ColorDefs.h" />
     <ClInclude Include="include\util\ConfigFileReader.h" />
     <ClInclude Include="include\util\GameTimer.h" />
+    <ClInclude Include="include\util\Memory.h" />
     <ClInclude Include="include\util\RefCount.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\components\Behaviour.cpp" />
+    <ClCompile Include="src\components\ScriptComponent.cpp" />
     <ClCompile Include="src\content\AssetManager.cpp" />
     <ClCompile Include="src\content\MeshLoader.cpp" />
     <ClCompile Include="src\content\SceneLoader.cpp" />
@@ -196,6 +199,7 @@
     <ClCompile Include="src\util\ConfigFileReader.cpp" />
     <ClCompile Include="src\util\FileReader.cpp" />
     <ClCompile Include="src\util\GameTimer.cpp" />
+    <ClCompile Include="src\util\Memory.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

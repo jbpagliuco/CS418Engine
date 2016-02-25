@@ -2,7 +2,7 @@
 
 namespace CS418
 {
-	Transform::Transform() : GameComponent("Transform")
+	Transform::Transform(const std::string &type) : GameComponent(type)
 	{
 
 	}

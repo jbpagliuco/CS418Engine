@@ -4,12 +4,14 @@
 #include <string>
 #include <vector>
 
-#include "util\Util.h"
-#include "util\RefCount.h"
+#include "util/Util.h"
+#include "util/RefCount.h"
 
-#include "graphics\Scene.h"
-#include "graphics\Mesh.h"
-#include "graphics\ShaderProgram.h"
+#include "graphics/Scene.h"
+#include "graphics/Mesh.h"
+#include "graphics/ShaderProgram.h"
+
+#include "engine/LuaManager.h"
 
 namespace CS418
 {
@@ -17,6 +19,8 @@ namespace CS418
 	{
 	public:
 		virtual ~AssetManager();
+
+		void Initialize(LuaManager * pLuaManager);
 
 		Scene * LoadScene(const std::string &sceneFilepath);
 
@@ -40,5 +44,7 @@ namespace CS418
 		SceneContainer_t m_scenes;
 		MeshContainer_t m_meshes;
 		ShaderContainer_t m_shaders;
+
+		LuaManager * m_pLuaManager;
 	};
 }

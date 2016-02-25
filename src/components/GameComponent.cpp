@@ -12,6 +12,11 @@ namespace CS418
 
 	}
 
+	void GameComponent::SetGameObject(GameObject * pGO)
+	{
+		m_pGameObject = pGO;
+	}
+
 	std::string GameComponent::GetType()const
 	{
 		return m_type;

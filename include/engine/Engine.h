@@ -2,6 +2,7 @@
 
 #include "graphics/GraphicsManager.h"
 #include "content/AssetManager.h"
+#include "LuaManager.h"
 
 #include "util/GameTimer.h"
 
@@ -25,6 +26,7 @@ namespace CS418
 	private:
 		GraphicsManager m_gfx;
 		AssetManager m_assetManager;
+		LuaManager m_luaManager;
 
 		GameTimer m_gameTimer;
 	};

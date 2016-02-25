@@ -9,7 +9,7 @@ namespace CS418
 	class Transform : public GameComponent
 	{
 	public:
-		Transform();
+		Transform(const std::string &type = "Transform");
 		virtual ~Transform();
 
 		// Initializes this transform to location (0, 0, 0), no rotation, and no scale.
