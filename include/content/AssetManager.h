@@ -12,6 +12,7 @@
 #include "graphics/ShaderProgram.h"
 
 #include "engine/LuaManager.h"
+#include "graphics/GraphicsManager.h"
 
 namespace CS418
 {
@@ -20,7 +21,7 @@ namespace CS418
 	public:
 		virtual ~AssetManager();
 
-		void Initialize(LuaManager * pLuaManager);
+		void Initialize(LuaManager * pLuaManager, GraphicsManager * pGFXManager);
 
 		Scene * LoadScene(const std::string &sceneFilepath);
 
@@ -46,5 +47,6 @@ namespace CS418
 		ShaderContainer_t m_shaders;
 
 		LuaManager * m_pLuaManager;
+		GraphicsManager * m_pGFXManager;
 	};
 }

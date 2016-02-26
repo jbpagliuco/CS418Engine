@@ -84,6 +84,17 @@ namespace CS418
 		return (v2 + (v1Crossv2 * (2 * w)) + (v1.v3Cross(v1Crossv2) * 2)).asVector3();
 	}
 
+
+	Quaternion Quaternion::Lua_MultiplyQuaternion(const Quaternion &other)const
+	{
+		return (*this) * other;
+	}
+
+	VECTOR3F Quaternion::Lua_MultiplyVector(const VECTOR3F &other)const
+	{
+		return (*this) * other;
+	}
+
 	F32 Quaternion::getX()const
 	{
 		return v.x;

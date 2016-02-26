@@ -19,4 +19,23 @@ RenderingComponent				| string: Mesh filepath
 								| ## All shaders will have the transform matrix already, so there is no need to specify that here
 --------------------------------|-------------------------------------------------------------------------------------	
 ScriptComponent					| string: Script filepath
-								| ## Script assets/scripts/Moving.lua
+								| Boolean: Enabled
+								| ## Script assets/scripts/Moving.lua,True
+--------------------------------|-------------------------------------------------------------------------------------	
+CameraComponent					| Vector3f: Position
+								| Vector3f: Target
+								| Vector3f: World Up
+								| F32: Field Of View
+								| Viewport: Camera Viewport
+								| Boolean: Enabled
+								| ## CameraComponent (-5.0 2.0 3.0),(0.0 0.0 0.0),(0.0 1.0 0.0),PIDIV4,(0 0 -1 -1 0.01 1000.0),True
+								
+								
+								
+Types:
+- String: "String" (No Quotes)
+- F32: Float (No f, ie 10.0 instead of 10.0f)
+- Vector3f: (X Y Z)
+- Viewport: (TopLeftX TopLeftY Width Height MinDepth MaxDepth)
+	- Use -1 for default width/height
+- Boolean: True of False

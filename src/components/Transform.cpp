@@ -1,5 +1,7 @@
 #include "components/Transform.h"
 
+#include "math/Quaternion.h"
+
 namespace CS418
 {
 	Transform::Transform(const std::string &type) : GameComponent(type)
@@ -36,8 +38,12 @@ namespace CS418
 		Vector vScale(Scale);
 
 		Matrix mTrans = MatrixTranslation(vTrans);
-		Matrix mRot = MatrixRotationEuler(Rotation.x, Rotation.y, Rotation.z);
 		Matrix mScale = MatrixScaling(vScale);
+
+		Quaternion qRotX(1.0f, 0.0f, 0.0f, Rotation.x);
+		Quaternion qRotY(0.0f, 1.0f, 0.0f, Rotation.y);
+		Quaternion qRotZ(0.0f, 0.0f, 1.0f, Rotation.z);
+		Matrix mRot = MatrixRotationQuaternion(qRotX * qRotY * qRotZ);
 
 		m_worldMat = mTrans * mRot * mScale;
 		

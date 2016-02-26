@@ -90,6 +90,10 @@ namespace CS418
 		// Transposes this matrix.
 		void transpose();
 
+		Matrix Lua_MultiplyMatrix(const Matrix &rhs)const;
+		Vector Lua_MultiplyVector(const Vector &rhs)const;
+		Matrix Lua_MultiplyScalar(F32 scalar)const;
+		
 #ifdef _MSC_VER
 	private:
 		// Returns true if det != 0.

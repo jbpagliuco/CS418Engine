@@ -12,7 +12,7 @@ namespace CS418
 	void Engine::Initialize()
 	{
 		m_luaManager.Initialize();
-		m_assetManager.Initialize(&m_luaManager);
+		m_assetManager.Initialize(&m_luaManager, &m_gfx);
 		
 		readConfigFile("startup.config");
 		m_gfx.Initialize();

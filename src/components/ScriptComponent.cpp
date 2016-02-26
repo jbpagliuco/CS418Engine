@@ -8,7 +8,7 @@ namespace CS418
 {
 	ScriptComponent::ScriptComponent(const std::string &type) : Behaviour(type)
 	{
-
+		Enabled = true;
 	}
 
 	ScriptComponent::~ScriptComponent()

@@ -1,4 +1,17 @@
-Triangle_GO 
+Main_Camera
+- Transform
+- CameraComponent (-5.0 2.0 3.0),(0.0 0.0 0.0),(0.0 1.0 0.0),PIDIV4,(0 0 -1 -1 0.01 1000.0),True
+
+Camera_2
+- Transform
+- CameraComponent (-5.0 2.0 3.0),(0.0 0.0 0.0),(0.0 1.0 0.0),PIDIV4,(400 300 400 300 0.01 1000.0),True
+
+Cube1
 - Transform (0.0 0.0 0.0),(0.0 0.0 0.0),(0.5 0.5 0.5)
 - RenderingComponent assets/cube2.cs418mesh,assets/vertexShader.vert,assets/fragShader.frag
-- ScriptComponent assets/scripts/test.lua
+- ScriptComponent assets/scripts/test.lua,True
+
+Cube2
+- Transform (1.0 1.0 1.0),(0.0 0.0 PIDIV4),(0.5 0.5 0.5)
+- RenderingComponent assets/cube2.cs418mesh,assets/vertexShader.vert,assets/fragShader.frag
+- ScriptComponent assets/scripts/test.lua,True

@@ -336,6 +336,22 @@ namespace CS418
 
 
 
+	Matrix Matrix::Lua_MultiplyMatrix(const Matrix &rhs)const
+	{
+		return (*this) * rhs;
+	}
+	Vector Matrix::Lua_MultiplyVector(const Vector &rhs)const
+	{
+		return (*this) * rhs;
+	}
+	Matrix Matrix::Lua_MultiplyScalar(F32 scalar)const
+	{
+		return (*this) * scalar;
+	}
+
+
+
+
 
 	bool Matrix::determinantVector(__m128 & minor0, __m128 & minor1, __m128 & minor2, __m128 & minor3, __m128 & pOutDet)const
 	{

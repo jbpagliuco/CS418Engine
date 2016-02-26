@@ -16,6 +16,7 @@ namespace CS418
 
 		// Returns the type of this component.
 		std::string GetType()const;
+		void SetType(std::string type);
 
 	protected:
 		GameObject * m_pGameObject;

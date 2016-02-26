@@ -42,6 +42,9 @@ namespace CS418
 		F32 getZ()const;
 		F32 getW()const;
 
+		Quaternion Lua_MultiplyQuaternion(const Quaternion &other)const;
+		VECTOR3F Lua_MultiplyVector(const VECTOR3F &other)const;
+
 	private:
 		Quaternion interpolate(const Quaternion & q1, const Quaternion & q2, F32 weightA, F32 weightB)const;
 

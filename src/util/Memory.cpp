@@ -27,7 +27,7 @@ namespace CS418
 		uintptr_t rawAddress = reinterpret_cast<uintptr_t>(AllocateUnalignedMemory(totalMemoryToAllocate));
 
 		size_t mask = (alignment - 1);
-		uintptr_t offset = (alignment & mask);
+		uintptr_t offset = (rawAddress & mask);
 		ptrdiff_t adjustment = alignment - offset;
 
 		uintptr_t alignedAddress = rawAddress + adjustment;

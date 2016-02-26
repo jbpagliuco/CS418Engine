@@ -11,9 +11,10 @@ namespace CS418
 		
 	}
 
-	void AssetManager::Initialize(LuaManager * pLuaManager)
+	void AssetManager::Initialize(LuaManager * pLuaManager, GraphicsManager * pGFXManager)
 	{
 		m_pLuaManager = pLuaManager;
+		m_pGFXManager = pGFXManager;
 	}
 
 	Scene * AssetManager::LoadScene(const std::string &sceneFilepath)
@@ -29,7 +30,7 @@ namespace CS418
 		}
 
 		// Otherwise load the scene.
-		Scene * pScene = CS418::LoadScene(this, sceneFilepath, m_pLuaManager);
+		Scene * pScene = CS418::LoadScene(this, sceneFilepath, m_pLuaManager, m_pGFXManager);
 		
 		// Add scene to list.
 		AssetContainer<Scene> sceneContainer;

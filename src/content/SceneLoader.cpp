@@ -8,25 +8,31 @@
 #include "components/Transform.h"
 #include "components/RenderingComponent.h"
 #include "components/ScriptComponent.h"
+#include "components/CameraComponent.h"
+
+#include "graphics/Viewport.h"
 
 #include "util/Memory.h"
 
 namespace CS418
 {
+	bool StringToBoolean(const std::string &line);
 	F32 StringToFloat(const std::string &line);
-	VECTOR3F LoadVector3f(std::string line);
+	VECTOR3F LoadVector3f(const std::string &line);
+	Viewport LoadViewport(const std::string &line, GraphicsManager * pGfxManager);
+
 
 	std::vector<std::string> GetArguments(const std::string &line);
-	GameComponent * LoadComponent(AssetManager *pAssetManager, std::string line, LuaManager * pLuaManager);
+	GameComponent * LoadComponent(AssetManager *pAssetManager, std::string line, LuaManager * pLuaManager, GraphicsManager * pGfxManager);
 
-	Scene * LoadCS418Scene(AssetManager * assetManager, const std::string &sceneData, LuaManager * pLuaManager);
+	Scene * LoadCS418Scene(AssetManager * assetManager, const std::string &sceneData, LuaManager * pLuaManager, GraphicsManager * pGfxManager);
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	Scene * LoadScene(AssetManager * pAssetManager, const std::string &sceneFilepath, LuaManager * pLuaManager)
+	Scene * LoadScene(AssetManager * pAssetManager, const std::string &sceneFilepath, LuaManager * pLuaManager, GraphicsManager * pGfxManager)
 	{
 		FileReader fileReader;
 		Scene * pScene;
@@ -35,7 +41,7 @@ namespace CS418
 		if (fileReader.GetFileExtension() == ".cs418scene")
 		{
 			std::string sceneData = fileReader.FileAsString();
-			pScene = LoadCS418Scene(pAssetManager, sceneData, pLuaManager);
+			pScene = LoadCS418Scene(pAssetManager, sceneData, pLuaManager, pGfxManager);
 		}
 		else
 			pScene = nullptr;
@@ -46,7 +52,7 @@ namespace CS418
 	}
 
 
-	Scene * LoadCS418Scene(AssetManager * pAssetManager, const std::string &sceneData, LuaManager * pLuaManager)
+	Scene * LoadCS418Scene(AssetManager * pAssetManager, const std::string &sceneData, LuaManager * pLuaManager, GraphicsManager * pGfxManager)
 	{
 		std::istringstream stream(sceneData);
 		std::string line;
@@ -74,13 +80,18 @@ namespace CS418
 				// This is a game component for the object.
 				if (pGO)
 				{
-					GameComponent * gc = LoadComponent(pAssetManager, line.substr(2), pLuaManager);
+					GameComponent * gc = LoadComponent(pAssetManager, line.substr(2), pLuaManager, pGfxManager);
 					if (line.find("- Transform") == 0)
+					{
 						pGO->SetTransform((Transform*)gc);
+						gc->SetType("Transform");
+					}
 					else
 						pGO->AddComponent(gc); // No hyphen or space
 
 					gc->SetGameObject(pGO);
+					if (gc->GetType() == "CameraComponent")
+						pScene->AddCamera((CameraComponent*)gc);
 				}
 			}
 			else if (line.at(0) == '>')
@@ -118,6 +129,10 @@ namespace CS418
 		return v;
 	}
 
+	bool StringToBoolean(const std::string &line)
+	{
+		return (line == "True");
+	}
 
 	F32 StringToFloat(const std::string &line)
 	{
@@ -143,25 +158,45 @@ namespace CS418
 		return value;
 	}
 	// line == (X Y Z)
-	VECTOR3F LoadVector3f(std::string line)
+	VECTOR3F LoadVector3f(const std::string &line)
 	{
 		VECTOR3F v;
+		std::stringstream ss(line);
 
-		size_t first = line.find_first_of(' ');
-		size_t last = line.find_last_of(' ');
-		std::string x = line.substr(1, first - 1);
-		std::string y = line.substr(first + 1, last - (first + 1));
-		std::string z = line.substr(last + 1, (line.length() - 1) - (last + 1));
+		std::string x, y, z;
+		ss >> x >> y >> z;
 
-		v.x = StringToFloat(x);
+		v.x = StringToFloat(x.substr(1));
 		v.y = StringToFloat(y);
-		v.z = StringToFloat(z);
+		v.z = StringToFloat(z.substr(0, z.length() - 1));
 
 		return v;
 	}
 
+	Viewport LoadViewport(const std::string &line, GraphicsManager * pGfxManager)
+	{
+		Viewport v;
+		std::stringstream ss(line);
+		std::string topLeftX, topLeftY, width, height, minDepth, maxDepth;
 
-	GameComponent * LoadComponent(AssetManager *pAssetManager, std::string line, LuaManager * pLuaManager)
+		ss >> topLeftX >> topLeftY >> width >> height >> minDepth >> maxDepth;
+
+		v.TopLeftX = StringToFloat(topLeftX.substr(1));
+		v.TopLeftY = StringToFloat(topLeftY);
+		v.Width = StringToFloat(width);
+		v.Height = StringToFloat(height);
+		v.MinDepth = StringToFloat(minDepth);
+		v.MaxDepth = StringToFloat(maxDepth.substr(0, maxDepth.length() - 1));
+
+		if (v.Width == -1)
+			v.Width = (F32)pGfxManager->GetWindowDimensions().X;
+		if (v.Height == -1)
+			v.Height = (F32)pGfxManager->GetWindowDimensions().Y;
+
+		return v;
+	}
+
+	GameComponent * LoadComponent(AssetManager *pAssetManager, std::string line, LuaManager * pLuaManager, GraphicsManager * pGfxManager)
 	{
 		GameComponent * pGC = nullptr;
 
@@ -170,14 +205,20 @@ namespace CS418
 
 		if (componentType == "Transform")
 		{
-			std::string position = arguments.at(0);
-			std::string rotation = arguments.at(1);
-			std::string scale = arguments.at(2);
+			void * pAlignedMem = AllocateAligned(sizeof(Transform), 16);
+			pGC = new(pAlignedMem)Transform();
 
-			pGC = (GameComponent*)AllocateAligned(sizeof(Transform), 16);
-			((Transform*)pGC)->Position = LoadVector3f(position);
-			((Transform*)pGC)->Rotation = LoadVector3f(rotation);
-			((Transform*)pGC)->Scale = LoadVector3f(scale);
+			pGC->SetType("Transform");
+			if (arguments.size() != 0)
+			{
+				std::string position = arguments.at(0);
+				std::string rotation = arguments.at(1);
+				std::string scale = arguments.at(2);
+
+				((Transform*)pGC)->Position = LoadVector3f(position);
+				((Transform*)pGC)->Rotation = LoadVector3f(rotation);
+				((Transform*)pGC)->Scale = LoadVector3f(scale);
+			}
 		}
 		else if (componentType == "RenderingComponent")
 		{
@@ -194,6 +235,22 @@ namespace CS418
 		{
 			pGC = new ScriptComponent;
 			((ScriptComponent*)pGC)->Initialize(pLuaManager, arguments.at(0));
+			((ScriptComponent*)pGC)->Enabled = StringToBoolean(arguments.at(1));
+		}
+		else if (componentType == "CameraComponent")
+		{
+			void * pAlignedMem = AllocateAligned(sizeof(CameraComponent), 16);
+			pGC = new(pAlignedMem)CameraComponent();
+
+			VECTOR3F position = LoadVector3f(arguments.at(0));
+			VECTOR3F target = LoadVector3f(arguments.at(1));
+			VECTOR3F up = LoadVector3f(arguments.at(2));
+			
+			F32 fov = StringToFloat(arguments.at(3));
+			Viewport v = LoadViewport(arguments.at(4), pGfxManager);
+
+			((CameraComponent*)pGC)->Initialize(Vector(position), Vector(target), Vector(up), fov, v);
+			((CameraComponent*)pGC)->Enabled = StringToBoolean(arguments.at(5));
 		}
 
 		return pGC;

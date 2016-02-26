@@ -21,4 +21,9 @@ namespace CS418
 	{
 		return m_type;
 	}
+
+	void GameComponent::SetType(std::string type)
+	{
+		m_type = type;
+	}
 }

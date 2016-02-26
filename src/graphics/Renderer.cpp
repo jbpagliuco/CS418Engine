@@ -78,34 +78,36 @@ namespace CS418
 		{
 			const std::vector<GameObject*> gameObjects = m_pScene->GetVisibleGameObjects();
 
-			for (std::vector<GameObject*>::const_iterator gameObject = gameObjects.begin(); gameObject != gameObjects.end(); gameObject++)
+			std::vector<CameraComponent*> pCameras = m_pScene->GetCameras();
+			for (std::vector<CameraComponent*>::const_iterator camera = pCameras.begin(); camera != pCameras.end(); camera++)
 			{
-				const std::vector<GameComponent*> &renderables = (*gameObject)->GetComponentsOfType("RenderingComponent");
+				if (!(*camera)->Enabled)
+					continue;
+				Viewport vp = (*camera)->GetViewport();
+				glViewport(vp.TopLeftX, vp.TopLeftY, vp.Width, vp.Height);
+				glClear(GL_DEPTH_BUFFER_BIT);
 
-				for (std::vector<GameComponent*>::const_iterator renderable = renderables.begin(); renderable != renderables.end(); renderable++)
-				{
-					RenderingComponent *rc = (RenderingComponent*)(*renderable);
-					glUseProgram(rc->m_material.GetShaderProgram()->m_shaderProgram);
+				for (std::vector<GameObject*>::const_iterator gameObject = gameObjects.begin(); gameObject != gameObjects.end(); gameObject++)
+				{				
+					const std::vector<RenderingComponent*> &renderables = (*gameObject)->GetComponentsOfType<RenderingComponent>("RenderingComponent");
 
-					float radius = 3.0f;
-					float height = 0.5f;
-					static float dt = 0.0f;
-					dt += 0.0f;
-					Matrix m = (*gameObject)->GetTransform()->CreateWorldMatrix();
-					Vector cameraPos(radius * cosf(dt), height, radius * sinf(dt), 1.0f);
-					Vector lookAt(0.0f, 0.0f, 0.0f, 1.0f);
-					Vector up(0.0f, 1.0f, 0.0f, 0.0f);
-					Matrix v = MatrixLookAtLH(cameraPos, lookAt, up);
-					Matrix p = MatrixPerspectiveFOVLH(PI_DIV4, 800.0f / 600.0f, 0.1f, 1000.0f);
+					for (std::vector<RenderingComponent*>::const_iterator renderable = renderables.begin(); renderable != renderables.end(); renderable++)
+					{
+						RenderingComponent *pRC = (*renderable);
+						glUseProgram(pRC->m_material.GetShaderProgram()->m_shaderProgram);
 
-					Matrix wvp = p * v * m;
-					rc->m_material.SetMatrix4x4("WVP", wvp);
-					rc->m_material.setValuesInShader();
+						Matrix m = (*gameObject)->GetTransform()->CreateWorldMatrix();
 
-					glBindVertexArray(rc->m_inputLayout);
-					glDrawElements(GL_TRIANGLES, rc->m_indicesCount, GL_UNSIGNED_INT, 0);
-				}
-			}
+						Matrix wvp = (*camera)->buildMatrix() * m;
+						pRC->m_material.SetMatrix4x4("WVP", wvp);
+						pRC->m_material.setValuesInShader();
+
+						glBindVertexArray(pRC->m_inputLayout);
+						glDrawElements(GL_TRIANGLES, pRC->m_indicesCount, GL_UNSIGNED_INT, 0);
+
+					} // Rendering Components
+				} // Game Objects
+			} // Cameras
 		}
 	}
 }

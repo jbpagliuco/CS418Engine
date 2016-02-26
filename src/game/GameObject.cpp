@@ -14,7 +14,10 @@ namespace CS418
 	{
 		for (const_comp_it it = m_pComponents.begin(); it != m_pComponents.end(); it++)
 		{
-			delete (*it);
+			if ((*it)->GetType() == "CameraComponent")
+				FreeAlignedMemory((*it));
+			else
+				delete (*it);
 		}
 		
 		FreeAlignedMemory(m_pTransform);
@@ -35,21 +38,6 @@ namespace CS418
 		return m_pComponents;
 	}
 
-	std::vector<GameComponent*> GameObject::GetComponentsOfType(const std::string &type)const
-	{
-		std::vector<GameComponent*> gameObjects;
-
-		for (const_comp_it it = m_pComponents.begin(); it != m_pComponents.end(); it++)
-		{
-			if ((*it)->GetType() == type)
-			{
-				gameObjects.push_back((*it));
-			}
-		}
-
-		return gameObjects;
-	}
-
 	void GameObject::SetTransform(Transform *transform)
 	{
 		m_pTransform = transform;
@@ -63,7 +51,6 @@ namespace CS418
 
 	void GameObject::Lua_SetTransform(const Transform &transform)
 	{
-		printf("In here!");
 		(*m_pTransform) = Transform(transform);
 	}
 

@@ -7,4 +7,8 @@ function Update(gameTimer)
 
 	gameObject.transform.rotation = v
 	
+	if gameObject.transform.rotation.y > math.pi then
+		gameObject:GetScriptComponents("ScriptComponent")[1].enabled = false
+	end
+	
 end
