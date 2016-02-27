@@ -30,9 +30,9 @@ namespace CS418
 		m_hRC = nullptr;
 	}
 
-	void GraphicsManager::Initialize()
+	void GraphicsManager::Initialize(Engine * pEngine)
 	{
-		createWindow();
+		createWindow(pEngine);
 
 		m_renderer.Initialize(this);
 	}
@@ -62,6 +62,18 @@ namespace CS418
 	{
 		// Swap front and back buffers
 		SwapBuffers(m_hDC);
+	}
+
+	void GraphicsManager::Resize()
+	{
+		RECT R;
+		GetClientRect(m_hWnd, &R);
+		Resize(R.right - R.left, R.bottom - R.top);
+	}
+
+	void GraphicsManager::Resize(U32 width, U32 height)
+	{
+		m_renderer.Resize(width, height);
 	}
 
 	void GraphicsManager::SetWindowWidth(U32 width)
@@ -148,7 +160,7 @@ namespace CS418
 		m_renderer.SetClearColor(color);
 	}
 
-	void GraphicsManager::createWindow()
+	void GraphicsManager::createWindow(Engine * pEngine)
 	{
 		WINDOW_DESC wd;
 		wd.caption = m_wWindowTitle.c_str();
@@ -158,7 +170,7 @@ namespace CS418
 		wd.size.Y = m_wHeight;
 		wd.isFullscreen = m_fullscreen;
 
-		m_hWnd = CreateApplicationWindow(wd);
+		m_hWnd = CreateApplicationWindow(wd, pEngine);
 
 		// get the device context (DC)
 		m_hDC = GetDC(m_hWnd);

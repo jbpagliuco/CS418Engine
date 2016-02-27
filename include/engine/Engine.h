@@ -19,6 +19,8 @@ namespace CS418
 		int Update();
 		void Draw();
 
+		LRESULT MessageHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
 	private:
 		void readConfigFile(const std::string &file);
 		void dispatchKeyAndValue(const std::string &key, const std::string &value);

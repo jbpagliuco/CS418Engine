@@ -1,6 +1,7 @@
 #pragma once
 
 #include "util/Util.h"
+#include "Engine.h"
 
 #if defined(WIN32) || defined(_WIN32)
 #include <Windows.h>
@@ -23,6 +24,6 @@ namespace CS418
 	} WINDOW_DESC;
 
 	/* Creates a window and returns the handle based on platform */
-	WindowHandle CreateApplicationWindow(const WINDOW_DESC &wd);
+	WindowHandle CreateApplicationWindow(const WINDOW_DESC &wd, Engine * pEngine);
 
 }

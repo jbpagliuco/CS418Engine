@@ -13,15 +13,14 @@ namespace CS418
 		CameraComponent(const std::string &type = "CameraComponent");
 		virtual ~CameraComponent();
 
-		virtual void Initialize(const Matrix &view, const Matrix &proj);
 		virtual void Initialize(const Vector &position, const Vector &target, const Vector &up, F32 fieldOfView, Viewport vp);
 
-		virtual void SetViewMatrix(const Matrix & view);
 		virtual void SetViewMatrix(const Vector &position, const Vector &target, const Vector& up);
-		virtual void SetProjection(const Matrix & proj);
 		virtual void SetProjection(F32 fieldOfView, Viewport vp);
 
 		virtual Viewport GetViewport()const;
+
+		virtual void Resize(U32 width, U32 height);
 
 	private:
 		Matrix buildMatrix()const;
@@ -30,6 +29,7 @@ namespace CS418
 		Matrix m_view;
 		Matrix m_proj;
 
+		F32 m_FOV;
 		Viewport m_vp;
 
 		friend class Renderer;

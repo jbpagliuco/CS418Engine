@@ -9,6 +9,8 @@
 
 namespace CS418
 {
+	class Engine;
+
 	/*
 	* Initializes and manages the settings of the graphics state.
 	*/
@@ -19,7 +21,7 @@ namespace CS418
 		virtual ~GraphicsManager();
 
 		/* Initializes the graphics device */
-		void Initialize();
+		void Initialize(Engine * pEngine);
 
 		/* Sets the scene to render */
 		void SetScene(Scene * pScene);
@@ -32,6 +34,9 @@ namespace CS418
 		void EndScene();
 
 		void Draw();
+
+		void Resize();
+		void Resize(U32 width, U32 height);
 
 		void SetWindowWidth(U32 width);
 		void SetWindowHeight(U32 height);
@@ -53,7 +58,7 @@ namespace CS418
 		void SetClearColor(const std::string &color);
 
 	private:
-		void createWindow();
+		void createWindow(Engine * pEngine);
 
 	private:
 #if defined(WIN32) || defined(_WIN32)

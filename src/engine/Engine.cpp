@@ -15,7 +15,7 @@ namespace CS418
 		m_assetManager.Initialize(&m_luaManager, &m_gfx);
 		
 		readConfigFile("startup.config");
-		m_gfx.Initialize();
+		m_gfx.Initialize(this);
 		readConfigFile("startup.graphics.config");
 
 
@@ -52,6 +52,61 @@ namespace CS418
 		}
 
 		m_gfx.Update(&m_gameTimer);
+
+		return 0;
+	}
+
+	LRESULT Engine::MessageHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+	{
+		switch (msg)
+		{
+		case WM_SIZE:
+		{
+			U32 width = LOWORD(lParam);
+			U32 height = HIWORD(lParam);
+
+			if (wParam == SIZE_MINIMIZED)
+			{
+
+			}
+			else if (wParam == SIZE_MAXIMIZED)
+			{
+				m_gfx.Resize(width, height);
+			}
+			else if (wParam == SIZE_RESTORED)
+			{
+				m_gfx.Resize(width, height);
+			}
+
+			break;
+		}
+
+		case WM_ENTERSIZEMOVE:
+			m_gameTimer.Pause();
+			break;
+
+		case WM_EXITSIZEMOVE:
+			m_gameTimer.Resume();
+
+			m_gfx.Resize();
+			break;
+
+		case WM_CLOSE:
+			DestroyWindow(hwnd);
+			break;
+
+		case WM_DESTROY:
+			PostQuitMessage(0);
+			break;
+
+		case WM_GETMINMAXINFO:
+			((MINMAXINFO*)lParam)->ptMinTrackSize.x = 200;
+			((MINMAXINFO*)lParam)->ptMinTrackSize.y = 200;
+			break;
+
+		default:
+			return DefWindowProcA(hwnd, msg, wParam, lParam);
+		}
 
 		return 0;
 	}

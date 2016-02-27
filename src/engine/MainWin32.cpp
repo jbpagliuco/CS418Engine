@@ -3,30 +3,19 @@
 #include "engine/Engine.h"
 #include <stdio.h>
 
-#include "math/Vector.h"
-#include "math/Matrix.h"
+#include "engine/MessageHandler.h"
 
 using namespace CS418;
 
-void printvector(const Vector &v)
-{
-	printf("(X: %f, Y: %f, Z: %f, W: %f)\n", v.getX(), v.getY(), v.getZ(), v.getW());
-}
+CS418::Engine engine;
 
-void printmatrix(const Matrix &m)
+LRESULT CALLBACK MessageHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-	for (U8 i = 0; i < 4; i++)
-	{
-		printf("%f %f %f %f\n", m(i, 0), m(i, 1), m(i, 2), m(i, 3));
-	}
-	printf("\n");
+	return engine.MessageHandler(hwnd, msg, wParam, lParam);
 }
-
 
 int main(int argc, char ** argv)
 {
-	CS418::Engine engine;
-
 	MSG msg;
 	ZeroMemory(&msg, sizeof(MSG));
 

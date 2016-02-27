@@ -20,6 +20,8 @@ namespace CS418
 
 		virtual void Draw()const;
 
+		virtual void Resize(U32 width, U32 height);
+
 	private:
 		VECTOR4F m_clearColor;
 

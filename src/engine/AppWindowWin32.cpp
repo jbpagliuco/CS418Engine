@@ -1,8 +1,8 @@
 #include "engine/AppWindow.h"
 
-#include "engine/MainWndProcWin32.h"
+#include "engine/MessageHandler.h"
 
-CS418::WindowHandle CS418::CreateApplicationWindow(const CS418::WINDOW_DESC &wd)
+CS418::WindowHandle CS418::CreateApplicationWindow(const CS418::WINDOW_DESC &wd, Engine * pEngine)
 {
 	HWND hwnd;
 
@@ -10,7 +10,7 @@ CS418::WindowHandle CS418::CreateApplicationWindow(const CS418::WINDOW_DESC &wd)
 	ZeroMemory(&wc, sizeof(WNDCLASSEXA));
 	wc.cbSize = sizeof(WNDCLASSEXA);
 	wc.hInstance = GetModuleHandle(NULL);
-	wc.lpfnWndProc = CS418::MainWndProc;
+	wc.lpfnWndProc = MessageHandler;
 	wc.hbrBackground = CreateSolidBrush(RGB(0, 0, 0));
 	wc.hCursor = LoadCursorA(NULL, IDC_ARROW);
 	wc.hIcon = wc.hIconSm = LoadIconA(NULL, IDI_APPLICATION);
@@ -27,7 +27,7 @@ CS418::WindowHandle CS418::CreateApplicationWindow(const CS418::WINDOW_DESC &wd)
 		PostQuitMessage(0);
 	}
 
-	hwnd = CreateWindowA(wc.lpszClassName, wd.caption, WS_OVERLAPPEDWINDOW ^ WS_THICKFRAME, wd.position.X, wd.position.Y, wd.size.X, wd.size.Y, nullptr, nullptr, wc.hInstance, 0);
+	hwnd = CreateWindowA(wc.lpszClassName, wd.caption, WS_OVERLAPPEDWINDOW, wd.position.X, wd.position.Y, wd.size.X, wd.size.Y, nullptr, nullptr, wc.hInstance, 0);
 	if (!hwnd)
 	{
 		OutputDebugStringA("Failed to create window!\n");

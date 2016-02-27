@@ -66,13 +66,24 @@ namespace CS418
 		glClearColor(m_clearColor.x, m_clearColor.y, m_clearColor.z, m_clearColor.w);
 	}
 
+	void Renderer::Resize(U32 width, U32 height)
+	{
+		if (m_pScene)
+		{
+			std::vector<CameraComponent*> pCameras = m_pScene->GetCameras();
+			for (std::vector<CameraComponent*>::const_iterator camera = pCameras.begin(); camera != pCameras.end(); camera++)
+			{
+				(*camera)->Resize(width, height);
+			}
+		}
+	}
+
 	void Renderer::Draw()const
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
-		glTranslatef(0.0f, 0.0f, -2.0f);
 
 		if (m_pScene)
 		{
