@@ -18,9 +18,12 @@ namespace CS418
 		m_gfx.Initialize(this);
 		readConfigFile("startup.graphics.config");
 
+		m_inputManager.Initialize();
 
 		m_gameTimer.Reset();
 		m_gameTimer.Resume();
+
+		m_luaManager.Push("input", m_inputManager);
 	}
 
 	int Engine::Update()
@@ -40,10 +43,13 @@ namespace CS418
 			std::ostringstream out;
 			out << "FPS: " << fps << ", Milliseconds Per Frame: " << mspf << "\n";
 			frameStats = out.str();
+
+			printf("-------------------------------------------------------------\n");
 			printf("%s", frameStats.c_str());
 			
 			std::ostringstream out2;
 			out2 << m_gameTimer.GetElapsedTimeInMillis();
+
 			printf("%s\n", out2.str().c_str());
 			printf("-------------------------------------------------------------\n");
 
@@ -102,6 +108,14 @@ namespace CS418
 		case WM_GETMINMAXINFO:
 			((MINMAXINFO*)lParam)->ptMinTrackSize.x = 200;
 			((MINMAXINFO*)lParam)->ptMinTrackSize.y = 200;
+			break;
+
+		case WM_KEYDOWN:
+			m_inputManager.Update(wParam, true);
+			break;
+
+		case WM_KEYUP:
+			m_inputManager.Update(wParam, false);
 			break;
 
 		default:

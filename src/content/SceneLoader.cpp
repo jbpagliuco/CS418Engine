@@ -12,25 +12,20 @@
 
 #include "graphics/Viewport.h"
 
+#include "util/Convert.h"
 #include "util/Memory.h"
 
 namespace CS418
 {
-	bool StringToBoolean(const std::string &line);
-	F32 StringToFloat(const std::string &line);
-	VECTOR3F LoadVector3f(const std::string &line);
-	Viewport LoadViewport(const std::string &line, GraphicsManager * pGfxManager);
-
-
-	std::vector<std::string> GetArguments(const std::string &line);
 	GameComponent * LoadComponent(AssetManager *pAssetManager, std::string line, LuaManager * pLuaManager, GraphicsManager * pGfxManager);
-
 	Scene * LoadCS418Scene(AssetManager * assetManager, const std::string &sceneData, LuaManager * pLuaManager, GraphicsManager * pGfxManager);
 
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
 
 	Scene * LoadScene(AssetManager * pAssetManager, const std::string &sceneFilepath, LuaManager * pLuaManager, GraphicsManager * pGfxManager)
 	{
@@ -50,6 +45,14 @@ namespace CS418
 
 		return pScene;
 	}
+
+
+
+
+
+
+
+
 
 
 	Scene * LoadCS418Scene(AssetManager * pAssetManager, const std::string &sceneData, LuaManager * pLuaManager, GraphicsManager * pGfxManager)
@@ -107,101 +110,31 @@ namespace CS418
 	}
 
 
-	std::vector<std::string> GetArguments(const std::string &line)
-	{
-		// No arguments
-		if (line.find(' ') == std::string::npos)
-			return std::vector<std::string>();
 
 
-		std::string arguments = line.substr(line.find(' ') + 1);
-		std::vector<std::string> v;
 
-		size_t pos;
-		while ((pos = arguments.find(",")) != std::string::npos)
-		{
-			std::string arg = arguments.substr(0, pos);
-			v.push_back(arg);
-			arguments.erase(0, pos + 1);
-		}
-		v.push_back(arguments);
 
-		return v;
-	}
 
-	bool StringToBoolean(const std::string &line)
-	{
-		return (line == "True");
-	}
 
-	F32 StringToFloat(const std::string &line)
-	{
-		F32 value;
 
-		if (line == "PI")
-			value = PI;
-		else if (line == "2PI")
-			value = PI_MUL2;
-		else if (line == "PIDIV2")
-			value = PI_DIV2;
-		else if (line == "PIDIV3")
-			value = PI_DIV3;
-		else if (line == "PIDIV4")
-			value = PI_DIV4;
-		else if (line == "PIDIV6")
-			value = PI_DIV6;
-		else if (line == "3PIDIV2")
-			value = PI_3DIV2;
-		else
-			value = stof(line);
 
-		return value;
-	}
-	// line == (X Y Z)
-	VECTOR3F LoadVector3f(const std::string &line)
-	{
-		VECTOR3F v;
-		std::stringstream ss(line);
 
-		std::string x, y, z;
-		ss >> x >> y >> z;
 
-		v.x = StringToFloat(x.substr(1));
-		v.y = StringToFloat(y);
-		v.z = StringToFloat(z.substr(0, z.length() - 1));
 
-		return v;
-	}
 
-	Viewport LoadViewport(const std::string &line, GraphicsManager * pGfxManager)
-	{
-		Viewport v;
-		std::stringstream ss(line);
-		std::string topLeftX, topLeftY, width, height, minDepth, maxDepth;
-
-		ss >> topLeftX >> topLeftY >> width >> height >> minDepth >> maxDepth;
-
-		v.TopLeftX = StringToFloat(topLeftX.substr(1));
-		v.TopLeftY = StringToFloat(topLeftY);
-		v.Width = StringToFloat(width);
-		v.Height = StringToFloat(height);
-		v.MinDepth = StringToFloat(minDepth);
-		v.MaxDepth = StringToFloat(maxDepth.substr(0, maxDepth.length() - 1));
-
-		if (v.Width == -1)
-			v.Width = (F32)pGfxManager->GetWindowDimensions().X;
-		if (v.Height == -1)
-			v.Height = (F32)pGfxManager->GetWindowDimensions().Y;
-
-		return v;
-	}
 
 	GameComponent * LoadComponent(AssetManager *pAssetManager, std::string line, LuaManager * pLuaManager, GraphicsManager * pGfxManager)
 	{
 		GameComponent * pGC = nullptr;
 
 		std::string componentType = line.substr(0, line.find(' '));
-		std::vector<std::string> arguments = GetArguments(line);
+		std::vector<std::string> arguments;
+		
+		if (line.find(' ') != std::string::npos)
+		{
+			std::string args = line.substr(line.find(' ') + 1);
+			arguments = SplitString(args, ",");
+		}
 
 		if (componentType == "Transform")
 		{
@@ -215,9 +148,9 @@ namespace CS418
 				std::string rotation = arguments.at(1);
 				std::string scale = arguments.at(2);
 
-				((Transform*)pGC)->Position = LoadVector3f(position);
-				((Transform*)pGC)->Rotation = LoadVector3f(rotation);
-				((Transform*)pGC)->Scale = LoadVector3f(scale);
+				((Transform*)pGC)->Position = StringToVector3f(position);
+				((Transform*)pGC)->Rotation = StringToVector3f(rotation);
+				((Transform*)pGC)->Scale = StringToVector3f(scale);
 			}
 		}
 		else if (componentType == "RenderingComponent")
@@ -236,18 +169,43 @@ namespace CS418
 			pGC = new ScriptComponent;
 			((ScriptComponent*)pGC)->Initialize(pLuaManager, arguments.at(0));
 			((ScriptComponent*)pGC)->Enabled = StringToBoolean(arguments.at(1));
+
+			((ScriptComponent*)pGC)->StartSetup();
+			for (size_t i = 2; i < arguments.size(); i++)
+			{
+				std::vector<std::string> var = SplitString(arguments.at(i), ":");
+				
+				std::string key = var.at(0);
+				std::string type = var.at(1);
+				std::string value = var.at(2);
+
+				if (type == "String")
+					((ScriptComponent*)pGC)->SetVariable(key, line);
+				else if (type == "F32")
+					((ScriptComponent*)pGC)->SetVariable(key, StringToFloat(line));
+				else if (type == "Boolean")
+					((ScriptComponent*)pGC)->SetVariable(key, StringToBoolean(line));
+				else if (type == "Vector2f")
+					((ScriptComponent*)pGC)->SetVariable(key, StringToVector2f(line));
+				else if (type == "Vector3f")
+					((ScriptComponent*)pGC)->SetVariable(key, StringToVector3f(line));
+				else if (type == "Vector4f")
+					((ScriptComponent*)pGC)->SetVariable(key, StringToVector4f(line));
+				else if (type == "Color")
+					((ScriptComponent*)pGC)->SetVariable(key, StringToColor(line));
+			}
 		}
 		else if (componentType == "CameraComponent")
 		{
 			void * pAlignedMem = AllocateAligned(sizeof(CameraComponent), 16);
 			pGC = new(pAlignedMem)CameraComponent();
 
-			VECTOR3F position = LoadVector3f(arguments.at(0));
-			VECTOR3F target = LoadVector3f(arguments.at(1));
-			VECTOR3F up = LoadVector3f(arguments.at(2));
+			VECTOR3F position = StringToVector3f(arguments.at(0));
+			VECTOR3F target = StringToVector3f(arguments.at(1));
+			VECTOR3F up = StringToVector3f(arguments.at(2));
 			
 			F32 fov = StringToFloat(arguments.at(3));
-			Viewport v = LoadViewport(arguments.at(4), pGfxManager);
+			Viewport v = StringToViewport(arguments.at(4), pGfxManager);
 
 			((CameraComponent*)pGC)->Initialize(Vector(position), Vector(target), Vector(up), fov, v);
 			((CameraComponent*)pGC)->Enabled = StringToBoolean(arguments.at(5));

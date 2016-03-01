@@ -18,6 +18,9 @@ namespace CS418
 		template <typename T>
 		void Push(const std::string name, T &value);
 
+		template <typename T>
+		void PushCopy(const std::string name, T value);
+
 		luabridge::LuaRef GetGlobal(const std::string name);
 
 	private:
@@ -31,6 +34,13 @@ namespace CS418
 	void LuaManager::Push(const std::string name, T &value)
 	{
 		luabridge::push(m_pLuaState, &value);
+		lua_setglobal(m_pLuaState, name.c_str());
+	}
+
+	template <typename T>
+	void LuaManager::PushCopy(const std::string name, T value)
+	{
+		luabridge::push(m_pLuaState, value);
 		lua_setglobal(m_pLuaState, name.c_str());
 	}
 }

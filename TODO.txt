@@ -39,3 +39,15 @@ Transform:
 Other
 	- Make all necessary functions const
 	- Comment stuff
+	
+	
+	
+	
+	
+	
+	
+		
+Make things pretty
+Terrain
+skybox
+camera transform

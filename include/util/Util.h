@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdint.h>
+#include <string>
 
 #ifndef CS418_ALIGN_MS
 #if _MSC_VER && !__INTEL_COMPILER

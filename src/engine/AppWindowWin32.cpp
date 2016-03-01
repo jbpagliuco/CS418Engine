@@ -23,14 +23,15 @@ CS418::WindowHandle CS418::CreateApplicationWindow(const CS418::WINDOW_DESC &wd,
 	if (!RegisterClassExA(&wc))
 	{
 		DWORD error = GetLastError();
-		OutputDebugStringA("Failed to register class!\n");
+		printf("Failed to register window class! Error Code: %lu\n", error);
 		PostQuitMessage(0);
 	}
 
 	hwnd = CreateWindowA(wc.lpszClassName, wd.caption, WS_OVERLAPPEDWINDOW, wd.position.X, wd.position.Y, wd.size.X, wd.size.Y, nullptr, nullptr, wc.hInstance, 0);
 	if (!hwnd)
 	{
-		OutputDebugStringA("Failed to create window!\n");
+		DWORD error = GetLastError();
+		printf("Failed to create window! Error Code: %lu\n", error);
 		PostQuitMessage(0);
 	}
 

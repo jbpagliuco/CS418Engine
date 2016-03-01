@@ -141,6 +141,15 @@
     <ClInclude Include="include\engine\MessageHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\input\InputManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\util\Convert.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\content\TextureLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\content\AssetManager.cpp">
@@ -237,6 +246,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\components\CameraComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\input\InputManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\Convert.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\Texture2D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\content\TextureLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

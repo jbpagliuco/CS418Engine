@@ -14,13 +14,14 @@ Transform						| Vector3f: Position
 RenderingComponent				| string: Mesh filepath
 								| string: Vertex shader filepath
 								| string: Fragment shader filepath
-								| [ array(string, ...): Material properities - (name, value) ]
-								| ## RenderingComponent assets/Mesh.obj,assets/vs.vert,assets/fr.frag,(color:Blue)
+								| [ Key/Value: Variables ]
+								| ## RenderingComponent assets/Mesh.obj,assets/vs.vert,assets/fr.frag,(Color:Color:Blue),(DiffuseMap:Texture2D:assets/textures/brickwall.png,REPEAT,REPEAT,LINEAR,LINEAR)
 								| ## All shaders will have the transform matrix already, so there is no need to specify that here
 --------------------------------|-------------------------------------------------------------------------------------	
 ScriptComponent					| string: Script filepath
 								| Boolean: Enabled
-								| ## Script assets/scripts/Moving.lua,True
+								| [ Key/Value: Variables ]
+								| ## Script assets/scripts/Moving.lua,True,speed:F32:10.0,name:String:Name
 --------------------------------|-------------------------------------------------------------------------------------	
 CameraComponent					| Vector3f: Position
 								| Vector3f: Target
@@ -35,7 +36,15 @@ CameraComponent					| Vector3f: Position
 Types:
 - String: "String" (No Quotes)
 - F32: Float (No f, ie 10.0 instead of 10.0f)
+- Vector2f: (X Y)
 - Vector3f: (X Y Z)
+- Vector4f: (X Y Z W)
+- Color: (R G B A) or ColorName (ie Blue)
 - Viewport: (TopLeftX TopLeftY Width Height MinDepth MaxDepth)
 	- Use -1 for default width/height
 - Boolean: True of False
+- Texture2D: (Texture filepath, [ Wrap_S (REPEAT, MIRRORED_REPEAT, CLAMP_EDGE, OR CLAMP_BORDER:Color), [ Wrap_T (REPEAT, MIRRORED_REPEAT, CLAMP_EDGE, OR CLAMP_BORDER:Color), FILTER_MIN (NEAREST, LINEAR), FILTER_MAX (NEAREST, LINEAR) ] )
+	- Specify all or none of the optional parameters
+	- REPEAT and LINEAR are the defaults
+
+- Key/Value: Key:Type:Value

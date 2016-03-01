@@ -3,6 +3,7 @@
 #include "graphics/GraphicsManager.h"
 #include "content/AssetManager.h"
 #include "LuaManager.h"
+#include "input/InputManager.h"
 
 #include "util/GameTimer.h"
 
@@ -29,6 +30,7 @@ namespace CS418
 		GraphicsManager m_gfx;
 		AssetManager m_assetManager;
 		LuaManager m_luaManager;
+		InputManager m_inputManager;
 
 		GameTimer m_gameTimer;
 	};
