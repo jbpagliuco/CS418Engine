@@ -25,6 +25,7 @@ namespace CS418
 
 		void SetMatrix4x4(const std::string &name, const Matrix &value);
 
+
 	private:
 		void setValuesInShader()const;
 

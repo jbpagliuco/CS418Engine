@@ -15,7 +15,6 @@ namespace CS418
 	VECTOR2F StringToVector2f(const std::string &line);
 	VECTOR3F StringToVector3f(const std::string &line);
 	VECTOR4F StringToVector4f(const std::string &line);
-	
 	VECTOR4F StringToColor(const std::string &line);
 
 	Viewport StringToViewport(const std::string &line, GraphicsManager * pGfxManager);

@@ -158,6 +158,26 @@ namespace CS418
 			Mesh * pMesh = pAssetManager->LoadMesh(arguments.at(0));
 			ShaderProgram * pShader = pAssetManager->LoadShader(arguments.at(1), arguments.at(2));
 
+			for (U32 i = 3; i < arguments.size(); i++)
+			{
+				std::vector<std::string> var = SplitString(arguments.at(i), ":");
+
+				std::string key = var.at(0);
+				std::string type = var.at(1);
+				std::string value = var.at(2).substr(0, var.at(2).length() - 1);
+
+				if (type == "Texture2D")
+				{
+					std::vector<std::string> textureParams = SplitString(value, " ");
+					Texture2D * pTexture = pAssetManager->LoadTexture2D(textureParams.at(0));
+					
+					if (textureParams.size() > 1)
+					{
+						
+					}
+				}
+			}
+
 			Material mat;
 			mat.Initialize(pShader);
 

@@ -15,7 +15,7 @@ RenderingComponent				| string: Mesh filepath
 								| string: Vertex shader filepath
 								| string: Fragment shader filepath
 								| [ Key/Value: Variables ]
-								| ## RenderingComponent assets/Mesh.obj,assets/vs.vert,assets/fr.frag,(Color:Color:Blue),(DiffuseMap:Texture2D:assets/textures/brickwall.png,REPEAT,REPEAT,LINEAR,LINEAR)
+								| ## RenderingComponent assets/Mesh.obj,assets/vs.vert,assets/fr.frag,(Color:Color:Blue),(DiffuseMap:Texture2D:assets/textures/brickwall.png REPEAT REPEAT LINEAR LINEAR)
 								| ## All shaders will have the transform matrix already, so there is no need to specify that here
 --------------------------------|-------------------------------------------------------------------------------------	
 ScriptComponent					| string: Script filepath
@@ -43,7 +43,7 @@ Types:
 - Viewport: (TopLeftX TopLeftY Width Height MinDepth MaxDepth)
 	- Use -1 for default width/height
 - Boolean: True of False
-- Texture2D: (Texture filepath, [ Wrap_S (REPEAT, MIRRORED_REPEAT, CLAMP_EDGE, OR CLAMP_BORDER:Color), [ Wrap_T (REPEAT, MIRRORED_REPEAT, CLAMP_EDGE, OR CLAMP_BORDER:Color), FILTER_MIN (NEAREST, LINEAR), FILTER_MAX (NEAREST, LINEAR) ] )
+- Texture2D: (Texture filepath [ Wrap_S (REPEAT, MIRRORED_REPEAT, CLAMP_EDGE, OR CLAMP_BORDER:Color) [ Wrap_T (REPEAT, MIRRORED_REPEAT, CLAMP_EDGE, OR CLAMP_BORDER:Color) FILTER_MIN (NEAREST, LINEAR) FILTER_MAX (NEAREST, LINEAR) ] )
 	- Specify all or none of the optional parameters
 	- REPEAT and LINEAR are the defaults
 

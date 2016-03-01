@@ -75,12 +75,10 @@ namespace CS418
 
 		return v;
 	}
-
 	VECTOR4F StringToColor(const std::string &line)
 	{
 		return Colors::StringToColor(line);
 	}
-
 
 	Viewport StringToViewport(const std::string &line, GraphicsManager * pGfxManager)
 	{
