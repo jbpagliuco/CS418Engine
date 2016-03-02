@@ -4,6 +4,7 @@
 
 #include "Util.h"
 #include "math/Vector.h"
+#include "math/Quaternion.h"
 #include "graphics/GraphicsManager.h"
 #include "graphics/Viewport.h"
 
@@ -15,6 +16,7 @@ namespace CS418
 	VECTOR2F StringToVector2f(const std::string &line);
 	VECTOR3F StringToVector3f(const std::string &line);
 	VECTOR4F StringToVector4f(const std::string &line);
+	Quaternion StringToQuaternion(const std::string &line);
 	VECTOR4F StringToColor(const std::string &line);
 
 	Viewport StringToViewport(const std::string &line, GraphicsManager * pGfxManager);

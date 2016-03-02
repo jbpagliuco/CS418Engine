@@ -44,6 +44,8 @@ namespace CS418
 		// Returns the elements at (x, y).
 		F32 operator()(U8 x, U8 y)const;
 
+		Vector getColumn(U8 col)const;
+
 		// Checks for equality (within epsilon) in each entry of the matrix. Returns 1.0f in entry slot if equal, 0.0f otherwise.
 		Matrix equals(const Matrix &other, F32 epsilon = FLOAT_EPSILON)const;
 		// Checks for inequality (within epsilon) in each entry of the matrix. Returns 1.0f in entry slot if not equal, 0.0f otherwise.

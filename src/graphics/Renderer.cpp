@@ -19,35 +19,18 @@ namespace CS418
 	{
 		glClearColor(m_clearColor.x, m_clearColor.y, m_clearColor.z, m_clearColor.w);
 		// Set polygon mode to fill
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glPolygonMode(GL_FRONT, GL_FILL);
 		// Set line point size
 		glPointSize(4.0f);
+
+		glEnable(GL_CULL_FACE);
+		glCullFace(GL_BACK);
+		glFrontFace(GL_CW);
 
 		glewInit();
 
 		Vector2<U32> dim = gfxManager->GetWindowDimensions();
 		glViewport(0, 0, dim.X, dim.Y);
-
-			/*
-		// Function pointer for the wgl extention function we need to enable/disable
-		// vsync
-		typedef BOOL(APIENTRY *PFNWGLSWAPINTERVALPROC)(int);
-		PFNWGLSWAPINTERVALPROC wglSwapIntervalEXT = 0;
-
-		const char *extensions = (char*)glGetString(GL_EXTENSIONS);
-
-		if (strstr(extensions, "WGL_EXT_swap_control") == 0)
-		{
-			return;
-		}
-		else
-		{
-			wglSwapIntervalEXT = (PFNWGLSWAPINTERVALPROC)wglGetProcAddress("wglSwapIntervalEXT");
-
-			if (wglSwapIntervalEXT)
-				wglSwapIntervalEXT(false);
-		}
-		*/
 	}
 
 	void Renderer::SetScene(Scene * pScene)
@@ -95,7 +78,7 @@ namespace CS418
 				if (!(*camera)->Enabled)
 					continue;
 				Viewport vp = (*camera)->GetViewport();
-				glViewport(vp.TopLeftX, vp.TopLeftY, vp.Width, vp.Height);
+				glViewport((I32)vp.TopLeftX, (I32)vp.TopLeftY, (U32)vp.Width, (U32)vp.Height);
 				glClear(GL_DEPTH_BUFFER_BIT);
 
 				for (std::vector<GameObject*>::const_iterator gameObject = gameObjects.begin(); gameObject != gameObjects.end(); gameObject++)

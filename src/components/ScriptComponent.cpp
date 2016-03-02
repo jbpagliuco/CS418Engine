@@ -41,6 +41,5 @@ namespace CS418
 
 		for (size_t i = 0; i < m_variables.size(); i++)
 			m_variables.at(i) = m_pLuaManager->GetGlobal(m_variablesKeys.at(i));
-		printf("%f\n", m_variables.at(0).cast<float>());
 	}
 }

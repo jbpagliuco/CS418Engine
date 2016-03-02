@@ -99,14 +99,14 @@ namespace CS418
 			count = largeInt.QuadPart;
 		}
 
-		return ((count - m_startCount) - m_pausedCounts) * m_secondsPerCount;
+		return (F32)(((count - m_startCount) - m_pausedCounts) * m_secondsPerCount);
 	}
 
 	F32 GameTimer::GetTotalGameTime()const
 	{
 		LARGE_INTEGER largeInt;
 		QueryPerformanceCounter(&largeInt);
-		return (largeInt.QuadPart - m_startCount) * m_secondsPerCount;
+		return (F32)((largeInt.QuadPart - m_startCount) * m_secondsPerCount);
 	}
 
 	F32 GameTimer::GetElapsedTimeInSeconds()const
@@ -116,6 +116,6 @@ namespace CS418
 
 	F32 GameTimer::GetElapsedTimeInMillis()const
 	{
-		return m_elapsedCounts * m_secondsPerCount * 1000;
+		return (F32)(m_elapsedCounts * m_secondsPerCount * 1000);
 	}
 }

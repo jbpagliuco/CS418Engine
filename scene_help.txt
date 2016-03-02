@@ -6,7 +6,7 @@ Name
 Component:                      | Parameters:
 --------------------------------|-------------------------------------------------------------------------------------
 Transform						| Vector3f: Position
-								| Vector3f: Rotation in rads
+								| Quaternion: Rotation
 								| Vector3f: Scale
 								| ## Transform (10.0 5.0 10.0),(PI 0.0 PI),(1.0 1.0 2.0)
 								| ## Types of PI: PI, 2PI, PIDIV2, PIDIV3, PIDIV4, PIDIV6, 3PIDIV2
@@ -39,12 +39,14 @@ Types:
 - Vector2f: (X Y)
 - Vector3f: (X Y Z)
 - Vector4f: (X Y Z W)
+- Quaternion: (xAxis yAxis zAxis angleInRadians)
 - Color: (R G B A) or ColorName (ie Blue)
 - Viewport: (TopLeftX TopLeftY Width Height MinDepth MaxDepth)
 	- Use -1 for default width/height
 - Boolean: True of False
-- Texture2D: (Texture filepath [ Wrap_S (REPEAT, MIRRORED_REPEAT, CLAMP_EDGE, OR CLAMP_BORDER:Color) [ Wrap_T (REPEAT, MIRRORED_REPEAT, CLAMP_EDGE, OR CLAMP_BORDER:Color) FILTER_MIN (NEAREST, LINEAR) FILTER_MAX (NEAREST, LINEAR) ] )
+- Texture2D: (Texture filepath [ Wrap_S (REPEAT, MIRRORED_REPEAT, CLAMP_EDGE, OR CLAMP_BORDER:Color) [ Wrap_T (REPEAT, MIRRORED_REPEAT, CLAMP_EDGE, OR CLAMP_BORDER:Color) FILTER_MIN (NEAREST, LINEAR) FILTER_MAX (NEAREST, LINEAR) BorderColor] )
 	- Specify all or none of the optional parameters
 	- REPEAT and LINEAR are the defaults
+	- BorderColor only needed if specifying CLAMP_BORDER
 
 - Key/Value: Key:Type:Value

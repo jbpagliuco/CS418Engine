@@ -7,6 +7,7 @@ namespace CS418
 {
 	Engine::~Engine()
 	{
+		m_assetManager.UnloadContent();
 	}
 
 	void Engine::Initialize()

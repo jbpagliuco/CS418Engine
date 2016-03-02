@@ -197,6 +197,7 @@
     <ClCompile Include="src\graphics\Scene.cpp" />
     <ClCompile Include="src\graphics\ShaderProgram.cpp" />
     <ClCompile Include="src\graphics\Texture2D.cpp" />
+    <ClCompile Include="src\graphics\Texture2DGL.cpp" />
     <ClCompile Include="src\input\InputManager.cpp" />
     <ClCompile Include="src\math\Math.cpp" />
     <ClCompile Include="src\math\MatrixMSVC.cpp" />

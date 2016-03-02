@@ -1,0 +1,9 @@
+Main_Camera
+- Transform
+- CameraComponent (5.0 2.0 0.0),(0.0 0.0 0.0),(0.0 1.0 0.0),PIDIV4,(0 0 -1 -1 0.01 1000.0),True
+- ScriptComponent assets/scripts/cameraMovement.lua,True,speed:F32:1.0
+
+Cube1
+- Transform (0.0 0.0 0.0),(),(1 1 1)
+- RenderingComponent assets/models/cube.cs418mesh,assets/shaders/texture.vert,assets/shaders/texture.frag,(DiffuseMap:Texture2D:assets/textures/kitty.png REPEAT REPEAT LINEAR LINEAR)
+- ScriptComponent assets/scripts/test.lua,True,speed:F32:3.0

@@ -9,7 +9,8 @@ namespace CS418
 {
 	Quaternion::Quaternion()
 	{
-
+		v.x = v.y = v.z = 0.0f;
+		w = 1.0f;
 	}
 
 	Quaternion::Quaternion(F32 xAxis, F32 yAxis, F32 zAxis, F32 angleInRadians)

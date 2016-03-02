@@ -4,6 +4,9 @@
 
 namespace CS418
 {
+	inline F32 SIGN(float x) { return (x >= 0.0f) ? +1.0f : -1.0f; }
+	inline F32 NORM(float a, float b, float c, float d) { return sqrt(a * a + b * b + c * c + d * d); }
+
 	Quaternion::Quaternion(const Matrix &rotMatrix)
 	{
 		__declspec(align(16)) F32 R[4][4];
@@ -12,44 +15,53 @@ namespace CS418
 
 		F32 q[4];
 
-
-		float trace = R[0][0] + R[1][1] + R[2][2];
-		// check the diagonal 
-		if (trace > 0.0f)
-		{
-			float s = sqrtf(trace + 1.0f);
-			q[3] = s * 0.5f;
-			float t = 0.5f / s;
-			q[0] = (R[2][1] - R[1][2]) * t;
-			q[1] = (R[0][2] - R[2][0]) * t;
-			q[2] = (R[1][0] - R[0][1]) * t;
+		q[0] = (R[0][0] + R[1][1] + R[2][2] + 1.0f) / 4.0f;
+		q[1] = (R[0][0] - R[1][1] - R[2][2] + 1.0f) / 4.0f;
+		q[2] = (-R[0][0] + R[1][1] - R[2][2] + 1.0f) / 4.0f;
+		q[3] = (-R[0][0] - R[1][1] + R[2][2] + 1.0f) / 4.0f;
+		if (q[0] < 0.0f) q[0] = 0.0f;
+		if (q[1] < 0.0f) q[1] = 0.0f;
+		if (q[2] < 0.0f) q[2] = 0.0f;
+		if (q[3] < 0.0f) q[3] = 0.0f;
+		q[0] = sqrt(q[0]);
+		q[1] = sqrt(q[1]);
+		q[2] = sqrt(q[2]);
+		q[3] = sqrt(q[3]);
+		if (q[0] >= q[1] && q[0] >= q[2] && q[0] >= q[3]) {
+			q[0] *= +1.0f;
+			q[1] *= SIGN(R[2][1] - R[1][2]);
+			q[2] *= SIGN(R[0][2] - R[2][0]);
+			q[3] *= SIGN(R[1][0] - R[0][1]);
 		}
-		else
-		{ // diagonal is negative 
-			int i = 0;
-			if (R[1][1] > R[0][0])
-				i = 1;
-			if (R[2][2] > R[i][i])
-				i = 2;
-			static const int NEXT[3] = { 1, 2, 0 };
-			int j = NEXT[i];
-			int k = NEXT[j];
-			float s = sqrtf((R[i][j] - (R[j][j] + R[k][k])) + 1.0f);
-			q[i] = s * 0.5f;
-			float t;
-			if (s != 0.0)
-				t = 0.5f / s;
-			else
-				t = s;
-			q[3] = (R[k][j] - R[j][k]) * t;
-			q[j] = (R[j][i] + R[i][j]) * t;
-			q[k] = (R[k][i] + R[i][k]) * t;
+		else if (q[1] >= q[0] && q[1] >= q[2] && q[1] >= q[3]) {
+			q[0] *= SIGN(R[2][1] - R[1][2]);
+			q[1] *= +1.0f;
+			q[2] *= SIGN(R[1][0] + R[0][1]);
+			q[3] *= SIGN(R[0][2] + R[2][0]);
+		}
+		else if (q[2] >= q[0] && q[2] >= q[1] && q[2] >= q[3]) {
+			q[0] *= SIGN(R[0][2] - R[2][0]);
+			q[1] *= SIGN(R[1][0] + R[0][1]);
+			q[2] *= +1.0f;
+			q[3] *= SIGN(R[2][1] + R[1][2]);
+		}
+		else if (q[3] >= q[0] && q[3] >= q[1] && q[3] >= q[2]) {
+			q[0] *= SIGN(R[1][0] - R[0][1]);
+			q[1] *= SIGN(R[2][0] + R[0][2]);
+			q[2] *= SIGN(R[2][1] + R[1][2]);
+			q[3] *= +1.0f;
 		}
 
-		w = q[3];
-		v.x = q[0];
-		v.y = q[1];
-		v.z = q[2];
+		F32 r = NORM(q[0], q[1], q[2], q[3]);
+		q[0] /= r;
+		q[1] /= r;
+		q[2] /= r;
+		q[3] /= r;
+
+		w = q[0];
+		v.x = q[1];
+		v.y = q[2];
+		v.z = q[3];
 	}
 
 

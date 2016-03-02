@@ -24,9 +24,9 @@ namespace CS418
 
 	private:
 		Matrix buildMatrix()const;
+		void setTransform(Matrix &view, const Vector &position);
 
 	private:
-		Matrix m_view;
 		Matrix m_proj;
 
 		F32 m_FOV;

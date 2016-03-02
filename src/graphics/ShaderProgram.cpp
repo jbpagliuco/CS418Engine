@@ -5,6 +5,8 @@
 #include <vector>
 #include <sstream>
 
+#include "util/Convert.h"
+
 namespace CS418
 {
 	ShaderProgram::~ShaderProgram()
@@ -18,7 +20,7 @@ namespace CS418
 			return false;
 
 		createInputLayout(vertexShaderSource);
-		getUniformIDs(vertexShaderSource);
+		getUniformIDs(vertexShaderSource, fragShaderSource);
 
 		return true;
 	}
@@ -46,6 +48,13 @@ namespace CS418
 	void ShaderProgram::SetMatrix4x4(const std::string &name, const Matrix &value)
 	{
 		glUniformMatrix4fv(m_uniforms.find(name)->second, 1, GL_FALSE, &(value.AsFloatArray().at(0)));
+	}
+
+	void ShaderProgram::SetTexture2D(const std::string &name, const Texture2DGL &tex2D, U32 index)
+	{
+		glActiveTexture(GL_TEXTURE0 + index);
+		glBindTexture(GL_TEXTURE_2D, tex2D.GetID());
+		glUniform1i(m_uniforms.find(name)->second, index);
 	}
 
 	VertexDesc ShaderProgram::GetVertexDesc()const
@@ -111,45 +120,59 @@ namespace CS418
 
 	void ShaderProgram::createInputLayout(std::string vertexShaderSource)
 	{
-		size_t newline = vertexShaderSource.find_first_of('\n');
-		size_t space = vertexShaderSource.find_first_of(' ');
+		std::string firstLine = vertexShaderSource.substr(0, vertexShaderSource.find_first_of("\n"));
+		std::vector<std::string> elements = SplitString(firstLine.substr(3), ",");
 
-		size_t start = space;
-		size_t end;
-		while ((end = vertexShaderSource.find(',', start)) != std::string::npos && end < newline)
+		for (std::vector<std::string>::iterator it = elements.begin(); it != elements.end(); it++)
 		{
-			std::string curr = vertexShaderSource.substr(start + 1, end - (start + 1));
-
-			if (curr == "POSITION")
+			if ((*it) == "POSITION")
 				m_vertexDesc.positions = true;
-			else if (curr == "NORMAL")
+			else if ((*it) == "NORMAL")
 				m_vertexDesc.normals = true;
-			else if (curr == "TEXCOORD")
+			else if ((*it) == "TEXCOORD")
 				m_vertexDesc.texCoords = true;
-			else if (curr == "TANGENT")
+			else if ((*it) == "TANGENT")
 				m_vertexDesc.tangents = true;
-			else if (curr == "COLOR")
+			else if ((*it) == "COLOR")
 				m_vertexDesc.colors = true;
-
-			start = end + 1;
 		}
 	}
 
-	void ShaderProgram::getUniformIDs(const std::string &vertexShaderSource)
+	void ShaderProgram::getUniformIDs(const std::string &vertexShaderSource, const std::string &fragShaderSource)
 	{
-		std::istringstream f(vertexShaderSource);
+		std::istringstream ssV(vertexShaderSource);
 		std::string line;
 
-		while (std::getline(f, line))
+		while (std::getline(ssV, line))
 		{
-			if (line.find_first_of("uniform ") == 0)
+			std::istringstream ss(line);
+			std::string type;
+			ss >> type;
+
+			if (type == "uniform")
 			{
-				std::istringstream ss(line);
-				std::string trash, name;
-				ss >> trash >> trash >> name;
-				name = name.substr(0, name.length() - 1); // Remove semicolon
-				U32 id = glGetUniformLocation(m_shaderProgram, name.c_str());
-				m_uniforms[name] = id;
+				ss >> type >> type; // type now holds name of variable
+				type = type.substr(0, type.length() - 1);
+				U32 id = glGetUniformLocation(m_shaderProgram, type.c_str());
+				m_uniforms[type] = id;
+			}
+		}
+
+
+
+		std::istringstream ssF(fragShaderSource);
+		while (std::getline(ssF, line))
+		{
+			std::istringstream ss(line);
+			std::string type;
+			ss >> type;
+
+			if (type == "uniform")
+			{
+				ss >> type >> type; // type now holds name of variable
+				type = type.substr(0, type.length() - 1);
+				U32 id = glGetUniformLocation(m_shaderProgram, type.c_str());
+				m_uniforms[type] = id;
 			}
 		}
 	}

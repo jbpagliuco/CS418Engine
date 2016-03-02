@@ -79,6 +79,15 @@ namespace CS418
 
 
 
+	Vector Matrix::getColumn(U8 col)const
+	{
+		return Vector(m_cols[col]);
+	}
+
+
+
+
+
 	Matrix Matrix::equals(const Matrix &other, F32 epsilon)const
 	{
 		Matrix result;

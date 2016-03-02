@@ -17,13 +17,13 @@ namespace CS418
 	void Transform::Initialize()
 	{
 		Position = VECTOR3F(0.0f, 0.0f, 0.0f);
-		Rotation = VECTOR3F(0.0f, 0.0f, 0.0f);
+		Rotation = Quaternion();
 		Scale = VECTOR3F(1.0f, 1.0f, 1.0f);
 
 		m_worldMat = MatrixIdentity();
 	}
 
-	void Transform::Initialize(const VECTOR3F &position, const VECTOR3F &rotation, const VECTOR3F &scale)
+	void Transform::Initialize(const VECTOR3F &position, const Quaternion &rotation, const VECTOR3F &scale)
 	{
 		Position = position;
 		Rotation = rotation;
@@ -39,11 +39,7 @@ namespace CS418
 
 		Matrix mTrans = MatrixTranslation(vTrans);
 		Matrix mScale = MatrixScaling(vScale);
-
-		Quaternion qRotX(1.0f, 0.0f, 0.0f, Rotation.x);
-		Quaternion qRotY(0.0f, 1.0f, 0.0f, Rotation.y);
-		Quaternion qRotZ(0.0f, 0.0f, 1.0f, Rotation.z);
-		Matrix mRot = MatrixRotationQuaternion(qRotX * qRotY * qRotZ);
+		Matrix mRot = MatrixRotationQuaternion(Rotation);
 
 		m_worldMat = mTrans * mRot * mScale;
 		

@@ -7,6 +7,7 @@
 
 #include "math/Vector.h"
 #include "math/Matrix.h"
+#include "graphics/Texture2DGL.h"
 
 namespace CS418
 {
@@ -40,10 +41,12 @@ namespace CS418
 
 		void SetMatrix4x4(const std::string &name, const Matrix &value);
 
+		void SetTexture2D(const std::string &name, const Texture2DGL &tex2D, U32 index);
+
 	private:
 		bool compileShaders(std::string vertexShaderSource, std::string fragShaderSource);
 		void createInputLayout(std::string vertexShaderSource);
-		void getUniformIDs(const std::string &vertexShaderSource);
+		void getUniformIDs(const std::string &vertexShaderSource, const std::string &fragShaderSource);
 
 	private:
 		U32 m_shaderProgram;

@@ -170,8 +170,6 @@ namespace CS418
 			.beginClass<Quaternion>("Quaternion")
 				.addConstructor<void (*) (void)>()
 				.addConstructor<void (*) (F32, F32, F32, F32)>()
-				.addConstructor<void (*) (const VECTOR3F * , F32)>()
-				.addConstructor<void (*) (const Matrix &)>()
 				.addFunction("Invert", &Quaternion::invert)
 				.addFunction("MultiplyQuaternion", &Quaternion::Lua_MultiplyQuaternion)
 				.addFunction("MultiplyVector", &Quaternion::Lua_MultiplyVector)

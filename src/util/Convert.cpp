@@ -75,6 +75,20 @@ namespace CS418
 
 		return v;
 	}
+
+	Quaternion StringToQuaternion(const std::string &line)
+	{
+		std::stringstream ss(line);
+		std::string x, y, z, angle;
+		ss >> x >> y >> z >> angle;
+
+		if (x == "()")
+			return Quaternion();
+
+		Quaternion q(StringToFloat(x.substr(1)), StringToFloat(y), StringToFloat(z), StringToFloat(angle.substr(0, angle.length() - 1)));
+		return q;
+	}
+
 	VECTOR4F StringToColor(const std::string &line)
 	{
 		return Colors::StringToColor(line);

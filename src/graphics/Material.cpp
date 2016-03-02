@@ -42,6 +42,12 @@ namespace CS418
 		m_varM[name] = value;
 	}
 
+	void Material::SetTexture2D(const std::string &name, const Texture2DGL & value)
+	{
+		U32 index = m_varT2D.size();
+		m_varT2D[name] = { value, index };
+	}
+
 	void Material::setValuesInShader()const
 	{
 		for (std::map<std::string, F32>::const_iterator it = m_varF.begin(); it != m_varF.end(); ++it)
@@ -58,5 +64,8 @@ namespace CS418
 
 		for (std::map<std::string, Matrix>::const_iterator it = m_varM.begin(); it != m_varM.end(); ++it)
 			m_pShader->SetMatrix4x4(it->first, it->second);
+
+		for (std::map<std::string, TextureElement>::const_iterator it = m_varT2D.begin(); it != m_varT2D.end(); it++)
+			m_pShader->SetTexture2D(it->first, it->second.tex2D, it->second.index);
 	}
 }
