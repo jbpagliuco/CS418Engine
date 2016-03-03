@@ -51,6 +51,7 @@ namespace CS418
 
 	void GameObject::Lua_SetTransform(const Transform &transform)
 	{
+		printf("Setting\n");
 		(*m_pTransform) = Transform(transform);
 	}
 

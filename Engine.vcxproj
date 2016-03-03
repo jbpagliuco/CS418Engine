@@ -135,6 +135,7 @@
     <ClInclude Include="include\components\GameComponent.h" />
     <ClInclude Include="include\components\RenderingComponent.h" />
     <ClInclude Include="include\components\ScriptComponent.h" />
+    <ClInclude Include="include\components\SkyboxComponent.h" />
     <ClInclude Include="include\components\Transform.h" />
     <ClInclude Include="include\content\AssetManager.h" />
     <ClInclude Include="include\content\MeshLoader.h" />
@@ -154,6 +155,7 @@
     <ClInclude Include="include\graphics\Renderer.h" />
     <ClInclude Include="include\graphics\ShaderProgram.h" />
     <ClInclude Include="include\graphics\Texture2D.h" />
+    <ClInclude Include="include\graphics\TextureCube.h" />
     <ClInclude Include="include\graphics\VertexBuffer.h" />
     <ClInclude Include="include\graphics\Viewport.h" />
     <ClInclude Include="include\input\InputManager.h" />
@@ -177,6 +179,7 @@
     <ClCompile Include="src\components\Behaviour.cpp" />
     <ClCompile Include="src\components\CameraComponent.cpp" />
     <ClCompile Include="src\components\ScriptComponent.cpp" />
+    <ClCompile Include="src\components\SkyboxComponent.cpp" />
     <ClCompile Include="src\content\AssetManager.cpp" />
     <ClCompile Include="src\content\MeshLoader.cpp" />
     <ClCompile Include="src\content\SceneLoader.cpp" />
@@ -198,6 +201,7 @@
     <ClCompile Include="src\graphics\ShaderProgram.cpp" />
     <ClCompile Include="src\graphics\Texture2D.cpp" />
     <ClCompile Include="src\graphics\Texture2DGL.cpp" />
+    <ClCompile Include="src\graphics\TextureCube.cpp" />
     <ClCompile Include="src\input\InputManager.cpp" />
     <ClCompile Include="src\math\Math.cpp" />
     <ClCompile Include="src\math\MatrixMSVC.cpp" />

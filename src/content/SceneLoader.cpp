@@ -9,6 +9,7 @@
 #include "components/RenderingComponent.h"
 #include "components/ScriptComponent.h"
 #include "components/CameraComponent.h"
+#include "components/SkyboxComponent.h"
 
 #include "graphics/Viewport.h"
 
@@ -97,6 +98,8 @@ namespace CS418
 
 					if (gc->GetType() == "CameraComponent")
 						pScene->AddCamera((CameraComponent*)gc);
+					if (gc->GetType() == "SkyboxComponent")
+						pScene->GetCameras().at(pScene->GetCameras().size() - 1)->SetSkybox((SkyboxComponent*)gc);
 				}
 			}
 			else if (line.at(0) == '>')
@@ -151,7 +154,7 @@ namespace CS418
 				std::string scale = arguments.at(2);
 
 				((Transform*)pGC)->Position = StringToVector3f(position);
-				((Transform*)pGC)->Rotation = StringToQuaternion(rotation);
+				((Transform*)pGC)->Rotation = StringToVector3f(rotation);
 				((Transform*)pGC)->Scale = StringToVector3f(scale);
 			}
 
@@ -258,6 +261,26 @@ namespace CS418
 
 			((CameraComponent*)pGC)->Initialize(Vector(position), Vector(target), Vector(up), fov, v);
 			((CameraComponent*)pGC)->Enabled = StringToBoolean(arguments.at(5));
+		}
+		else if (componentType == "SkyboxComponent")
+		{
+			pGC = new SkyboxComponent;
+
+			Texture2D * pTextures[6];
+			pTextures[0] = pAssetManager->LoadTexture2D(arguments.at(0) + "_rt.tga");
+			pTextures[1] = pAssetManager->LoadTexture2D(arguments.at(0) + "_lf.tga");
+			pTextures[2] = pAssetManager->LoadTexture2D(arguments.at(0) + "_up.tga");
+			pTextures[3] = pAssetManager->LoadTexture2D(arguments.at(0) + "_dn.tga");
+			pTextures[4] = pAssetManager->LoadTexture2D(arguments.at(0) + "_ft.tga");
+			pTextures[5] = pAssetManager->LoadTexture2D(arguments.at(0) + "_bk.tga");
+
+			ShaderProgram * pSkyboxShader = pAssetManager->LoadShader("assets/shaders/skybox.vert", "assets/shaders/skybox.frag");
+			Mesh * pSkyboxMesh = pAssetManager->LoadMesh("assets/models/cube.cs418mesh");
+			
+			((SkyboxComponent*)pGC)->Initialize(pTextures, pSkyboxShader, pSkyboxMesh);
+			((SkyboxComponent*)pGC)->Enabled = StringToBoolean(arguments.at(1));
+
+			pGC->SetGameObject(pGO);
 		}
 
 		return pGC;

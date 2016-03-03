@@ -30,6 +30,11 @@ CameraComponent					| Vector3f: Position
 								| Viewport: Camera Viewport
 								| Boolean: Enabled
 								| ## CameraComponent (-5.0 2.0 3.0),(0.0 0.0 0.0),(0.0 1.0 0.0),PIDIV4,(0 0 -1 -1 0.01 1000.0),True
+--------------------------------|-------------------------------------------------------------------------------------	
+SkyboxComponent					| String: Skybox filepath prefix
+								| Boolean: Enabled
+								| ## SkyboxComponent assets/textures/skybox_moon,True
+								| ## skybox_moon refers to skybox_moon_front, skybox_moon_top, etc
 								
 								
 								

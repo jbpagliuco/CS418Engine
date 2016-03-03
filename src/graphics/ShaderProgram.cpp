@@ -57,6 +57,13 @@ namespace CS418
 		glUniform1i(m_uniforms.find(name)->second, index);
 	}
 
+	void ShaderProgram::SetTextureCube(const std::string &name, const TextureCube &texCube, U32 index)
+	{
+		glActiveTexture(GL_TEXTURE0 + index);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, texCube.GetID());
+		glUniform1i(m_uniforms.find(name)->second, index);
+	}
+
 	VertexDesc ShaderProgram::GetVertexDesc()const
 	{
 		return m_vertexDesc;
@@ -142,6 +149,8 @@ namespace CS418
 	{
 		std::istringstream ssV(vertexShaderSource);
 		std::string line;
+
+		glUseProgram(m_shaderProgram);
 
 		while (std::getline(ssV, line))
 		{

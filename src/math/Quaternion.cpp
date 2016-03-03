@@ -37,6 +37,17 @@ namespace CS418
 		v.z = sinThetaDiv2 * pAxis->z;
 	}
 
+	VECTOR3F Quaternion::ToEuler()const
+	{
+		VECTOR3F euler;
+
+		euler.x = atan2f(2 * (w * v.x + v.y * v.z), 1 - 2 * (v.x * v.x + v.y * v.y));
+		euler.y = asinf(2 * (w * v.y - v.z * v.x));
+		euler.z = atan2f(2 * (w * v.z + v.x * v.y), 1 - 2 * (v.y * v.y + v.z * v.z));
+
+		return euler;
+	}
+
 	Quaternion & Quaternion::invert()
 	{
 		v.x *= -1;

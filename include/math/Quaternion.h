@@ -19,6 +19,8 @@ namespace CS418
 		// Creates a quaternion from the rotation matrix.
 		Quaternion(const Matrix &rotMatrix);
 
+		VECTOR3F ToEuler()const;
+
 		// Inverts this quaternion.
 		// Returns a reference to this.
 		Quaternion & invert();

@@ -4,6 +4,7 @@
 
 #include "math/Matrix.h"
 #include "graphics/Viewport.h"
+#include "SkyboxComponent.h"
 
 namespace CS418
 {
@@ -22,6 +23,9 @@ namespace CS418
 
 		virtual void Resize(U32 width, U32 height);
 
+		virtual void SetSkybox(SkyboxComponent * pSkybox);
+		SkyboxComponent * GetSkybox()const;
+
 	private:
 		Matrix buildMatrix()const;
 		void setTransform(Matrix &view, const Vector &position);
@@ -31,6 +35,8 @@ namespace CS418
 
 		F32 m_FOV;
 		Viewport m_vp;
+
+		SkyboxComponent * m_pSkybox;
 
 		friend class Renderer;
 	};

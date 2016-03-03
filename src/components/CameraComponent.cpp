@@ -7,6 +7,7 @@ namespace CS418
 	CameraComponent::CameraComponent(const std::string &type) : Behaviour(type)
 	{
 		Enabled = true;
+		m_pSkybox = nullptr;
 	}
 
 	CameraComponent::~CameraComponent()
@@ -21,16 +22,6 @@ namespace CS418
 
 		m_FOV = fieldOfView;
 		m_vp = vp;
-
-
-		/*Vector zaxis = (target - position).v3Normalize();
-		Vector xaxis = (up.v3Cross(zaxis)).v3Normalize();
-		Vector yaxis = zaxis.v3Cross(xaxis);
-		Matrix m(xaxis, yaxis, zaxis, Vector(0.0f, 0.0f, 0.0f, 1.0f));
-		
-		m_pGameObject->GetTransform()->Position = position.asVector3();
-		m_pGameObject->GetTransform()->Rotation = Quaternion(m);
-		m_pGameObject->GetTransform()->Scale = VECTOR3F(1.0f, 1.0f, 1.0f);*/
 
 		setTransform(view, position);
 	}
@@ -73,7 +64,17 @@ namespace CS418
 	{
 		view.invert(nullptr);
 		m_pGameObject->GetTransform()->Position = view.getColumn(3).asVector3();
-		m_pGameObject->GetTransform()->Rotation = Quaternion(view);
+		m_pGameObject->GetTransform()->Rotation = Quaternion(view).ToEuler();
 		m_pGameObject->GetTransform()->Scale = VECTOR3F(1.0f, 1.0f, 1.0f);
+	}
+
+	void CameraComponent::SetSkybox(SkyboxComponent * pSkybox)
+	{
+		m_pSkybox = pSkybox;
+	}
+
+	SkyboxComponent * CameraComponent::GetSkybox()const
+	{
+		return m_pSkybox;
 	}
 }

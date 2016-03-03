@@ -19,7 +19,7 @@ namespace CS418
 	{
 		glClearColor(m_clearColor.x, m_clearColor.y, m_clearColor.z, m_clearColor.w);
 		// Set polygon mode to fill
-		glPolygonMode(GL_FRONT, GL_FILL);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		// Set line point size
 		glPointSize(4.0f);
 
@@ -65,9 +65,6 @@ namespace CS418
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
-
 		if (m_pScene)
 		{
 			const std::vector<GameObject*> gameObjects = m_pScene->GetVisibleGameObjects();
@@ -79,7 +76,13 @@ namespace CS418
 					continue;
 				Viewport vp = (*camera)->GetViewport();
 				glViewport((I32)vp.TopLeftX, (I32)vp.TopLeftY, (U32)vp.Width, (U32)vp.Height);
+
+				glDepthFunc(GL_LESS);
+				glCullFace(GL_BACK);
+
 				glClear(GL_DEPTH_BUFFER_BIT);
+
+				Matrix mViewProj = (*camera)->buildMatrix();
 
 				for (std::vector<GameObject*>::const_iterator gameObject = gameObjects.begin(); gameObject != gameObjects.end(); gameObject++)
 				{				
@@ -92,7 +95,7 @@ namespace CS418
 
 						Matrix m = (*gameObject)->GetTransform()->CreateWorldMatrix();
 
-						Matrix wvp = (*camera)->buildMatrix() * m;
+						Matrix wvp = mViewProj * m;
 						pRC->m_material.SetMatrix4x4("WVP", wvp);
 						pRC->m_material.setValuesInShader();
 
@@ -101,6 +104,23 @@ namespace CS418
 
 					} // Rendering Components
 				} // Game Objects
+
+				// Draw Skybox
+				/*SkyboxComponent * pSC = (*camera)->GetSkybox();
+				if (pSC->Enabled)
+				{
+					glDepthFunc(GL_LEQUAL);
+					glCullFace(GL_FRONT);
+
+					glUseProgram(pSC->GetRenderingComponent().m_material.GetShaderProgram()->m_shaderProgram);
+					
+					Matrix wvp = (*camera)->m_pGameObject->GetTransform()->CreateWorldMatrix();
+					wvp = (*camera)->buildMatrix() * wvp;
+					pSC->GetRenderingComponent().m_material.SetMatrix4x4("WVP", wvp);
+					pSC->GetRenderingComponent().m_material.setValuesInShader();
+					glBindVertexArray(pSC->GetRenderingComponent().m_inputLayout);
+					glDrawElements(GL_TRIANGLES, pSC->GetRenderingComponent().m_indicesCount, GL_UNSIGNED_INT, 0);
+				}*/
 			} // Cameras
 		}
 	}

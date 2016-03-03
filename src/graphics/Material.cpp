@@ -44,8 +44,14 @@ namespace CS418
 
 	void Material::SetTexture2D(const std::string &name, const Texture2DGL & value)
 	{
-		U32 index = m_varT2D.size();
+		U32 index = m_varT2D.size() + m_varTC.size();
 		m_varT2D[name] = { value, index };
+	}
+
+	void Material::SetTextureCube(const std::string &name, const TextureCube & value)
+	{
+		U32 index = m_varT2D.size() + m_varTC.size();
+		m_varTC[name] = { value, index };
 	}
 
 	void Material::setValuesInShader()const
@@ -65,7 +71,10 @@ namespace CS418
 		for (std::map<std::string, Matrix>::const_iterator it = m_varM.begin(); it != m_varM.end(); ++it)
 			m_pShader->SetMatrix4x4(it->first, it->second);
 
-		for (std::map<std::string, TextureElement>::const_iterator it = m_varT2D.begin(); it != m_varT2D.end(); it++)
-			m_pShader->SetTexture2D(it->first, it->second.tex2D, it->second.index);
+		for (std::map<std::string, IndexedElement<Texture2DGL>>::const_iterator it = m_varT2D.begin(); it != m_varT2D.end(); it++)
+			m_pShader->SetTexture2D(it->first, it->second.element, it->second.index);
+
+		for (std::map<std::string, IndexedElement<TextureCube>>::const_iterator it = m_varTC.begin(); it != m_varTC.end(); it++)
+			m_pShader->SetTextureCube(it->first, it->second.element, it->second.index);
 	}
 }

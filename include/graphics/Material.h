@@ -26,6 +26,7 @@ namespace CS418
 		void SetMatrix4x4(const std::string &name, const Matrix &value);
 
 		void SetTexture2D(const std::string &name, const Texture2DGL &value);
+		void SetTextureCube(const std::string &name, const TextureCube &value);
 
 	private:
 		void setValuesInShader()const;
@@ -40,12 +41,14 @@ namespace CS418
 
 		std::map<std::string, Matrix> m_varM;
 
-		struct TextureElement
+		template <typename T>
+		struct IndexedElement
 		{
-			Texture2DGL tex2D;
+			T element;
 			U32 index;
 		};
-		std::map<std::string, TextureElement> m_varT2D;
+		std::map<std::string, IndexedElement<Texture2DGL>> m_varT2D;
+		std::map<std::string, IndexedElement<TextureCube>> m_varTC;
 
 		friend class Renderer;
 	};
