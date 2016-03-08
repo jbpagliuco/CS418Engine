@@ -1,24 +1,13 @@
+CS 418 - MP2 Flight Simulator
 
-DISCLAIMER: THIS PROJECT CURRENTLY ONLY WORKS ON A WINDOWS PLATFORM!
+***********************************************************************************************
+*** DISCLAIMER: THIS PROJECT ONLY WORKS ON WINDOWS MACHINES ***********************************
+***********************************************************************************************
 
--------------------------------------------------------------------------------------------------------------------------
-
-TABLE OF CONTENTS:
-1. PROJECT SPECIFICS
- 
-2. SETUP
-	A. Visual Studio
-
--------------------------------------------------------------------------------------------------------------------------
-
-1. PROJECT SPECIFICS
-
-
-
-2. SETUP
-    A. Visual Studio
-
-	This project requires OpenGL, which is already provided in the Windows SDK. As a result, all that should be
-	needed is a reference to opengl32.lib. To add this reference, open the properties of the project. 
-	Navigate to Linker > Input > Additional Dependencies, and add "opengl32.lib" to the list (no double quotes).
-
+Basic Information:
+	1. PLATFORM: Windows
+	2. OS VERSION: Only tested on Windows 7, should work on 7 and up
+	3. BUILD ENVIRONMENT: Visual Studio
+	4. BUILD ENVIRONMENT VERSION: Visual Studio Community 2015
+	5. LANGUAGE: C++
+	6. EXTERNAL LIBRARIES: OPENGL, GLEW, LUA 5.1, LUABRIDGE, SOIL
