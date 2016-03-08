@@ -35,6 +35,10 @@ SkyboxComponent					| String: Skybox filepath prefix
 								| Boolean: Enabled
 								| ## SkyboxComponent assets/textures/skybox_moon,True
 								| ## skybox_moon refers to skybox_moon_front, skybox_moon_top, etc
+--------------------------------|-------------------------------------------------------------------------------------	
+TerrainComponent				| F32: Terrain Size (Must be a power of 2)
+								| F32: Max height
+								| ## TerrainComponent 128,64
 								
 								
 								

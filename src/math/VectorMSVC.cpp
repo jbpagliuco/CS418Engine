@@ -352,6 +352,11 @@ namespace CS418
 		return *this;
 	}
 
+	Vector Vector::Lua_MultScalar(F32 scalar)const
+	{
+		return (*this) * scalar;
+	}
+
 	Vector Vector::operator/(const Vector &other)const
 	{
 		return Vector(_mm_div_ps(m_elems, other.m_elems));
@@ -589,6 +594,23 @@ namespace CS418
 		return acosf(v4Dot(other));
 	}
 
+
+
+
+
+
+	Vector Lua_V2(VECTOR2F v)
+	{
+		return Vector(v);
+	}
+	Vector Lua_V3(VECTOR3F v)
+	{
+		return Vector(v);
+	}
+	Vector Lua_V4(VECTOR4F v)
+	{
+		return Vector(v);
+	}
 
 
 

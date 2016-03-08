@@ -156,6 +156,9 @@
     <ClInclude Include="include\graphics\TextureCube.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\components\TerrainComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\content\AssetManager.cpp">
@@ -273,6 +276,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\graphics\TextureCube.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\components\TerrainComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

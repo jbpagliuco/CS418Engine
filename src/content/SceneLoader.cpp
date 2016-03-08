@@ -10,6 +10,7 @@
 #include "components/ScriptComponent.h"
 #include "components/CameraComponent.h"
 #include "components/SkyboxComponent.h"
+#include "components/TerrainComponent.h"
 
 #include "graphics/Viewport.h"
 
@@ -65,6 +66,8 @@ namespace CS418
 		std::string line;
 
 		Scene * pScene = new Scene;
+		pScene->Initialize(pLuaManager);
+
 		GameObject * pGO = nullptr;
 
 		while (std::getline(stream, line))
@@ -281,6 +284,17 @@ namespace CS418
 			((SkyboxComponent*)pGC)->Enabled = StringToBoolean(arguments.at(1));
 
 			pGC->SetGameObject(pGO);
+		}
+		else if (componentType == "TerrainComponent")
+		{
+			F32 size = StringToFloat(arguments.at(0));
+			F32 maxHeight = StringToFloat(arguments.at(1));
+
+			pGC = new TerrainComponent;
+
+			ShaderProgram * pColorShader = pAssetManager->LoadShader("assets/shaders/color.vert", "assets/shaders/color.frag");
+
+			((TerrainComponent*)pGC)->Initialize(size, maxHeight, pColorShader);
 		}
 
 		return pGC;

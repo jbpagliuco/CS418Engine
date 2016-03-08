@@ -4,8 +4,9 @@
 
 #include "graphics/GraphicsManager.h"
 #include "components/RenderingComponent.h"
+#include "components/TerrainComponent.h"
 
-#include "util\ColorDefs.h"
+#include "util/ColorDefs.h"
 #include <Windows.h>
 
 namespace CS418
@@ -26,6 +27,8 @@ namespace CS418
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
 		glFrontFace(GL_CW);
+		glEnable(GL_DEPTH);
+		glDepthFunc(GL_LESS);
 
 		glewInit();
 
@@ -77,9 +80,6 @@ namespace CS418
 				Viewport vp = (*camera)->GetViewport();
 				glViewport((I32)vp.TopLeftX, (I32)vp.TopLeftY, (U32)vp.Width, (U32)vp.Height);
 
-				glDepthFunc(GL_LESS);
-				glCullFace(GL_BACK);
-
 				glClear(GL_DEPTH_BUFFER_BIT);
 
 				Matrix mViewProj = (*camera)->buildMatrix();
@@ -103,6 +103,25 @@ namespace CS418
 						glDrawElements(GL_TRIANGLES, pRC->m_indicesCount, GL_UNSIGNED_INT, 0);
 
 					} // Rendering Components
+
+
+					const std::vector<TerrainComponent*> &terrainComps = (*gameObject)->GetComponentsOfType<TerrainComponent>("TerrainComponent");
+
+					for (std::vector<TerrainComponent*>::const_iterator terrain = terrainComps.begin(); terrain != terrainComps.end(); terrain++)
+					{
+						RenderingComponent rc = (*terrain)->GetRC();
+						glUseProgram(rc.m_material.GetShaderProgram()->m_shaderProgram);
+
+						Matrix m = (*gameObject)->GetTransform()->CreateWorldMatrix();
+
+						Matrix wvp = mViewProj * m;
+						rc.m_material.SetMatrix4x4("WVP", wvp);
+						rc.m_material.setValuesInShader();
+
+						glBindVertexArray(rc.m_inputLayout);
+						glDrawElements(GL_TRIANGLES, rc.m_indicesCount, GL_UNSIGNED_INT, 0);
+
+					} // Terrain Components
 				} // Game Objects
 
 				// Draw Skybox

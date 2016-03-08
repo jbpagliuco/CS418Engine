@@ -119,6 +119,7 @@ namespace CS418
 		friend Matrix MatrixRotationZ(F32 angle);
 		friend Matrix MatrixRotationQuaternion(const Quaternion & qRot);
 		friend Matrix MatrixRotationEuler(F32 x, F32 y, F32 z);
+		friend Quaternion QuaternionFromMatrix(const Matrix &mat);
 	} CS418_ALIGN_GCC(16);
 
 	// Creates a 4x4 identity matrix.

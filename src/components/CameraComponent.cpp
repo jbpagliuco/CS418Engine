@@ -50,9 +50,7 @@ namespace CS418
 
 	Matrix CameraComponent::buildMatrix()const
 	{
-		Matrix m = m_pGameObject->GetTransform()->CreateWorldMatrix();
-		m.invert(nullptr);
-		return m_proj * m;
+		return m_proj * viewMatrix();
 	}
 
 	Viewport CameraComponent::GetViewport()const
@@ -64,7 +62,7 @@ namespace CS418
 	{
 		view.invert(nullptr);
 		m_pGameObject->GetTransform()->Position = view.getColumn(3).asVector3();
-		m_pGameObject->GetTransform()->Rotation = Quaternion(view).ToEuler();
+		m_pGameObject->GetTransform()->Rotation = QuaternionFromMatrix(view).ToEuler();
 		m_pGameObject->GetTransform()->Scale = VECTOR3F(1.0f, 1.0f, 1.0f);
 	}
 
@@ -76,5 +74,33 @@ namespace CS418
 	SkyboxComponent * CameraComponent::GetSkybox()const
 	{
 		return m_pSkybox;
+	}
+
+	Vector CameraComponent::GetForward()const
+	{
+		return m_pGameObject->GetTransform()->CreateWorldMatrix().getColumn(2);
+	}
+
+	Vector CameraComponent::GetUp()const
+	{
+		return m_pGameObject->GetTransform()->CreateWorldMatrix().getColumn(1);
+	}
+
+	Vector CameraComponent::GetRight()const
+	{
+		return m_pGameObject->GetTransform()->CreateWorldMatrix().getColumn(0);
+	}
+
+	Matrix CameraComponent::GetRotationMatrix()const
+	{
+		Matrix view = viewMatrix();
+		return Matrix(view.getColumn(0), view.getColumn(1), view.getColumn(2), Vector(0.0f, 0.0f, 0.0f, 1.0f));
+	}
+
+	Matrix CameraComponent::viewMatrix()const
+	{
+		Matrix m = m_pGameObject->GetTransform()->CreateWorldMatrix();
+		m.invert(nullptr);
+		return m;
 	}
 }

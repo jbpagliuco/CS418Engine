@@ -142,4 +142,14 @@ namespace CS418
 
 		return interpolate(*this, other, weightA, weightB);
 	}
+
+
+	Quaternion QuaternionFromEuler(F32 x, F32 y, F32 z)
+	{
+		Quaternion qX(1.0f, 0.0f, 0.0f, x);
+		Quaternion qY(0.0f, 1.0f, 0.0f, y);
+		Quaternion qZ(0.0f, 0.0f, 1.0f, z);
+		
+		return qZ * qY * qX;
+	}
 }

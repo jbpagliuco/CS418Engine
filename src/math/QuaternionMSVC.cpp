@@ -7,8 +7,9 @@ namespace CS418
 	inline F32 SIGN(float x) { return (x >= 0.0f) ? +1.0f : -1.0f; }
 	inline F32 NORM(float a, float b, float c, float d) { return sqrt(a * a + b * b + c * c + d * d); }
 
-	Quaternion::Quaternion(const Matrix &rotMatrix)
+	Quaternion QuaternionFromMatrix(const Matrix &rotMatrix)
 	{
+		Quaternion quat;
 		__declspec(align(16)) F32 R[4][4];
 		for (U8 i = 0; i < 4; i++)
 			_mm_store_ps(R[i], rotMatrix.m_cols[i]);
@@ -58,10 +59,12 @@ namespace CS418
 		q[2] /= r;
 		q[3] /= r;
 
-		w = q[0];
-		v.x = q[1];
-		v.y = q[2];
-		v.z = q[3];
+		quat.w = q[0];
+		quat.v.x = q[1];
+		quat.v.y = q[2];
+		quat.v.z = q[3];
+		
+		return quat;
 	}
 
 

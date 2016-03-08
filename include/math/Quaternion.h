@@ -16,8 +16,6 @@ namespace CS418
 		// Creates a quaternion, where axis is the unit vector to rotate about, and
 		// angleInRadians is the amount to rotate.
 		Quaternion(const VECTOR3F * pAxis, F32 angleInRadians);
-		// Creates a quaternion from the rotation matrix.
-		Quaternion(const Matrix &rotMatrix);
 
 		VECTOR3F ToEuler()const;
 
@@ -55,5 +53,9 @@ namespace CS418
 		F32 w;
 
 		friend Matrix MatrixRotationQuaternion(const Quaternion & qRot);
+		friend Quaternion QuaternionFromMatrix(const Matrix &mat);
 	};
+
+	extern Quaternion QuaternionFromEuler(F32 x, F32 y, F32 z);
+	extern Quaternion QuaternionFromMatrix(const Matrix &mat);
 }

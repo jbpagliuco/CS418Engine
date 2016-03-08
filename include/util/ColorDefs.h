@@ -32,6 +32,11 @@ namespace CS418
 
 		const VECTOR4F CornflowerBlue = VECTOR4F(0.396f, 0.612f, .937f, 1.0f);
 
+		const VECTOR4F BeachSand(1.0f, 0.96f, 0.62f, 1.0f);
+		const VECTOR4F LightYellowGreen(0.48f, 0.77f, 0.46f, 1.0f);
+		const VECTOR4F DarkYellowGreen(0.1f, 0.48f, 0.19f, 1.0f);
+		const VECTOR4F DarkBrown(0.45f, 0.39f, 0.34f, 1.0f);
+
 		VECTOR4F StringToColor(const std::string &color);
 	}
 }

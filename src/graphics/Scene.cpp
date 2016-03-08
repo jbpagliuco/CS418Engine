@@ -12,9 +12,9 @@ namespace CS418
 		}
 	}
 
-	void Scene::Initialize()
+	void Scene::Initialize(LuaManager * pLuaManager)
 	{
-
+		m_pLuaManager = pLuaManager;
 	}
 
 	const std::vector<GameObject*> & Scene::GetVisibleGameObjects()const
@@ -37,9 +37,10 @@ namespace CS418
 		return m_pCameras;
 	}
 
-
 	void Scene::Update(const GameTimer *gameTimer)
 	{
+		m_pLuaManager->Push("camera", *(m_pCameras.at(0)));
+
 		for (GO_It it = m_gameObjects.begin(); it != m_gameObjects.end(); it++)
 		{
 			GameObject * pGO = (*it);

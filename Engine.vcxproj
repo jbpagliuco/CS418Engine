@@ -136,6 +136,7 @@
     <ClInclude Include="include\components\RenderingComponent.h" />
     <ClInclude Include="include\components\ScriptComponent.h" />
     <ClInclude Include="include\components\SkyboxComponent.h" />
+    <ClInclude Include="include\components\TerrainComponent.h" />
     <ClInclude Include="include\components\Transform.h" />
     <ClInclude Include="include\content\AssetManager.h" />
     <ClInclude Include="include\content\MeshLoader.h" />
@@ -180,6 +181,7 @@
     <ClCompile Include="src\components\CameraComponent.cpp" />
     <ClCompile Include="src\components\ScriptComponent.cpp" />
     <ClCompile Include="src\components\SkyboxComponent.cpp" />
+    <ClCompile Include="src\components\TerrainComponent.cpp" />
     <ClCompile Include="src\content\AssetManager.cpp" />
     <ClCompile Include="src\content\MeshLoader.cpp" />
     <ClCompile Include="src\content\SceneLoader.cpp" />

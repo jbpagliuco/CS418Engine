@@ -154,6 +154,7 @@ namespace CS418
 		Vector operator*(F32 scalar)const;
 		// Multiplies each component by the scalar and sets the result equal to this.
 		Vector operator*=(F32 scalar);
+		Vector Lua_MultScalar(F32 scalar)const;
 
 		// Divides the two vectors component wise.
 		Vector operator/(const Vector &other)const;
@@ -321,9 +322,6 @@ namespace CS418
 		F32 v4AngleBetweenNormals(const Vector &other)const;
 
 
-
-
-
 	private:
 #ifdef _MSC_VER
 		__m128 m_elems;
@@ -336,4 +334,8 @@ namespace CS418
 
 	// Returns the zero vector.
 	Vector VectorZero();
+
+	Vector Lua_V2(VECTOR2F v);
+	Vector Lua_V3(VECTOR3F v);
+	Vector Lua_V4(VECTOR4F v);
 }

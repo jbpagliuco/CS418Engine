@@ -42,6 +42,14 @@ namespace CS418
 					return Fuchsia;
 				else if (color == "CornflowerBlue")
 					return CornflowerBlue;
+				else if (color == "BeachSand")
+					return BeachSand;
+				else if (color == "LightYellowGreen")
+					return LightYellowGreen;
+				else if (color == "DarkYellowGreen")
+					return DarkYellowGreen;
+				else if (color == "DarkBrown")
+					return DarkBrown;
 				else
 					return Black;
 			}

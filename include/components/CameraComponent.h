@@ -26,9 +26,17 @@ namespace CS418
 		virtual void SetSkybox(SkyboxComponent * pSkybox);
 		SkyboxComponent * GetSkybox()const;
 
+		Vector GetForward()const;
+		Vector GetUp()const;
+		Vector GetRight()const;
+
+		Matrix GetRotationMatrix()const;
+
 	private:
 		Matrix buildMatrix()const;
 		void setTransform(Matrix &view, const Vector &position);
+
+		Matrix viewMatrix()const;
 
 	private:
 		Matrix m_proj;

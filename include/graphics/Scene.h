@@ -4,6 +4,8 @@
 #include "util/GameTimer.h"
 #include "components/CameraComponent.h"
 
+#include "engine/LuaManager.h"
+
 namespace CS418
 {
 	class Scene
@@ -11,7 +13,7 @@ namespace CS418
 	public:
 		virtual ~Scene();
 
-		virtual void Initialize();
+		virtual void Initialize(LuaManager * pLuaManager);
 
 		virtual const std::vector<GameObject*> & GetVisibleGameObjects()const;
 
@@ -28,5 +30,7 @@ namespace CS418
 
 		typedef std::vector<GameObject*>::iterator GO_It;
 		typedef std::vector<GameObject*>::const_iterator GO_Const_It;
+
+		LuaManager * m_pLuaManager;
 	};
 }
