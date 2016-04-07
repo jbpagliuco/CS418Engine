@@ -19,7 +19,7 @@ namespace CS418
 
 		Material material;
 		material.Initialize(pSkyboxShader);
-		material.SetTextureCube("_Skybox", texCube);
+		material.SetTextureCube("Skybox", texCube);
 
 		m_rc.Initialize(pSkyboxMesh, material);
 	}

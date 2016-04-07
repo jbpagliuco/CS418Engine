@@ -21,6 +21,7 @@ namespace CS418
 		glClearColor(m_clearColor.x, m_clearColor.y, m_clearColor.z, m_clearColor.w);
 		// Set polygon mode to fill
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		// Set line point size
 		glPointSize(4.0f);
 
@@ -66,10 +67,14 @@ namespace CS418
 
 	void Renderer::Draw()const
 	{
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 		if (m_pScene)
 		{
+			glEnable(GL_DEPTH_TEST);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			glDepthMask(GL_TRUE);
+			glDepthFunc(GL_LESS);
+			glCullFace(GL_BACK);
+
 			const std::vector<GameObject*> gameObjects = m_pScene->GetVisibleGameObjects();
 
 			std::vector<CameraComponent*> pCameras = m_pScene->GetCameras();
@@ -96,7 +101,9 @@ namespace CS418
 						Matrix m = (*gameObject)->GetTransform()->CreateWorldMatrix();
 
 						Matrix wvp = mViewProj * m;
-						pRC->m_material.SetMatrix4x4("WVP", wvp);
+						pRC->m_material.SetMatrix4x4("_WVP", wvp);
+						pRC->m_material.SetMatrix4x4("_World", m);
+						pRC->m_material.SetVec3f("_CameraPos", (*camera)->m_pGameObject->GetTransform()->Position);
 						pRC->m_material.setValuesInShader();
 
 						glBindVertexArray(pRC->m_inputLayout);
@@ -115,7 +122,7 @@ namespace CS418
 						Matrix m = (*gameObject)->GetTransform()->CreateWorldMatrix();
 
 						Matrix wvp = mViewProj * m;
-						rc.m_material.SetMatrix4x4("WVP", wvp);
+						rc.m_material.SetMatrix4x4("_WVP", wvp);
 						rc.m_material.setValuesInShader();
 
 						glBindVertexArray(rc.m_inputLayout);
@@ -125,21 +132,22 @@ namespace CS418
 				} // Game Objects
 
 				// Draw Skybox
-				/*SkyboxComponent * pSC = (*camera)->GetSkybox();
+				SkyboxComponent * pSC = (*camera)->GetSkybox();
 				if (pSC->Enabled)
 				{
 					glDepthFunc(GL_LEQUAL);
+					glDepthMask(GL_FALSE);
 					glCullFace(GL_FRONT);
 
 					glUseProgram(pSC->GetRenderingComponent().m_material.GetShaderProgram()->m_shaderProgram);
 					
-					Matrix wvp = (*camera)->m_pGameObject->GetTransform()->CreateWorldMatrix();
-					wvp = (*camera)->buildMatrix() * wvp;
-					pSC->GetRenderingComponent().m_material.SetMatrix4x4("WVP", wvp);
+					Matrix translation = MatrixTranslation(Vector((*camera)->m_pGameObject->GetTransform()->Position));
+					Matrix wvp = mViewProj * translation;
+					pSC->GetRenderingComponent().m_material.SetMatrix4x4("_WVP", wvp);
 					pSC->GetRenderingComponent().m_material.setValuesInShader();
 					glBindVertexArray(pSC->GetRenderingComponent().m_inputLayout);
 					glDrawElements(GL_TRIANGLES, pSC->GetRenderingComponent().m_indicesCount, GL_UNSIGNED_INT, 0);
-				}*/
+				}
 			} // Cameras
 		}
 	}

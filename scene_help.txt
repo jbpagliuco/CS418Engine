@@ -1,7 +1,5 @@
 Name 
 - [ Components Parameters ]
-> Child Game Object
->> GrandChild Game Object
 
 Component:                      | Parameters:
 --------------------------------|-------------------------------------------------------------------------------------
@@ -21,7 +19,7 @@ RenderingComponent				| string: Mesh filepath
 ScriptComponent					| string: Script filepath
 								| Boolean: Enabled
 								| [ Key/Value: Variables ]
-								| ## Script assets/scripts/Moving.lua,True,speed:F32:10.0,name:String:Name
+								| ## ScriptComponent assets/scripts/Moving.lua,True,speed:F32:10.0,name:String:Name
 --------------------------------|-------------------------------------------------------------------------------------	
 CameraComponent					| Vector3f: Position
 								| Vector3f: Target

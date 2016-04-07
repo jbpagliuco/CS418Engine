@@ -208,6 +208,21 @@ namespace CS418
 
 					mat.SetTexture2D(key, tex2DGL);
 				}
+				else if (type == "TextureCube")
+				{
+					Texture2D * pTextures[6];
+					pTextures[0] = pAssetManager->LoadTexture2D(value + "/right.jpg");
+					pTextures[1] = pAssetManager->LoadTexture2D(value + "/left.jpg");
+					pTextures[2] = pAssetManager->LoadTexture2D(value + "/top.jpg");
+					pTextures[3] = pAssetManager->LoadTexture2D(value + "/bottom.jpg");
+					pTextures[4] = pAssetManager->LoadTexture2D(value + "/back.jpg");
+					pTextures[5] = pAssetManager->LoadTexture2D(value + "/front.jpg");
+
+					TextureCube texCube;
+					texCube.Initialize(pTextures);
+
+					mat.SetTextureCube(key, texCube);
+				}
 			}
 
 			pGC = new RenderingComponent;
@@ -270,12 +285,12 @@ namespace CS418
 			pGC = new SkyboxComponent;
 
 			Texture2D * pTextures[6];
-			pTextures[0] = pAssetManager->LoadTexture2D(arguments.at(0) + "_rt.tga");
-			pTextures[1] = pAssetManager->LoadTexture2D(arguments.at(0) + "_lf.tga");
-			pTextures[2] = pAssetManager->LoadTexture2D(arguments.at(0) + "_up.tga");
-			pTextures[3] = pAssetManager->LoadTexture2D(arguments.at(0) + "_dn.tga");
-			pTextures[4] = pAssetManager->LoadTexture2D(arguments.at(0) + "_ft.tga");
-			pTextures[5] = pAssetManager->LoadTexture2D(arguments.at(0) + "_bk.tga");
+			pTextures[0] = pAssetManager->LoadTexture2D(arguments.at(0) + "/right.jpg");
+			pTextures[1] = pAssetManager->LoadTexture2D(arguments.at(0) + "/left.jpg");
+			pTextures[2] = pAssetManager->LoadTexture2D(arguments.at(0) + "/top.jpg");
+			pTextures[3] = pAssetManager->LoadTexture2D(arguments.at(0) + "/bottom.jpg");
+			pTextures[4] = pAssetManager->LoadTexture2D(arguments.at(0) + "/back.jpg");
+			pTextures[5] = pAssetManager->LoadTexture2D(arguments.at(0) + "/front.jpg");
 
 			ShaderProgram * pSkyboxShader = pAssetManager->LoadShader("assets/shaders/skybox.vert", "assets/shaders/skybox.frag");
 			Mesh * pSkyboxMesh = pAssetManager->LoadMesh("assets/models/cube.cs418mesh");

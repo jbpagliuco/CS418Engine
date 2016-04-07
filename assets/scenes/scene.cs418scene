@@ -1,0 +1,10 @@
+Main_Camera
+- Transform
+- CameraComponent (10.0 0.0 10.0),(0.0 0.0 0.0),(0.0 1.0 0.0),PIDIV4,(0 0 -1 -1 0.01 1000.0),True
+- SkyboxComponent assets/textures/skybox,True
+- ScriptComponent assets/scripts/moveInCircle.lua,True,speed:F32:0.0,radius:F32:20.0
+
+Teapot
+- Transform (0.0 0.0 0.0),(0.0 0.0 0.0),(1.0 1.0 1.0)
+- RenderingComponent assets/models/cube.cs418mesh,assets/shaders/reflection.vert,assets/shaders/reflection.frag,(Environment:TextureCube:assets/textures/skybox)
+- ScriptComponent assets/scripts/rotate.lua,True,speed:F32:1.0
