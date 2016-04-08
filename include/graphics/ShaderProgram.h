@@ -46,6 +46,7 @@ namespace CS418
 		void SetTexture2D(const std::string &name, const Texture2DGL &tex2D, U32 index);
 		void SetTextureCube(const std::string &name, const TextureCube &texCube, U32 index);
 
+		void SetParallelLight(const std::string &name, const ParallelLight &pointLight);
 		void SetPointLight(const std::string &name, const PointLight &pointLight);
 
 	private:

@@ -104,6 +104,8 @@ namespace CS418
 						pScene->AddCamera((CameraComponent*)gc);
 					if (gc->GetType() == "SkyboxComponent")
 						pScene->GetCameras().at(pScene->GetCameras().size() - 1)->SetSkybox((SkyboxComponent*)gc);
+					if (gc->GetType() == "ParallelLightComponent")
+						pScene->AddParallelLight((ParallelLightComponent*)gc);
 					if (gc->GetType() == "PointLightComponent")
 						pScene->AddPointLight((PointLightComponent*)gc);
 				}
@@ -325,6 +327,21 @@ namespace CS418
 			ShaderProgram * pColorShader = pAssetManager->LoadShader("assets/shaders/color.vert", "assets/shaders/color.frag");
 
 			((TerrainComponent*)pGC)->Initialize(size, maxHeight, pColorShader);
+
+			pGC->SetGameObject(pGO);
+		}
+		else if (componentType == "ParallelLightComponent")
+		{
+			ParallelLight light;
+			light.direction = StringToVector3f(arguments.at(0));
+			light.ambient = StringToColor(arguments.at(1));
+			light.diffuse = StringToColor(arguments.at(2));
+			light.specular = StringToColor(arguments.at(3));
+			light.intensity = StringToFloat(arguments.at(4));
+
+			pGC = new ParallelLightComponent;
+
+			((ParallelLightComponent*)pGC)->Initialize(light);
 
 			pGC->SetGameObject(pGO);
 		}

@@ -7,7 +7,7 @@ Joe Pagliuco (jpagli2)
 *** DISCLAIMER: THIS PROJECT ONLY WORKS ON WINDOWS MACHINES ***********************************
 ***********************************************************************************************
 
-Video Link: https://youtu.be/lg37p-oS8mc
+Video Link: https://www.youtube.com/watch?v=1jn3LBo4Y8E
 
 
 What this project is:

@@ -32,6 +32,11 @@ namespace CS418
 		m_pCameras.push_back(pCamera);
 	}
 
+	void Scene::AddParallelLight(ParallelLightComponent * pParallelLightComponent)
+	{
+		m_pParallelLights.push_back(pParallelLightComponent);
+	}
+
 	void Scene::AddPointLight(PointLightComponent * pPointLightComponent)
 	{
 		m_pPointLights.push_back(pPointLightComponent);
@@ -40,6 +45,11 @@ namespace CS418
 	std::vector<CameraComponent*> Scene::GetCameras()
 	{
 		return m_pCameras;
+	}
+
+	std::vector<ParallelLightComponent*> Scene::GetParallelLights()
+	{
+		return m_pParallelLights;
 	}
 
 	std::vector<PointLightComponent*> Scene::GetPointLights()

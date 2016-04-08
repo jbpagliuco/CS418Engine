@@ -71,6 +71,22 @@ namespace CS418
 			glUniform1i(m_uniforms.find(name)->second, index);
 	}
 
+	void ShaderProgram::SetParallelLight(const std::string &name, const ParallelLight &pointLight)
+	{
+		GLuint loc = glGetUniformLocation(m_shaderProgram, (name + ".ambient").c_str());
+		glUniform4f(loc, pointLight.ambient.x, pointLight.ambient.y, pointLight.ambient.z, pointLight.ambient.w);
+		loc = glGetUniformLocation(m_shaderProgram, (name + ".diffuse").c_str());
+		glUniform4f(loc, pointLight.diffuse.x, pointLight.diffuse.y, pointLight.diffuse.z, pointLight.diffuse.w);
+		loc = glGetUniformLocation(m_shaderProgram, (name + ".specular").c_str());
+		glUniform4f(loc, pointLight.specular.x, pointLight.specular.y, pointLight.specular.z, pointLight.specular.w);
+
+		loc = glGetUniformLocation(m_shaderProgram, (name + ".direction").c_str());
+		glUniform3f(loc, pointLight.direction.x, pointLight.direction.y, pointLight.direction.z);
+
+		loc = glGetUniformLocation(m_shaderProgram, (name + ".intensity").c_str());
+		glUniform1f(loc, pointLight.intensity);
+	}
+
 	void ShaderProgram::SetPointLight(const std::string &name, const PointLight &pointLight)
 	{
 		GLuint loc = glGetUniformLocation(m_shaderProgram, (name + ".ambient").c_str());

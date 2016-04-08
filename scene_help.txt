@@ -38,6 +38,13 @@ TerrainComponent				| F32: Terrain Size (Must be a power of 2)
 								| F32: Max height
 								| ## TerrainComponent 128,64
 --------------------------------|-------------------------------------------------------------------------------------	
+ParallelLightComponent			| Vector3f: Direction
+								| Color: Ambient color
+								| Color: Diffuse color
+								| Color: Specular color
+								| F32: Intensity
+								| ## PointLightComponent (-5.0 -5.0 -5.0),(0.1 0.1 0.1 1.0),(0.7 0.7 0.7 1.0),White,0.5
+--------------------------------|-------------------------------------------------------------------------------------	
 PointLightComponent				| Color: Ambient color
 								| Color: Diffuse color
 								| Color: Specular color
