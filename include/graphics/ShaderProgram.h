@@ -9,6 +9,7 @@
 #include "math/Matrix.h"
 #include "graphics/Texture2DGL.h"
 #include "graphics/TextureCube.h"
+#include "graphics/lighting/Lighting.h"
 
 namespace CS418
 {
@@ -44,6 +45,8 @@ namespace CS418
 
 		void SetTexture2D(const std::string &name, const Texture2DGL &tex2D, U32 index);
 		void SetTextureCube(const std::string &name, const TextureCube &texCube, U32 index);
+
+		void SetPointLight(const std::string &name, const PointLight &pointLight);
 
 	private:
 		bool compileShaders(std::string vertexShaderSource, std::string fragShaderSource);

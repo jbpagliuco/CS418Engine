@@ -54,6 +54,11 @@ namespace CS418
 		m_varTC[name] = { value, index };
 	}
 
+	void Material::SetPointLight(const std::string &name, const PointLight &value)
+	{
+		m_varLPL[name] = value;
+	}
+
 	void Material::setValuesInShader()const
 	{
 		for (std::map<std::string, F32>::const_iterator it = m_varF.begin(); it != m_varF.end(); ++it)
@@ -76,5 +81,8 @@ namespace CS418
 
 		for (std::map<std::string, IndexedElement<TextureCube>>::const_iterator it = m_varTC.begin(); it != m_varTC.end(); it++)
 			m_pShader->SetTextureCube(it->first, it->second.element, it->second.index);
+
+		for (std::map<std::string, PointLight>::const_iterator it = m_varLPL.begin(); it != m_varLPL.end(); ++it)
+			m_pShader->SetPointLight(it->first, it->second);
 	}
 }

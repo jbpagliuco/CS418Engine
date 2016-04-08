@@ -20,7 +20,8 @@ namespace CS418
 				delete (*it);
 		}
 		
-		FreeAlignedMemory(m_pTransform);
+		if (m_pTransform)
+			FreeAlignedMemory(m_pTransform);
 	}
 
 	void GameObject::AddComponent(GameComponent *component)

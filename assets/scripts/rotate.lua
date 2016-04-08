@@ -12,6 +12,6 @@ function Update(gameTimer)
 	local rot = gameObject.transform.rotation
 	rot.y = rot.y + dr;	
 	
-	--gameObject.transform.rotation = rot
+	gameObject.transform.rotation = rot
 		
 end

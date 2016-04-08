@@ -133,6 +133,7 @@
     <ClInclude Include="include\components\Behaviour.h" />
     <ClInclude Include="include\components\CameraComponent.h" />
     <ClInclude Include="include\components\GameComponent.h" />
+    <ClInclude Include="include\components\LightingComponent.h" />
     <ClInclude Include="include\components\RenderingComponent.h" />
     <ClInclude Include="include\components\ScriptComponent.h" />
     <ClInclude Include="include\components\SkyboxComponent.h" />
@@ -175,10 +176,12 @@
     <ClInclude Include="include\util\GameTimer.h" />
     <ClInclude Include="include\util\Memory.h" />
     <ClInclude Include="include\util\RefCount.h" />
+    <ClInclude Include="include\graphics\lighting\Lighting.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\components\Behaviour.cpp" />
     <ClCompile Include="src\components\CameraComponent.cpp" />
+    <ClCompile Include="src\components\LightComponent.cpp" />
     <ClCompile Include="src\components\ScriptComponent.cpp" />
     <ClCompile Include="src\components\SkyboxComponent.cpp" />
     <ClCompile Include="src\components\TerrainComponent.cpp" />

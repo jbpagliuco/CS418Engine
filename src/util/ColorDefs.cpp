@@ -55,7 +55,12 @@ namespace CS418
 			}
 			else
 			{
-				std::istringstream ss(color);
+				std::string _color = color;
+				if (_color.at(0) == '(')
+					_color = _color.substr(1);
+				if (_color.at(_color.length() - 1) == ')')
+					_color.at(_color.length() - 1) = '\0';
+				std::istringstream ss(_color);
 				VECTOR4F v;
 				ss >> v.x >> v.y >> v.z >> v.w;
 				return v;

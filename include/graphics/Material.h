@@ -28,6 +28,8 @@ namespace CS418
 		void SetTexture2D(const std::string &name, const Texture2DGL &value);
 		void SetTextureCube(const std::string &name, const TextureCube &value);
 
+		void SetPointLight(const std::string &name, const PointLight &value);
+
 	private:
 		void setValuesInShader()const;
 
@@ -49,6 +51,8 @@ namespace CS418
 		};
 		std::map<std::string, IndexedElement<Texture2DGL>> m_varT2D;
 		std::map<std::string, IndexedElement<TextureCube>> m_varTC;
+
+		std::map<std::string, PointLight> m_varLPL;
 
 		friend class Renderer;
 	};

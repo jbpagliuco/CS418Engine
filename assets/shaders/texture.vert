@@ -7,11 +7,11 @@ layout (location = 1) in vec2 texCoord;
 
 out vec2 vout_texCoord;
 
-uniform mat4 WVP;
+uniform mat4 _WVP;
 
 void main()
 {
-	gl_Position = WVP * vec4(position, 1.0f);
+	gl_Position = _WVP * vec4(position, 1.0f);
 	
 	vout_texCoord = vec2(texCoord.x, 1.0f - texCoord.y);
 }

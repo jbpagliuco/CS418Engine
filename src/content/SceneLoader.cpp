@@ -11,6 +11,7 @@
 #include "components/CameraComponent.h"
 #include "components/SkyboxComponent.h"
 #include "components/TerrainComponent.h"
+#include "components/LightingComponent.h"
 
 #include "graphics/Viewport.h"
 
@@ -103,6 +104,8 @@ namespace CS418
 						pScene->AddCamera((CameraComponent*)gc);
 					if (gc->GetType() == "SkyboxComponent")
 						pScene->GetCameras().at(pScene->GetCameras().size() - 1)->SetSkybox((SkyboxComponent*)gc);
+					if (gc->GetType() == "PointLightComponent")
+						pScene->AddPointLight((PointLightComponent*)gc);
 				}
 			}
 			else if (line.at(0) == '>')
@@ -223,6 +226,16 @@ namespace CS418
 
 					mat.SetTextureCube(key, texCube);
 				}
+				else if (type == "F32")
+					mat.SetFloat(key, StringToFloat(value));
+				else if (type == "Vector2f")
+					mat.SetVec2f(key, StringToVector2f(value));
+				else if (type == "Vector3f")
+					mat.SetVec3f(key, StringToVector3f(value));
+				else if (type == "Vector4f")
+					mat.SetVec4f(key, StringToVector4f(value));
+				else if (type == "Color")
+					mat.SetVec4f(key, StringToColor(value));
 			}
 
 			pGC = new RenderingComponent;
@@ -279,6 +292,8 @@ namespace CS418
 
 			((CameraComponent*)pGC)->Initialize(Vector(position), Vector(target), Vector(up), fov, v);
 			((CameraComponent*)pGC)->Enabled = StringToBoolean(arguments.at(5));
+
+			pGC->SetGameObject(pGO);
 		}
 		else if (componentType == "SkyboxComponent")
 		{
@@ -310,6 +325,25 @@ namespace CS418
 			ShaderProgram * pColorShader = pAssetManager->LoadShader("assets/shaders/color.vert", "assets/shaders/color.frag");
 
 			((TerrainComponent*)pGC)->Initialize(size, maxHeight, pColorShader);
+
+			pGC->SetGameObject(pGO);
+		}
+		else if (componentType == "PointLightComponent")
+		{
+			PointLight light;
+			light.position = pGO->GetTransform()->Position;
+			light.ambient = StringToColor(arguments.at(0));
+			light.diffuse = StringToColor(arguments.at(1));
+			light.specular = StringToColor(arguments.at(2));
+			light.att = StringToVector3f(arguments.at(3));
+			light.range = StringToFloat(arguments.at(4));
+			light.intensity = StringToFloat(arguments.at(5));
+
+			pGC = new PointLightComponent;
+
+			((PointLightComponent*)pGC)->Initialize(light);
+
+			pGC->SetGameObject(pGO);
 		}
 
 		return pGC;

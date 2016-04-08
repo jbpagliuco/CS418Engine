@@ -32,9 +32,19 @@ namespace CS418
 		m_pCameras.push_back(pCamera);
 	}
 
+	void Scene::AddPointLight(PointLightComponent * pPointLightComponent)
+	{
+		m_pPointLights.push_back(pPointLightComponent);
+	}
+
 	std::vector<CameraComponent*> Scene::GetCameras()
 	{
 		return m_pCameras;
+	}
+
+	std::vector<PointLightComponent*> Scene::GetPointLights()
+	{
+		return m_pPointLights;
 	}
 
 	void Scene::Update(const GameTimer *gameTimer)

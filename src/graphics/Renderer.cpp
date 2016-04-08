@@ -77,6 +77,10 @@ namespace CS418
 
 			const std::vector<GameObject*> gameObjects = m_pScene->GetVisibleGameObjects();
 
+			const std::vector<PointLightComponent*> pointLights = m_pScene->GetPointLights();
+			for (std::vector<PointLightComponent*>::const_iterator it = pointLights.begin(); it != pointLights.end(); it++)
+				(*it)->m_pointLight.position = (*it)->m_pGameObject->GetTransform()->Position;
+
 			std::vector<CameraComponent*> pCameras = m_pScene->GetCameras();
 			for (std::vector<CameraComponent*>::const_iterator camera = pCameras.begin(); camera != pCameras.end(); camera++)
 			{
@@ -104,6 +108,7 @@ namespace CS418
 						pRC->m_material.SetMatrix4x4("_WVP", wvp);
 						pRC->m_material.SetMatrix4x4("_World", m);
 						pRC->m_material.SetVec3f("_CameraPos", (*camera)->m_pGameObject->GetTransform()->Position);
+						pRC->m_material.SetPointLight("_PointLight", pointLights.at(0)->m_pointLight);
 						pRC->m_material.setValuesInShader();
 
 						glBindVertexArray(pRC->m_inputLayout);
