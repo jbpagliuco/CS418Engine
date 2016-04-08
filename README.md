@@ -1,4 +1,4 @@
-CS 418 - MP2 Flight Simulator
+CS 418 - MP3 Teapot
 
 Joe Pagliuco (jpagli2)
 
@@ -16,18 +16,16 @@ What this project is:
 	- The only files necessary to create specifically this MP (not the engine) are in the assets folder, namely scripts/cameraMovement.lua and scenes/scene.cs418scene
 	- The engine itself contains all OpenGL drawing calls, this can be seen in graphics/Renderer.cpp
 	- Any project using the current state of the engine can be creating using lua scripts, and a scene file; No recompilation is required.
-	- The .exe file to run is called Engine.exe - This file will run the correct scripts to create the flight simulator.
+	- The .exe file to run is called Engine.exe
 	
 	
 	
 MP Controls and Configuration:
-	- Rotate pitch by using the Up and Down arrow keys (inverted controls)
-	- Rotate roll by using the Left and Right arrow keys
-	- Increase the speed of the plane by holding the W key, and decrease the speed by holding the S key
-	- If the program is taking to too long to initialize, try setting the terrain size to a lower value.
-		- Correct values are explained in the scene_help.txt file, and the actual data can be modified in the assets/scenes/scene.cs418scene file
-		- NOTE: Any changes in configuration will NOT require recompiling of the project, only restarting the .exe file
-
+	- You can rotate the teapot by holding the space key.
+	- The camera will move in a circle about the origin by holding the left/right arrow keys
+	- The light source (Cube) can be moved up and down with the w/s keys
+	- The teapot can be lowered or raised by using the q/e keys
+	- The camera's radius can be changed by using the up/arrow keys
 
 
 Basic Information:
