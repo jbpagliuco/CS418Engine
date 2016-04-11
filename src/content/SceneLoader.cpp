@@ -25,14 +25,7 @@ namespace CS418
 {
 	GameComponent * LoadComponent(GameObject * pGO, AssetManager *pAssetManager, std::string line, LuaManager * pLuaManager, GraphicsManager * pGfxManager);
 	Scene * LoadCS418Scene(AssetManager * assetManager, const std::string &sceneData, LuaManager * pLuaManager, GraphicsManager * pGfxManager);
-
-
-
-
-
-
-
-
+	
 	Scene * LoadScene(AssetManager * pAssetManager, const std::string &sceneFilepath, LuaManager * pLuaManager, GraphicsManager * pGfxManager)
 	{
 		FileReader fileReader;
@@ -51,15 +44,6 @@ namespace CS418
 
 		return pScene;
 	}
-
-
-
-
-
-
-
-
-
 
 	Scene * LoadCS418Scene(AssetManager * pAssetManager, const std::string &sceneData, LuaManager * pLuaManager, GraphicsManager * pGfxManager)
 	{
@@ -122,20 +106,6 @@ namespace CS418
 		return pScene;
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	GameComponent * LoadComponent(GameObject * pGO, AssetManager *pAssetManager, std::string line, LuaManager * pLuaManager, GraphicsManager * pGfxManager)
 	{
 		GameComponent * pGC = nullptr;
@@ -150,186 +120,17 @@ namespace CS418
 		}
 
 		if (componentType == "Transform")
-		{
-			void * pAlignedMem = AllocateAligned(sizeof(Transform), 16);
-			pGC = new(pAlignedMem)Transform();
-
-			pGC->SetType("Transform");
-			if (arguments.size() != 0)
-			{
-				std::string position = arguments.at(0);
-				std::string rotation = arguments.at(1);
-				std::string scale = arguments.at(2);
-
-				((Transform*)pGC)->Position = StringToVector3f(position);
-				((Transform*)pGC)->Rotation = StringToVector3f(rotation);
-				((Transform*)pGC)->Scale = StringToVector3f(scale);
-			}
-
-			pGC->SetGameObject(pGO);
-		}
+			pGC = CreateTransform(arguments);
 		else if (componentType == "RenderingComponent")
-		{
-			Mesh * pMesh = pAssetManager->LoadMesh(arguments.at(0));
-			ShaderProgram * pShader = pAssetManager->LoadShader(arguments.at(1), arguments.at(2));
-
-			Material mat;
-			mat.Initialize(pShader);
-
-			for (U32 i = 3; i < arguments.size(); i++)
-			{
-				std::vector<std::string> var = SplitString(arguments.at(i), ":");
-
-				std::string key = var.at(0).substr(1);
-				std::string type = var.at(1);
-				std::string value = var.at(2).substr(0, var.at(2).length() - 1);
-
-				if (type == "Texture2D")
-				{
-					std::vector<std::string> textureParams = SplitString(value, " ");
-					Texture2D * pTexture = pAssetManager->LoadTexture2D(textureParams.at(0));
-					
-					TEXTURE2D_DESC texDesc;
-					if (textureParams.size() > 1)
-					{
-						std::stringstream ss(value);
-						std::string wrapS, wrapT, filterMin, filterMag, borderColor;
-						std::string trash;
-
-						ss >> trash >> wrapS >> wrapT >> filterMin >> filterMag;
-						if (textureParams.size() == 6)
-							ss >> borderColor;
-
-						texDesc.WrapS = StringToTextureWrap(wrapS);
-						texDesc.WrapT = StringToTextureWrap(wrapT);
-						texDesc.FilterMin = StringToTextureFilter(filterMin);
-						texDesc.FilterMag = StringToTextureFilter(filterMag);
-						if (borderColor != "")
-							texDesc.BorderColor = StringToColor(borderColor);
-					}
-
-					Texture2DGL tex2DGL;
-					tex2DGL.Initialize(pTexture, texDesc);
-
-					mat.SetTexture2D(key, tex2DGL);
-				}
-				else if (type == "TextureCube")
-				{
-					Texture2D * pTextures[6];
-					pTextures[0] = pAssetManager->LoadTexture2D(value + "/right.jpg");
-					pTextures[1] = pAssetManager->LoadTexture2D(value + "/left.jpg");
-					pTextures[2] = pAssetManager->LoadTexture2D(value + "/top.jpg");
-					pTextures[3] = pAssetManager->LoadTexture2D(value + "/bottom.jpg");
-					pTextures[4] = pAssetManager->LoadTexture2D(value + "/back.jpg");
-					pTextures[5] = pAssetManager->LoadTexture2D(value + "/front.jpg");
-
-					TextureCube texCube;
-					texCube.Initialize(pTextures);
-
-					mat.SetTextureCube(key, texCube);
-				}
-				else if (type == "F32")
-					mat.SetFloat(key, StringToFloat(value));
-				else if (type == "Vector2f")
-					mat.SetVec2f(key, StringToVector2f(value));
-				else if (type == "Vector3f")
-					mat.SetVec3f(key, StringToVector3f(value));
-				else if (type == "Vector4f")
-					mat.SetVec4f(key, StringToVector4f(value));
-				else if (type == "Color")
-					mat.SetVec4f(key, StringToColor(value));
-			}
-
-			pGC = new RenderingComponent;
-			((RenderingComponent*)pGC)->Initialize(pMesh, mat);
-
-			pGC->SetGameObject(pGO);
-		}
+			pGC = CreateRenderingComponent(arguments, pAssetManager);
 		else if (componentType == "ScriptComponent")
-		{
-			pGC = new ScriptComponent;
-			((ScriptComponent*)pGC)->Initialize(pLuaManager, arguments.at(0));
-			((ScriptComponent*)pGC)->Enabled = StringToBoolean(arguments.at(1));
-
-			((ScriptComponent*)pGC)->StartSetup();
-			for (size_t i = 2; i < arguments.size(); i++)
-			{
-				std::vector<std::string> var = SplitString(arguments.at(i), ":");
-				
-				std::string key = var.at(0);
-				std::string type = var.at(1);
-				std::string value = var.at(2);
-
-				if (type == "String")
-					((ScriptComponent*)pGC)->SetVariable(key, value);
-				else if (type == "F32")
-					((ScriptComponent*)pGC)->SetVariable(key, StringToFloat(value));
-				else if (type == "Boolean")
-					((ScriptComponent*)pGC)->SetVariable(key, StringToBoolean(value));
-				else if (type == "Vector2f")
-					((ScriptComponent*)pGC)->SetVariable(key, StringToVector2f(value));
-				else if (type == "Vector3f")
-					((ScriptComponent*)pGC)->SetVariable(key, StringToVector3f(value));
-				else if (type == "Vector4f")
-					((ScriptComponent*)pGC)->SetVariable(key, StringToVector4f(value));
-				else if (type == "Color")
-					((ScriptComponent*)pGC)->SetVariable(key, StringToColor(value));
-			}
-
-			pGC->SetGameObject(pGO);
-		}
+			pGC = CreateScriptComponent(arguments, pLuaManager);
 		else if (componentType == "CameraComponent")
-		{
-			void * pAlignedMem = AllocateAligned(sizeof(CameraComponent), 16);
-			pGC = new(pAlignedMem)CameraComponent();
-
-			pGC->SetGameObject(pGO);
-
-			VECTOR3F position = StringToVector3f(arguments.at(0));
-			VECTOR3F target = StringToVector3f(arguments.at(1));
-			VECTOR3F up = StringToVector3f(arguments.at(2));
-			
-			F32 fov = StringToFloat(arguments.at(3));
-			Viewport v = StringToViewport(arguments.at(4), pGfxManager);
-
-			((CameraComponent*)pGC)->Initialize(Vector(position), Vector(target), Vector(up), fov, v);
-			((CameraComponent*)pGC)->Enabled = StringToBoolean(arguments.at(5));
-
-			pGC->SetGameObject(pGO);
-		}
+			pGC = CreateCameraComponent(arguments, pGfxManager, pGO);
 		else if (componentType == "SkyboxComponent")
-		{
-			pGC = new SkyboxComponent;
-
-			Texture2D * pTextures[6];
-			pTextures[0] = pAssetManager->LoadTexture2D(arguments.at(0) + "/right.jpg");
-			pTextures[1] = pAssetManager->LoadTexture2D(arguments.at(0) + "/left.jpg");
-			pTextures[2] = pAssetManager->LoadTexture2D(arguments.at(0) + "/top.jpg");
-			pTextures[3] = pAssetManager->LoadTexture2D(arguments.at(0) + "/bottom.jpg");
-			pTextures[4] = pAssetManager->LoadTexture2D(arguments.at(0) + "/back.jpg");
-			pTextures[5] = pAssetManager->LoadTexture2D(arguments.at(0) + "/front.jpg");
-
-			ShaderProgram * pSkyboxShader = pAssetManager->LoadShader("assets/shaders/skybox.vert", "assets/shaders/skybox.frag");
-			Mesh * pSkyboxMesh = pAssetManager->LoadMesh("assets/models/cube.cs418mesh");
-			
-			((SkyboxComponent*)pGC)->Initialize(pTextures, pSkyboxShader, pSkyboxMesh);
-			((SkyboxComponent*)pGC)->Enabled = StringToBoolean(arguments.at(1));
-
-			pGC->SetGameObject(pGO);
-		}
+			pGC = CreateSkyboxComponent(arguments, pAssetManager);
 		else if (componentType == "TerrainComponent")
-		{
-			F32 size = StringToFloat(arguments.at(0));
-			F32 maxHeight = StringToFloat(arguments.at(1));
-
-			pGC = new TerrainComponent;
-
-			ShaderProgram * pColorShader = pAssetManager->LoadShader("assets/shaders/color.vert", "assets/shaders/color.frag");
-
-			((TerrainComponent*)pGC)->Initialize(size, maxHeight, pColorShader);
-
-			pGC->SetGameObject(pGO);
-		}
+			pGC = CreateTerrainComponent(arguments, pAssetManager);
 		else if (componentType == "ParallelLightComponent")
 		{
 			ParallelLight light;
@@ -363,6 +164,8 @@ namespace CS418
 			pGC->SetGameObject(pGO);
 		}
 
+		pGC->SetGameObject(pGO);
+		
 		return pGC;
 	}
 }

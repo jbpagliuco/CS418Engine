@@ -1,6 +1,9 @@
 #include "components/CameraComponent.h"
 
 #include "game/GameObject.h"
+#include "util/Memory.h"
+#include "util/Convert.h"
+#include "graphics/GraphicsManager.h"
 
 namespace CS418
 {
@@ -102,5 +105,25 @@ namespace CS418
 		Matrix m = m_pGameObject->GetTransform()->CreateWorldMatrix();
 		m.invert(nullptr);
 		return m;
+	}
+
+	CameraComponent * CreateCameraComponent(std::vector<std::string> arguments, GraphicsManager * pGM, GameObject * pGO)
+	{
+		void * pAlignedMem = AllocateAligned(sizeof(CameraComponent), 16);
+		CameraComponent * pCC = new(pAlignedMem)CameraComponent();
+
+		pCC->SetGameObject(pGO);
+
+		VECTOR3F position = StringToVector3f(arguments.at(0));
+		VECTOR3F target = StringToVector3f(arguments.at(1));
+		VECTOR3F up = StringToVector3f(arguments.at(2));
+
+		F32 fov = StringToFloat(arguments.at(3));
+		Viewport v = StringToViewport(arguments.at(4), pGM);
+
+		pCC->Initialize(Vector(position), Vector(target), Vector(up), fov, v);
+		pCC->Enabled = StringToBoolean(arguments.at(5));
+
+		return pCC;
 	}
 }

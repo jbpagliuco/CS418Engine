@@ -1,10 +1,7 @@
 #pragma once
 
-#include <string>
-
-#include "Util.h"
-#include "math/Vector.h"
 #include "math/Quaternion.h"
+#include "util/ColorDefs.h"
 #include "graphics/Viewport.h"
 #include "graphics/Texture2DGL.h"
 #include "graphics/TextureCube.h"
@@ -26,28 +23,7 @@ namespace CS418
 	Viewport StringToViewport(const std::string &line, GraphicsManager * pGfxManager);
 
 	Texture2DGL StringToTexture2D(const std::string &line, AssetManager * pAM);
-	TextureCube StringToTextureCube(const std::string &line, AssetManager * pAM);
+	TextureCube StringToTextureCube(const std::string &line,  AssetManager * pAM);
 
 	std::vector<std::string> SplitString(std::string s, const std::string &delim);
-
-	/*
-	template <typename T>
-	T StringToT(const std::string &type, std::string &line)
-	{
-		if (type == "String")
-			return line;
-		else if (type == "F32")
-			return StringToFloat(line);
-		else if (type == "Boolean")
-			return StringToBoolean(line);
-		else if (type == "Vector2f")
-			return StringToVector2f(line);
-		else if (type == "Vector3f")
-			return StringToVector3f(line);
-		else if (type == "Vector4f")
-			return StringToVector4f(line);
-		else if (type == "Color")
-			return StringToColor(line);
-	}
-	*/
 }

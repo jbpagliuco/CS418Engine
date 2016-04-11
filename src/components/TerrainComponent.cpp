@@ -1,10 +1,11 @@
 #include "components/TerrainComponent.h"
 
-#include "graphics/Mesh.h"
-
 #include <fstream>
 
+#include "graphics/Mesh.h"
 #include "util/ColorDefs.h"
+#include "util/Convert.h"
+#include "content/AssetManager.h"
 
 namespace CS418
 {
@@ -139,5 +140,18 @@ namespace CS418
 		}
 
 		diamondSquare(x1, y1, x2, y2, range / 2, level / 2);
+	}
+
+	TerrainComponent * CreateTerrainComponent(std::vector<std::string> arguments, AssetManager * pAM)
+	{
+		F32 size = StringToFloat(arguments.at(0));
+		F32 maxHeight = StringToFloat(arguments.at(1));
+
+		ShaderProgram * pColorShader = pAM->LoadShader("assets/shaders/color.vert", "assets/shaders/color.frag");
+
+		TerrainComponent * pTC = new TerrainComponent;
+		pTC->Initialize(size, maxHeight, pColorShader);
+
+		return pTC;
 	}
 }

@@ -2,6 +2,9 @@
 
 #include <GL/glew.h>
 
+#include "util/Convert.h"
+#include "content/AssetManager.h"
+
 namespace CS418
 {
 	RenderingComponent::RenderingComponent(const std::string &type) : GameComponent(type)
@@ -122,5 +125,43 @@ namespace CS418
 		//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 		delete[] vertices;
+	}
+
+	RenderingComponent * CreateRenderingComponent(std::vector<std::string> arguments, AssetManager * pAM)
+	{
+		Mesh * pMesh = pAM->LoadMesh(arguments.at(0));
+		ShaderProgram * pShader = pAM->LoadShader(arguments.at(1), arguments.at(2));
+
+		Material mat;
+		mat.Initialize(pShader);
+
+		for (U32 i = 3; i < arguments.size(); i++)
+		{
+			std::vector<std::string> var = SplitString(arguments.at(i), ":");
+
+			std::string key = var.at(0).substr(1);
+			std::string type = var.at(1);
+			std::string value = var.at(2).substr(0, var.at(2).length() - 1);
+
+			if (type == "F32")
+				mat.SetFloat(key, StringToFloat(value));
+			else if (type == "Vector2f")
+				mat.SetVec2f(key, StringToVector2f(value));
+			else if (type == "Vector3f")
+				mat.SetVec3f(key, StringToVector3f(value));
+			else if (type == "Vector4f")
+				mat.SetVec4f(key, StringToVector4f(value));
+			else if (type == "Color")
+				mat.SetVec4f(key, StringToColor(value));
+			else if (type == "Texture2D")
+				mat.SetTexture2D(key, StringToTexture2D(value, pAM));
+			else if (type == "TextureCube")
+				mat.SetTextureCube(key, StringToTextureCube(value, pAM));
+		}
+
+		RenderingComponent * pRC = new RenderingComponent;
+		pRC->Initialize(pMesh, mat);
+
+		return pRC;
 	}
 }

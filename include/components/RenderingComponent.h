@@ -7,6 +7,8 @@
 
 namespace CS418
 {
+	class AssetManager;
+
 	class RenderingComponent : public GameComponent
 	{
 	public:
@@ -26,4 +28,6 @@ namespace CS418
 
 		friend class Renderer;
 	};
+
+	RenderingComponent * CreateRenderingComponent(std::vector<std::string> arguments, AssetManager * pAM);
 }

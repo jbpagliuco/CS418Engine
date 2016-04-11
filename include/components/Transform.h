@@ -32,4 +32,6 @@ namespace CS418
 	private:
 		Matrix m_worldMat;
 	};
+
+	Transform * CreateTransform(std::vector<std::string> arguments);
 }

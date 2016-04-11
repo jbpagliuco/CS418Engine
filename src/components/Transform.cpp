@@ -1,6 +1,8 @@
 #include "components/Transform.h"
 
 #include "math/Quaternion.h"
+#include "util/Memory.h"
+#include "util/Convert.h"
 
 namespace CS418
 {
@@ -53,5 +55,21 @@ namespace CS418
 	const Matrix & Transform::GetWorldMatrix()const
 	{
 		return m_worldMat;
+	}
+
+	Transform * CreateTransform(std::vector<std::string> arguments)
+	{
+		void * pAlignedMem = AllocateAligned(sizeof(Transform), 16);
+		Transform * pTransform = new(pAlignedMem)Transform();
+
+		pTransform->SetType("Transform");
+		if (arguments.size() != 0)
+		{
+			pTransform->Position = StringToVector3f(arguments[0]);
+			pTransform->Rotation = StringToVector3f(arguments[1]);
+			pTransform->Scale = StringToVector3f(arguments[2]);
+		}
+
+		return pTransform;
 	}
 }

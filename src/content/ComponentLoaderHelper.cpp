@@ -1,6 +1,6 @@
-#include "util/Convert.h"
+#include "content/ComponentLoaderHelper.h"
 
-#include "util/ColorDefs.h"
+#include <sstream>
 
 namespace CS418
 {
@@ -31,7 +31,7 @@ namespace CS418
 
 		return value;
 	}
-	
+
 
 	VECTOR2F StringToVector2f(const std::string &line)
 	{
@@ -120,7 +120,7 @@ namespace CS418
 	Texture2DGL StringToTexture2D(const std::string &line, AssetManager * pAM)
 	{
 		std::vector<std::string> textureParams = SplitString(line, " ");
-		Texture2D * pTexture = pAM->LoadTexture2D(textureParams[0]);
+		Texture2D * pTexture = pAM->LoadTexture2D(textureParams.at(0));
 
 		TEXTURE2D_DESC texDesc;
 		if (textureParams.size() > 1)
@@ -129,13 +129,14 @@ namespace CS418
 			texDesc.WrapT = StringToTextureWrap(textureParams[2]);
 			texDesc.FilterMin = StringToTextureFilter(textureParams[3]);
 			texDesc.FilterMag = StringToTextureFilter(textureParams[4]);
+
 			if (textureParams.size() == 6)
 				texDesc.BorderColor = StringToColor(textureParams[5]);
 		}
 
 		Texture2DGL tex2DGL;
 		tex2DGL.Initialize(pTexture, texDesc);
-		
+
 		return tex2DGL;
 	}
 

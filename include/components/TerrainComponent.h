@@ -6,6 +6,8 @@
 
 namespace CS418
 {
+	class AssetManager;
+
 	class TerrainComponent : public GameComponent
 	{
 	public:
@@ -26,4 +28,6 @@ namespace CS418
 		U32 m_size;
 		F32 ** m_heights;
 	};
+
+	TerrainComponent * CreateTerrainComponent(std::vector<std::string> arguments, AssetManager * pAM);
 }

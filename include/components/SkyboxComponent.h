@@ -7,6 +7,8 @@
 
 namespace CS418
 {
+	class AssetManager;
+
 	class SkyboxComponent : public Behaviour
 	{
 	public:
@@ -22,4 +24,6 @@ namespace CS418
 
 		RenderingComponent m_rc;
 	};
+
+	SkyboxComponent * CreateSkyboxComponent(std::vector<std::string> arguments, AssetManager * pAM);
 }

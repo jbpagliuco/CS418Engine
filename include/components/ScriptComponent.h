@@ -32,6 +32,8 @@ namespace CS418
 		std::vector<luabridge::LuaRef> m_variables;
 	};
 
+	ScriptComponent * CreateScriptComponent(std::vector<std::string> arguments, LuaManager * pLM);
+
 	template <typename T>
 	void ScriptComponent::SetVariable(std::string key, T value)
 	{

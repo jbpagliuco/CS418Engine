@@ -8,6 +8,8 @@
 
 namespace CS418
 {
+	class GraphicsManager;
+
 	class CameraComponent : public Behaviour
 	{
 	public:
@@ -48,4 +50,6 @@ namespace CS418
 
 		friend class Renderer;
 	};
+
+	CameraComponent * CreateCameraComponent(std::vector<std::string> arguments, GraphicsManager * pGM, GameObject * pGO);
 }

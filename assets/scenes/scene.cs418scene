@@ -2,11 +2,16 @@ Main_Camera
 - Transform
 - CameraComponent (10.0 0.0 10.0),(0.0 0.0 0.0),(0.0 1.0 0.0),PIDIV4,(0 0 -1 -1 0.01 1000.0),True
 - SkyboxComponent assets/textures/skybox,True
-- ScriptComponent assets/scripts/moveInCircle.lua,True,speed:F32:0.0,radius:F32:20.0,theta:F32:0.0
+- ScriptComponent assets/scripts/moveInCircle.lua,True,speed:F32:0.0,radius:F32:15.0,theta:F32:0.0
 
-Teapot
-- Transform (0.0 0.0 0.0),(0.0 0.0 0.0),(1.0 1.0 1.0)
+Teapot1
+- Transform (0.0 -3.0 0.0),(0.0 0.0 0.0),(1.0 1.0 1.0)
 - RenderingComponent assets/models/teapot_0.cs418mesh,assets/shaders/reflection.vert,assets/shaders/reflection.frag,(Environment:TextureCube:assets/textures/skybox),(Diffuse:Color:Red),(Specular:Color:(1.0 1.0 1.0 256.0))
+- ScriptComponent assets/scripts/rotate.lua,True,speed:F32:1.0
+
+Teapot2
+- Transform (0.0 3.0 0.0),(0.0 0.0 0.0),(1.0 1.0 1.0)
+- RenderingComponent assets/models/teapot_0.cs418mesh,assets/shaders/texture.vert,assets/shaders/texture.frag,(DiffuseMap:Texture2D:assets/textures/teapot_texture.jpg)
 - ScriptComponent assets/scripts/rotate.lua,True,speed:F32:1.0
 
 ParallelLight
