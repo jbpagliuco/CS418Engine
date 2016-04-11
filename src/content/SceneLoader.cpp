@@ -88,10 +88,8 @@ namespace CS418
 						pScene->AddCamera((CameraComponent*)gc);
 					if (gc->GetType() == "SkyboxComponent")
 						pScene->GetCameras().at(pScene->GetCameras().size() - 1)->SetSkybox((SkyboxComponent*)gc);
-					if (gc->GetType() == "ParallelLightComponent")
-						pScene->AddParallelLight((ParallelLightComponent*)gc);
-					if (gc->GetType() == "PointLightComponent")
-						pScene->AddPointLight((PointLightComponent*)gc);
+					if (gc->GetType() == "LightComponent")
+						pScene->AddLight((LightComponent*)gc);
 				}
 			}
 			else if (line.at(0) == '>')
@@ -132,37 +130,9 @@ namespace CS418
 		else if (componentType == "TerrainComponent")
 			pGC = CreateTerrainComponent(arguments, pAssetManager);
 		else if (componentType == "ParallelLightComponent")
-		{
-			ParallelLight light;
-			light.direction = StringToVector3f(arguments.at(0));
-			light.ambient = StringToColor(arguments.at(1));
-			light.diffuse = StringToColor(arguments.at(2));
-			light.specular = StringToColor(arguments.at(3));
-			light.intensity = StringToFloat(arguments.at(4));
-
-			pGC = new ParallelLightComponent;
-
-			((ParallelLightComponent*)pGC)->Initialize(light);
-
-			pGC->SetGameObject(pGO);
-		}
+			pGC = CreateParallelLight(arguments);
 		else if (componentType == "PointLightComponent")
-		{
-			PointLight light;
-			light.position = pGO->GetTransform()->Position;
-			light.ambient = StringToColor(arguments.at(0));
-			light.diffuse = StringToColor(arguments.at(1));
-			light.specular = StringToColor(arguments.at(2));
-			light.att = StringToVector3f(arguments.at(3));
-			light.range = StringToFloat(arguments.at(4));
-			light.intensity = StringToFloat(arguments.at(5));
-
-			pGC = new PointLightComponent;
-
-			((PointLightComponent*)pGC)->Initialize(light);
-
-			pGC->SetGameObject(pGO);
-		}
+			pGC = CreatePointLight(arguments, pGO);
 
 		pGC->SetGameObject(pGO);
 		

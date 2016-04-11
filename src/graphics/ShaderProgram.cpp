@@ -25,7 +25,13 @@ namespace CS418
 		return true;
 	}
 
-	void ShaderProgram::SetFloat(const std::string &name, F32 value)
+	void ShaderProgram::SetU32(const std::string &name, U32 value)
+	{
+		if (m_uniforms.find(name) != m_uniforms.end())
+			glUniform1i(m_uniforms.find(name)->second, value);
+	}
+
+	void ShaderProgram::SetF32(const std::string &name, F32 value)
 	{
 		if (m_uniforms.find(name) != m_uniforms.end())
 			glUniform1f(m_uniforms.find(name)->second, value);
@@ -71,23 +77,7 @@ namespace CS418
 			glUniform1i(m_uniforms.find(name)->second, index);
 	}
 
-	void ShaderProgram::SetParallelLight(const std::string &name, const ParallelLight &pointLight)
-	{
-		GLuint loc = glGetUniformLocation(m_shaderProgram, (name + ".ambient").c_str());
-		glUniform4f(loc, pointLight.ambient.x, pointLight.ambient.y, pointLight.ambient.z, pointLight.ambient.w);
-		loc = glGetUniformLocation(m_shaderProgram, (name + ".diffuse").c_str());
-		glUniform4f(loc, pointLight.diffuse.x, pointLight.diffuse.y, pointLight.diffuse.z, pointLight.diffuse.w);
-		loc = glGetUniformLocation(m_shaderProgram, (name + ".specular").c_str());
-		glUniform4f(loc, pointLight.specular.x, pointLight.specular.y, pointLight.specular.z, pointLight.specular.w);
-
-		loc = glGetUniformLocation(m_shaderProgram, (name + ".direction").c_str());
-		glUniform3f(loc, pointLight.direction.x, pointLight.direction.y, pointLight.direction.z);
-
-		loc = glGetUniformLocation(m_shaderProgram, (name + ".intensity").c_str());
-		glUniform1f(loc, pointLight.intensity);
-	}
-
-	void ShaderProgram::SetPointLight(const std::string &name, const PointLight &pointLight)
+	void ShaderProgram::SetLight(const std::string &name, const Light &pointLight)
 	{
 		GLuint loc = glGetUniformLocation(m_shaderProgram, (name + ".ambient").c_str());
 		glUniform4f(loc, pointLight.ambient.x, pointLight.ambient.y, pointLight.ambient.z, pointLight.ambient.w);
@@ -98,14 +88,19 @@ namespace CS418
 
 		loc = glGetUniformLocation(m_shaderProgram, (name + ".position").c_str());
 		glUniform3f(loc, pointLight.position.x, pointLight.position.y, pointLight.position.z);
+		loc = glGetUniformLocation(m_shaderProgram, (name + ".direction").c_str());
+		glUniform3f(loc, pointLight.direction.x, pointLight.direction.y, pointLight.direction.z);
 
 		loc = glGetUniformLocation(m_shaderProgram, (name + ".att").c_str());
 		glUniform3f(loc, pointLight.att.x, pointLight.att.y, pointLight.att.z);
+
 		loc = glGetUniformLocation(m_shaderProgram, (name + ".range").c_str());
 		glUniform1f(loc, pointLight.range);
-
 		loc = glGetUniformLocation(m_shaderProgram, (name + ".intensity").c_str());
 		glUniform1f(loc, pointLight.intensity);
+
+		loc = glGetUniformLocation(m_shaderProgram, (name + ".type").c_str());
+		glUniform1i(loc, pointLight.type);
 	}
 
 	VertexDesc ShaderProgram::GetVertexDesc()const

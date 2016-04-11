@@ -32,29 +32,19 @@ namespace CS418
 		m_pCameras.push_back(pCamera);
 	}
 
-	void Scene::AddParallelLight(ParallelLightComponent * pParallelLightComponent)
+	void Scene::AddLight(LightComponent * pLightComponent)
 	{
-		m_pParallelLights.push_back(pParallelLightComponent);
+		m_pLights.push_back(pLightComponent);
 	}
 
-	void Scene::AddPointLight(PointLightComponent * pPointLightComponent)
-	{
-		m_pPointLights.push_back(pPointLightComponent);
-	}
-
-	std::vector<CameraComponent*> Scene::GetCameras()
+	std::vector<CameraComponent*> Scene::GetCameras()const
 	{
 		return m_pCameras;
 	}
 
-	std::vector<ParallelLightComponent*> Scene::GetParallelLights()
+	std::vector<LightComponent*> Scene::GetLights()const
 	{
-		return m_pParallelLights;
-	}
-
-	std::vector<PointLightComponent*> Scene::GetPointLights()
-	{
-		return m_pPointLights;
+		return m_pLights;
 	}
 
 	void Scene::Update(const GameTimer *gameTimer)
@@ -75,6 +65,13 @@ namespace CS418
 				if (pSC->Enabled)
 					pSC->Update(gameTimer);
 			}
+		}
+
+		for (std::vector<LightComponent*>::iterator it = m_pLights.begin(); it != m_pLights.end(); it++)
+		{
+			// Update position of lights.
+			// Should only be for point and spot lights, however we can skip a conditional statement to check since position doesn't affect parallel lights
+			(*it)->GetLight().position = (*it)->GetGameObject()->GetTransform()->Position;
 		}
 	}
 }

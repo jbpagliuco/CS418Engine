@@ -58,7 +58,7 @@ namespace CS418
 			{
 				F32 y = m_heights[i][j];
 
-				vertices[i * depth + j].position = VECTOR3F(i, y, j);
+				vertices[i * depth + j].position = VECTOR3F((F32)i, y, (F32)j);
 
 				// Color the vertex based on its height.
 				if (y < 0.0f)
@@ -150,7 +150,7 @@ namespace CS418
 		ShaderProgram * pColorShader = pAM->LoadShader("assets/shaders/color.vert", "assets/shaders/color.frag");
 
 		TerrainComponent * pTC = new TerrainComponent;
-		pTC->Initialize(size, maxHeight, pColorShader);
+		pTC->Initialize((U32)size, (U32)maxHeight, pColorShader);
 
 		return pTC;
 	}

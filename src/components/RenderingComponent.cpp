@@ -144,7 +144,7 @@ namespace CS418
 			std::string value = var.at(2).substr(0, var.at(2).length() - 1);
 
 			if (type == "F32")
-				mat.SetFloat(key, StringToFloat(value));
+				mat.SetF32(key, StringToFloat(value));
 			else if (type == "Vector2f")
 				mat.SetVec2f(key, StringToVector2f(value));
 			else if (type == "Vector3f")

@@ -19,10 +19,7 @@ namespace CS418
 	void Renderer::Initialize(GraphicsManager * gfxManager)
 	{
 		glClearColor(m_clearColor.x, m_clearColor.y, m_clearColor.z, m_clearColor.w);
-		// Set polygon mode to fill
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		// Set line point size
 		glPointSize(4.0f);
 
 		glEnable(GL_CULL_FACE);
@@ -69,6 +66,7 @@ namespace CS418
 	{
 		if (m_pScene)
 		{
+			// Reset scene
 			glEnable(GL_DEPTH_TEST);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			glDepthMask(GL_TRUE);
@@ -76,88 +74,101 @@ namespace CS418
 			glCullFace(GL_BACK);
 
 			const std::vector<GameObject*> gameObjects = m_pScene->GetVisibleGameObjects();
-
-			const std::vector<ParallelLightComponent*> parallelLights = m_pScene->GetParallelLights();
-			for (std::vector<ParallelLightComponent*>::const_iterator it = parallelLights.begin(); it != parallelLights.end(); it++)
-				(*it)->m_parallelLight.direction = Vector((*it)->m_pGameObject->GetTransform()->Position).v3Normalize().negate().asVector3();
-
-			const std::vector<PointLightComponent*> pointLights = m_pScene->GetPointLights();
-			for (std::vector<PointLightComponent*>::const_iterator it = pointLights.begin(); it != pointLights.end(); it++)
-				(*it)->m_pointLight.position = (*it)->m_pGameObject->GetTransform()->Position;
+			const std::vector<LightComponent*> lights = m_pScene->GetLights();
 
 			std::vector<CameraComponent*> pCameras = m_pScene->GetCameras();
 			for (std::vector<CameraComponent*>::const_iterator camera = pCameras.begin(); camera != pCameras.end(); camera++)
 			{
-				if (!(*camera)->Enabled)
-					continue;
-				Viewport vp = (*camera)->GetViewport();
-				glViewport((I32)vp.TopLeftX, (I32)vp.TopLeftY, (U32)vp.Width, (U32)vp.Height);
-
-				glClear(GL_DEPTH_BUFFER_BIT);
-
-				Matrix mViewProj = (*camera)->buildMatrix();
-
-				for (std::vector<GameObject*>::const_iterator gameObject = gameObjects.begin(); gameObject != gameObjects.end(); gameObject++)
-				{				
-					const std::vector<RenderingComponent*> &renderables = (*gameObject)->GetComponentsOfType<RenderingComponent>("RenderingComponent");
-
-					for (std::vector<RenderingComponent*>::const_iterator renderable = renderables.begin(); renderable != renderables.end(); renderable++)
-					{
-						RenderingComponent *pRC = (*renderable);
-						glUseProgram(pRC->m_material.GetShaderProgram()->m_shaderProgram);
-
-						Matrix m = (*gameObject)->GetTransform()->CreateWorldMatrix();
-
-						Matrix wvp = mViewProj * m;
-						pRC->m_material.SetMatrix4x4("_WVP", wvp);
-						pRC->m_material.SetMatrix4x4("_World", m);
-						pRC->m_material.SetVec3f("_CameraPos", (*camera)->m_pGameObject->GetTransform()->Position);
-						pRC->m_material.SetParallelLight("_ParallelLight", parallelLights.at(0)->m_parallelLight);
-						pRC->m_material.setValuesInShader();
-
-						glBindVertexArray(pRC->m_inputLayout);
-						glDrawElements(GL_TRIANGLES, pRC->m_indicesCount, GL_UNSIGNED_INT, 0);
-
-					} // Rendering Components
-
-
-					const std::vector<TerrainComponent*> &terrainComps = (*gameObject)->GetComponentsOfType<TerrainComponent>("TerrainComponent");
-
-					for (std::vector<TerrainComponent*>::const_iterator terrain = terrainComps.begin(); terrain != terrainComps.end(); terrain++)
-					{
-						RenderingComponent rc = (*terrain)->GetRC();
-						glUseProgram(rc.m_material.GetShaderProgram()->m_shaderProgram);
-
-						Matrix m = (*gameObject)->GetTransform()->CreateWorldMatrix();
-
-						Matrix wvp = mViewProj * m;
-						rc.m_material.SetMatrix4x4("_WVP", wvp);
-						rc.m_material.setValuesInShader();
-
-						glBindVertexArray(rc.m_inputLayout);
-						glDrawElements(GL_TRIANGLES, rc.m_indicesCount, GL_UNSIGNED_INT, 0);
-
-					} // Terrain Components
-				} // Game Objects
-
-				// Draw Skybox
-				SkyboxComponent * pSC = (*camera)->GetSkybox();
-				if (pSC->Enabled)
+				if ((*camera)->Enabled)
 				{
-					glDepthFunc(GL_LEQUAL);
-					glDepthMask(GL_FALSE);
-					glCullFace(GL_FRONT);
+					Viewport vp = (*camera)->GetViewport();
+					glViewport((I32)vp.TopLeftX, (I32)vp.TopLeftY, (U32)vp.Width, (U32)vp.Height);
 
-					glUseProgram(pSC->GetRenderingComponent().m_material.GetShaderProgram()->m_shaderProgram);
-					
-					Matrix translation = MatrixTranslation(Vector((*camera)->m_pGameObject->GetTransform()->Position));
-					Matrix wvp = mViewProj * translation;
-					pSC->GetRenderingComponent().m_material.SetMatrix4x4("_WVP", wvp);
-					pSC->GetRenderingComponent().m_material.setValuesInShader();
-					glBindVertexArray(pSC->GetRenderingComponent().m_inputLayout);
-					glDrawElements(GL_TRIANGLES, pSC->GetRenderingComponent().m_indicesCount, GL_UNSIGNED_INT, 0);
+					glClear(GL_DEPTH_BUFFER_BIT);
+
+					drawScene(gameObjects, (*camera), lights);
 				}
-			} // Cameras
+			}
+		}
+	}
+
+	void Renderer::drawScene(std::vector<GameObject*> gameObjects, CameraComponent * pCamera, std::vector<LightComponent*> lights)const
+	{
+		Matrix mViewProj = pCamera->buildMatrix();
+
+		for (std::vector<GameObject*>::const_iterator gameObject = gameObjects.begin(); gameObject != gameObjects.end(); gameObject++)
+		{
+			drawRenderingComponents((*gameObject), pCamera, mViewProj, lights);
+			drawTerrainComponents((*gameObject), pCamera, mViewProj, lights);
+		}
+
+		drawSkyboxComponent(pCamera, mViewProj);
+	}
+
+	void Renderer::drawRenderingComponents(GameObject * pGO, CameraComponent * pCamera, Matrix &mViewProj, std::vector<LightComponent*> lights)const
+	{
+		const std::vector<RenderingComponent*> &renderables = pGO->GetComponentsOfType<RenderingComponent>("RenderingComponent");
+
+		for (std::vector<RenderingComponent*>::const_iterator renderable = renderables.begin(); renderable != renderables.end(); renderable++)
+		{
+			RenderingComponent *pRC = (*renderable);
+			glUseProgram(pRC->m_material.GetShaderProgram()->m_shaderProgram);
+
+			Matrix m = pGO->GetTransform()->CreateWorldMatrix();
+
+			Matrix wvp = mViewProj * m;
+			pRC->m_material.SetMatrix4x4("_WVP", wvp);
+			pRC->m_material.SetMatrix4x4("_World", m);
+			pRC->m_material.SetVec3f("_CameraPos", pCamera->m_pGameObject->GetTransform()->Position);
+			pRC->m_material.SetU32("_NumLights", lights.size());
+			
+			for (size_t i = 0; i < lights.size(); i++)
+				pRC->m_material.SetLight("_Lights[" + std::to_string(i) + "]", lights.at(i)->m_light);
+			pRC->m_material.setValuesInShader();
+
+			glBindVertexArray(pRC->m_inputLayout);
+			glDrawElements(GL_TRIANGLES, pRC->m_indicesCount, GL_UNSIGNED_INT, 0);
+		}
+	}
+
+	void Renderer::drawTerrainComponents(GameObject * pGO, CameraComponent * pCamera, Matrix &mViewProj, std::vector<LightComponent*> lights)const
+	{
+		const std::vector<TerrainComponent*> &terrainComps = pGO->GetComponentsOfType<TerrainComponent>("TerrainComponent");
+
+		for (std::vector<TerrainComponent*>::const_iterator terrain = terrainComps.begin(); terrain != terrainComps.end(); terrain++)
+		{
+			RenderingComponent rc = (*terrain)->GetRC();
+			glUseProgram(rc.m_material.GetShaderProgram()->m_shaderProgram);
+
+			Matrix m = pGO->GetTransform()->CreateWorldMatrix();
+
+			Matrix wvp = mViewProj * m;
+			rc.m_material.SetMatrix4x4("_WVP", wvp);
+			rc.m_material.setValuesInShader();
+
+			glBindVertexArray(rc.m_inputLayout);
+			glDrawElements(GL_TRIANGLES, rc.m_indicesCount, GL_UNSIGNED_INT, 0);
+
+		} // Terrain Components
+	}
+
+	void Renderer::drawSkyboxComponent(CameraComponent * pCamera, Matrix &mViewProj)const
+	{
+		SkyboxComponent * pSC = pCamera->GetSkybox();
+		if (pSC->Enabled)
+		{
+			glDepthFunc(GL_LEQUAL);
+			glDepthMask(GL_FALSE);
+			glCullFace(GL_FRONT);
+
+			glUseProgram(pSC->GetRenderingComponent().m_material.GetShaderProgram()->m_shaderProgram);
+
+			Matrix translation = MatrixTranslation(Vector(pCamera->m_pGameObject->GetTransform()->Position));
+			Matrix wvp = mViewProj * translation;
+			pSC->GetRenderingComponent().m_material.SetMatrix4x4("_WVP", wvp);
+			pSC->GetRenderingComponent().m_material.setValuesInShader();
+			glBindVertexArray(pSC->GetRenderingComponent().m_inputLayout);
+			glDrawElements(GL_TRIANGLES, pSC->GetRenderingComponent().m_indicesCount, GL_UNSIGNED_INT, 0);
 		}
 	}
 }

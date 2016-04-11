@@ -18,7 +18,9 @@ namespace CS418
 		// Returns a pointer to this material's reference.
 		ShaderProgram * GetShaderProgram()const;
 
-		void SetFloat(const std::string &name, F32 value);
+		void SetU32(const std::string &name, U32 value);
+
+		void SetF32(const std::string &name, F32 value);
 		void SetVec2f(const std::string &name, VECTOR2F value);
 		void SetVec3f(const std::string &name, VECTOR3F value);
 		void SetVec4f(const std::string &name, VECTOR4F value);
@@ -28,14 +30,15 @@ namespace CS418
 		void SetTexture2D(const std::string &name, const Texture2DGL &value);
 		void SetTextureCube(const std::string &name, const TextureCube &value);
 
-		void SetParallelLight(const std::string &name, const ParallelLight &value);
-		void SetPointLight(const std::string &name, const PointLight &value);
+		void SetLight(const std::string &name, const Light &value);
 
 	private:
 		void setValuesInShader()const;
 
 	private:
 		ShaderProgram* m_pShader;
+
+		std::map<std::string, U32> m_varUI;
 
 		std::map<std::string, F32> m_varF;
 		std::map<std::string, VECTOR2F> m_var2F;
@@ -53,8 +56,7 @@ namespace CS418
 		std::map<std::string, IndexedElement<Texture2DGL>> m_varT2D;
 		std::map<std::string, IndexedElement<TextureCube>> m_varTC;
 
-		std::map<std::string, ParallelLight> m_varLDL; // Directional == Parallel
-		std::map<std::string, PointLight> m_varLPL;
+		std::map<std::string, Light> m_varLights;
 
 		friend class Renderer;
 	};

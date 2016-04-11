@@ -13,6 +13,7 @@ namespace CS418
 		virtual ~GameComponent();
 
 		void SetGameObject(GameObject * pGO);
+		GameObject * GetGameObject()const;
 
 		// Returns the type of this component.
 		std::string GetType()const;

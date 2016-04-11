@@ -20,20 +20,17 @@ namespace CS418
 
 		virtual void AddGameObject(GameObject *gameObject);
 		virtual void AddCamera(CameraComponent * pCameraComponent);
-		virtual void AddParallelLight(ParallelLightComponent * pParallelLightComponent);
-		virtual void AddPointLight(PointLightComponent * pPointLightComponent);
+		virtual void AddLight(LightComponent * pLight);
 
 		virtual void Update(const GameTimer *gameTimer);
 
-		virtual std::vector<CameraComponent*> GetCameras();
-		virtual std::vector<ParallelLightComponent*> GetParallelLights();
-		virtual std::vector<PointLightComponent*> GetPointLights();
+		virtual std::vector<CameraComponent*> GetCameras()const;
+		virtual std::vector<LightComponent*> GetLights()const;
 		
 	private:
 		std::vector<GameObject*> m_gameObjects;
 		std::vector<CameraComponent*> m_pCameras;
-		std::vector<ParallelLightComponent*> m_pParallelLights;
-		std::vector<PointLightComponent*> m_pPointLights;
+		std::vector<LightComponent*> m_pLights;
 
 		typedef std::vector<GameObject*>::iterator GO_It;
 		typedef std::vector<GameObject*>::const_iterator GO_Const_It;

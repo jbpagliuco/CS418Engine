@@ -17,7 +17,12 @@ namespace CS418
 		return m_pShader;
 	}
 
-	void Material::SetFloat(const std::string &name, F32 value)
+	void Material::SetU32(const std::string &name, U32 value)
+	{
+		m_varUI[name] = value;
+	}
+
+	void Material::SetF32(const std::string &name, F32 value)
 	{
 		m_varF[name] = value;
 	}
@@ -54,20 +59,18 @@ namespace CS418
 		m_varTC[name] = { value, index };
 	}
 
-	void Material::SetParallelLight(const std::string &name, const ParallelLight &value)
+	void Material::SetLight(const std::string &name, const Light &value)
 	{
-		m_varLDL[name] = value;
-	}
-
-	void Material::SetPointLight(const std::string &name, const PointLight &value)
-	{
-		m_varLPL[name] = value;
+		m_varLights[name] = value;
 	}
 
 	void Material::setValuesInShader()const
 	{
+		for (std::map<std::string, U32>::const_iterator it = m_varUI.begin(); it != m_varUI.end(); ++it)
+			m_pShader->SetU32(it->first, it->second);
+
 		for (std::map<std::string, F32>::const_iterator it = m_varF.begin(); it != m_varF.end(); ++it)
-			m_pShader->SetFloat(it->first, it->second);
+			m_pShader->SetF32(it->first, it->second);
 
 		for (std::map<std::string, VECTOR2F>::const_iterator it = m_var2F.begin(); it != m_var2F.end(); ++it)
 			m_pShader->SetVec2f(it->first, it->second);
@@ -87,10 +90,7 @@ namespace CS418
 		for (std::map<std::string, IndexedElement<TextureCube>>::const_iterator it = m_varTC.begin(); it != m_varTC.end(); it++)
 			m_pShader->SetTextureCube(it->first, it->second.element, it->second.index);
 
-		for (std::map<std::string, ParallelLight>::const_iterator it = m_varLDL.begin(); it != m_varLDL.end(); ++it)
-			m_pShader->SetParallelLight(it->first, it->second);
-
-		for (std::map<std::string, PointLight>::const_iterator it = m_varLPL.begin(); it != m_varLPL.end(); ++it)
-			m_pShader->SetPointLight(it->first, it->second);
+		for (std::map<std::string, Light>::const_iterator it = m_varLights.begin(); it != m_varLights.end(); ++it)
+			m_pShader->SetLight(it->first, it->second);
 	}
 }

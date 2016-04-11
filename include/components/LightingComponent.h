@@ -2,35 +2,29 @@
 
 #include "Behaviour.h"
 
+#include <vector>
+#include <string>
+
 #include "graphics/lighting/Lighting.h"
 
 namespace CS418
 {
-	class ParallelLightComponent : public Behaviour
+	class LightComponent : public Behaviour
 	{
 	public:
-		ParallelLightComponent(const std::string &type = "ParallelLightComponent");
-		virtual ~ParallelLightComponent();
+		LightComponent(const std::string &type = "LightComponent");
+		virtual ~LightComponent();
 
-		virtual void Initialize(ParallelLight parallelLight);
+		virtual void Initialize(Light light);
+
+		virtual Light & GetLight();
 
 	private:
-		ParallelLight m_parallelLight;
+		Light m_light;
 
 		friend class Renderer;
 	};
 
-	class PointLightComponent : public Behaviour
-	{
-	public:
-		PointLightComponent(const std::string &type = "PointLightComponent");
-		virtual ~PointLightComponent();
-
-		virtual void Initialize(PointLight pointLight);
-
-	private:
-		PointLight m_pointLight;
-
-		friend class Renderer;
-	};
+	LightComponent * CreateParallelLight(std::vector<std::string> arguments);
+	LightComponent * CreatePointLight(std::vector<std::string> arguments, GameObject * pGO);
 }

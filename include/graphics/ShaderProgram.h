@@ -36,7 +36,9 @@ namespace CS418
 
 		VertexDesc GetVertexDesc()const;
 
-		void SetFloat(const std::string &name, F32 value);
+		void SetU32(const std::string &name, U32 value);
+
+		void SetF32(const std::string &name, F32 value);
 		void SetVec2f(const std::string &name, VECTOR2F value);
 		void SetVec3f(const std::string &name, VECTOR3F value);
 		void SetVec4f(const std::string &name, VECTOR4F value);
@@ -46,8 +48,7 @@ namespace CS418
 		void SetTexture2D(const std::string &name, const Texture2DGL &tex2D, U32 index);
 		void SetTextureCube(const std::string &name, const TextureCube &texCube, U32 index);
 
-		void SetParallelLight(const std::string &name, const ParallelLight &pointLight);
-		void SetPointLight(const std::string &name, const PointLight &pointLight);
+		void SetLight(const std::string &name, const Light &light);
 
 	private:
 		bool compileShaders(std::string vertexShaderSource, std::string fragShaderSource);
