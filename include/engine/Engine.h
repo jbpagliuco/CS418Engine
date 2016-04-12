@@ -22,6 +22,8 @@ namespace CS418
 
 		LRESULT MessageHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
+		AssetManager GetAssetManager()const;
+
 	private:
 		void readConfigFile(const std::string &file);
 		void dispatchKeyAndValue(const std::string &key, const std::string &value);

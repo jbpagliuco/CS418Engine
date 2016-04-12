@@ -151,6 +151,8 @@
     <ClInclude Include="include\GameComponent.h" />
     <ClInclude Include="include\GameObject.h" />
     <ClInclude Include="include\GraphicsManager.h" />
+    <ClInclude Include="include\graphics\BasicMeshes.h" />
+    <ClInclude Include="include\graphics\FrameBuffer.h" />
     <ClInclude Include="include\graphics\IndexBuffer.h" />
     <ClInclude Include="include\graphics\Material.h" />
     <ClInclude Include="include\graphics\Mesh.h" />
@@ -197,6 +199,8 @@
     <ClCompile Include="src\components\GameComponent.cpp" />
     <ClCompile Include="src\game\GameObject.cpp" />
     <ClCompile Include="src\components\Transform.cpp" />
+    <ClCompile Include="src\graphics\BasicMeshes.cpp" />
+    <ClCompile Include="src\graphics\FrameBuffer.cpp" />
     <ClCompile Include="src\graphics\GraphicsManager.cpp" />
     <ClCompile Include="src\graphics\Material.cpp" />
     <ClCompile Include="src\graphics\Mesh.cpp" />

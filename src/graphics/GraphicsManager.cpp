@@ -34,7 +34,7 @@ namespace CS418
 	{
 		createWindow(pEngine);
 
-		m_renderer.Initialize(this);
+		m_renderer.Initialize(this, &pEngine->GetAssetManager());
 	}
 
 	void GraphicsManager::SetScene(Scene * pScene)

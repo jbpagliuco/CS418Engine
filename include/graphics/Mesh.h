@@ -4,7 +4,7 @@
 
 #include <vector>
 
-#include "Vertex.h" 
+#include "graphics/Vertex.h" 
 
 namespace CS418
 {

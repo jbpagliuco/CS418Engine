@@ -133,6 +133,11 @@ namespace CS418
 		m_gfx.EndScene();
 	}
 
+	AssetManager Engine::GetAssetManager()const
+	{
+		return m_assetManager;
+	}
+
 	void Engine::readConfigFile(const std::string &file)
 	{
 		ConfigFileReader reader;
