@@ -17,7 +17,7 @@ namespace CS418
 		
 		readConfigFile("startup.config");
 		m_gfx.Initialize(this);
-		readConfigFile("startup.graphics.config");
+		readConfigFile("startup.game.config");
 
 		m_inputManager.Initialize();
 
@@ -174,6 +174,11 @@ namespace CS418
 		else if (key == "Target FPS")
 		{
 
+		}
+		else if (key == "Enable Post Processing")
+		{
+			if (value == "true" || value == "True")
+				m_gfx.EnablePostProcessing();
 		}
 		else if (key == "Default Scene")
 		{

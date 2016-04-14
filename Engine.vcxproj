@@ -224,6 +224,7 @@
     <ClCompile Include="src\util\FileReader.cpp" />
     <ClCompile Include="src\util\GameTimer.cpp" />
     <ClCompile Include="src\util\Memory.cpp" />
+    <ClCompile Include="src\util\Util.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

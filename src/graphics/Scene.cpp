@@ -27,9 +27,9 @@ namespace CS418
 		m_gameObjects.push_back(gameObject);
 	}
 
-	void Scene::AddCamera(CameraComponent * pCamera)
+	void Scene::SetCamera(CameraComponent * pCamera)
 	{
-		m_pCameras.push_back(pCamera);
+		m_pCamera = pCamera;
 	}
 
 	void Scene::AddLight(LightComponent * pLightComponent)
@@ -37,9 +37,9 @@ namespace CS418
 		m_pLights.push_back(pLightComponent);
 	}
 
-	std::vector<CameraComponent*> Scene::GetCameras()const
+	CameraComponent* Scene::GetCamera()const
 	{
-		return m_pCameras;
+		return m_pCamera;
 	}
 
 	std::vector<LightComponent*> Scene::GetLights()const
@@ -49,7 +49,7 @@ namespace CS418
 
 	void Scene::Update(const GameTimer *gameTimer)
 	{
-		m_pLuaManager->Push("camera", *(m_pCameras.at(0)));
+		m_pLuaManager->Push("camera", *(m_pCamera));
 
 		for (GO_It it = m_gameObjects.begin(); it != m_gameObjects.end(); it++)
 		{

@@ -1,6 +1,13 @@
 #include "util/Convert.h"
 
 #include "util/ColorDefs.h"
+#include "math/Vector.h"
+#include "math/Quaternion.h"
+#include "graphics/Viewport.h"
+#include "graphics/Texture2DGL.h"
+#include "graphics/TextureCube.h"
+#include "graphics/Mesh.h"
+#include "graphics/BasicMeshes.h"
 
 namespace CS418
 {
@@ -11,25 +18,33 @@ namespace CS418
 	F32 StringToFloat(const std::string &line)
 	{
 		F32 value;
+		std::string l = line;
 
-		if (line == "PI")
+		bool neg = false;
+		if (line.at(0) == '-')
+		{
+			neg = true;
+			l = line.substr(1);
+		}
+
+		if (l == "PI")
 			value = PI;
-		else if (line == "2PI")
+		else if (l == "2PI")
 			value = PI_MUL2;
-		else if (line == "PIDIV2")
+		else if (l == "PIDIV2")
 			value = PI_DIV2;
-		else if (line == "PIDIV3")
+		else if (l == "PIDIV3")
 			value = PI_DIV3;
-		else if (line == "PIDIV4")
+		else if (l == "PIDIV4")
 			value = PI_DIV4;
-		else if (line == "PIDIV6")
+		else if (l == "PIDIV6")
 			value = PI_DIV6;
-		else if (line == "3PIDIV2")
+		else if (l == "3PIDIV2")
 			value = PI_3DIV2;
 		else
-			value = stof(line);
+			value = stof(l);
 
-		return value;
+		return neg ? -value : value;
 	}
 	
 
@@ -155,19 +170,20 @@ namespace CS418
 		return texCube;
 	}
 
-	std::vector<std::string> SplitString(std::string s, const std::string &delim)
+	Mesh StringToMesh(const std::string &line, std::string args)
 	{
-		std::vector<std::string> v;
-
-		size_t pos;
-		while ((pos = s.find(delim)) != std::string::npos)
+		if (line == "Quad")
+			return CreateQuad();
+		else if (line == "Cube")
+			return CreateCube();
+		else if (line == "Sphere")
 		{
-			std::string arg = s.substr(0, pos);
-			v.push_back(arg);
-			s.erase(0, pos + delim.length());
+			args.erase(args.begin());
+			args.erase(args.end() - 1);
+			std::vector<std::string> a = SplitString(args, " ");
+			return CreateSphere(StringToFloat(a.at(0)), (U32)StringToFloat(a.at(1)), (U32)StringToFloat(a.at(2)));
 		}
-		v.push_back(s);
 
-		return v;
+		return Mesh();
 	}
 }

@@ -3,17 +3,21 @@
 #include <string>
 
 #include "Util.h"
-#include "math/Vector.h"
-#include "math/Quaternion.h"
-#include "graphics/Viewport.h"
-#include "graphics/Texture2DGL.h"
-#include "graphics/TextureCube.h"
 
 #include "content/AssetManager.h"
 #include "graphics/GraphicsManager.h"
 
 namespace CS418
 {
+	struct VECTOR2F;
+	struct VECTOR3F;
+	struct VECTOR4F;
+	class Quaternion;
+	struct Viewport;
+	class Texture2DGL;
+	class TextureCube;
+	class Mesh;
+
 	bool StringToBoolean(const std::string &line);
 	F32 StringToFloat(const std::string &line);
 
@@ -25,29 +29,8 @@ namespace CS418
 
 	Viewport StringToViewport(const std::string &line, GraphicsManager * pGfxManager);
 
+	Mesh StringToMesh(const std::string &line, std::string args);
+
 	Texture2DGL StringToTexture2D(const std::string &line, AssetManager * pAM);
 	TextureCube StringToTextureCube(const std::string &line, AssetManager * pAM);
-
-	std::vector<std::string> SplitString(std::string s, const std::string &delim);
-
-	/*
-	template <typename T>
-	T StringToT(const std::string &type, std::string &line)
-	{
-		if (type == "String")
-			return line;
-		else if (type == "F32")
-			return StringToFloat(line);
-		else if (type == "Boolean")
-			return StringToBoolean(line);
-		else if (type == "Vector2f")
-			return StringToVector2f(line);
-		else if (type == "Vector3f")
-			return StringToVector3f(line);
-		else if (type == "Vector4f")
-			return StringToVector4f(line);
-		else if (type == "Color")
-			return StringToColor(line);
-	}
-	*/
 }

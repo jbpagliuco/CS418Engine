@@ -9,7 +9,7 @@ namespace CS418
 	public:
 		virtual ~FrameBuffer();
 
-		void Initialize(U32 width, U32 height);
+		void Initialize(U32 width, U32 height, bool depthOnly);
 
 		void Resize(U32 width, U32 height);
 
@@ -19,11 +19,12 @@ namespace CS418
 
 	private:
 		U32 buildColorMap(U32 width, U32 height);
-		U32 buildDepthMap(U32 width, U32 height);
+		U32 buildDepthMap(U32 width, U32 height, bool depthOnly);
 
 	private:
 		U32 m_bufferID;
 		U32 m_colorMapID;
 		U32 m_depthMapID;
+		bool m_depthOnly;
 	};
 }

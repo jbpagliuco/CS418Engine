@@ -27,7 +27,7 @@ namespace CS418
 		Scene * LoadScene(const std::string &sceneFilepath);
 
 		Mesh * LoadMesh(const std::string &meshFilepath);
-		ShaderProgram * LoadShader(const std::string &vertexShaderFilepath, const std::string &fragShaderFilepath);
+		ShaderProgram * LoadShader(const std::string &shaderFolder);
 		Texture2D * LoadTexture2D(const std::string &texture2DFilepath);
 
 		void UnloadContent();

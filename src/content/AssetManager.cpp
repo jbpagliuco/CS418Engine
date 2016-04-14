@@ -68,12 +68,12 @@ namespace CS418
 		return pMesh;
 	}
 
-	ShaderProgram * AssetManager::LoadShader(const std::string &vertexShaderFilepath, const std::string &fragShaderFilepath)
+	ShaderProgram * AssetManager::LoadShader(const std::string &shaderFolder)
 	{
 		// Check if shader has already been loaded.
 		for (ShaderContainer_t::iterator it = m_shaders.begin(); it != m_shaders.end(); ++it)
 		{
-			if (it->first == (vertexShaderFilepath + fragShaderFilepath))
+			if (it->first == (shaderFolder))
 			{
 				it->second.Count.AddRef();
 				return it->second.Asset;
@@ -81,13 +81,13 @@ namespace CS418
 		}
 
 		// Otherwise load the shader.
-		ShaderProgram * pShader = CS418::LoadShader(vertexShaderFilepath, fragShaderFilepath);
+		ShaderProgram * pShader = CS418::LoadShader(shaderFolder);
 
 		// Add shader to list.
 		AssetContainer<ShaderProgram> shaderContainer;
 		shaderContainer.Asset = pShader;
 		shaderContainer.Count.AddRef();
-		m_shaders[(vertexShaderFilepath + fragShaderFilepath)] = shaderContainer;
+		m_shaders[shaderFolder] = shaderContainer;
 
 		return pShader;
 	}

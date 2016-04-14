@@ -4,6 +4,7 @@
 
 #include "util/Convert.h"
 #include "content/AssetManager.h"
+#include "graphics/BasicMeshes.h"
 
 namespace CS418
 {
@@ -129,13 +130,34 @@ namespace CS418
 
 	RenderingComponent * CreateRenderingComponent(std::vector<std::string> arguments, AssetManager * pAM)
 	{
-		Mesh * pMesh = pAM->LoadMesh(arguments.at(0));
-		ShaderProgram * pShader = pAM->LoadShader(arguments.at(1), arguments.at(2));
+		Mesh * pMesh;
+		Mesh engineMesh;
+		if (arguments.at(0).substr(0, 7) == "Engine:")
+		{
+			std::string meshType, temp = arguments.at(0);
+			if (temp.find_first_of("(") != std::string::npos)
+			{
+				size_t paren = temp.find_first_of("(");
+				meshType = temp.substr(strlen("Engine:"), paren - strlen("Engine:"));
+				std::string args = temp.substr(paren);
+				engineMesh = StringToMesh(meshType, args);
+			}
+			else
+			{
+				meshType = temp.substr(strlen("Engine:"));
+				engineMesh = StringToMesh(meshType, "");
+			}
+
+			pMesh = &engineMesh;
+		}
+		else
+			pMesh = pAM->LoadMesh(arguments.at(0));
+		ShaderProgram * pShader = pAM->LoadShader(arguments.at(1));
 
 		Material mat;
 		mat.Initialize(pShader);
 
-		for (U32 i = 3; i < arguments.size(); i++)
+		for (U32 i = 2; i < arguments.size(); i++)
 		{
 			std::vector<std::string> var = SplitString(arguments.at(i), ":");
 

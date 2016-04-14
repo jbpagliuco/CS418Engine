@@ -2,6 +2,7 @@
 
 #include <stdint.h>
 #include <string>
+#include <vector>
 
 #ifndef CS418_ALIGN_MS
 #if _MSC_VER && !__INTEL_COMPILER
@@ -70,4 +71,21 @@ namespace CS418
 		T Z;
 		T W;
 	};
+
+	// Splits a string by delim
+	std::vector<std::string> SplitString(std::string s, const std::string &delim);
+
+	// Removes the whitespace in the string.
+	// Includes: " ", "\n", "\t", "\r"
+	void RemoveWhitespace(std::string &s);
+	// Removes the whitespace at the beginning and end of the string.
+	// Includes: " ", "\n", "\t", "\r"
+	void RemoveCapWhitespace(std::string &s);
+	// Removes the whitespace at the beginning of the string.
+	// Includes: " ", "\n", "\t", "\r"
+	void RemoveLeadingWhitespace(std::string &s);
+	// Removes the whitespace at the end of the string.
+	// Includes: " ", "\n", "\t", "\r"
+	void RemoveTrailingWhitespace(std::string &s);
+
 }

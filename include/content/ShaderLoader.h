@@ -4,5 +4,5 @@
 
 namespace CS418
 {
-	extern ShaderProgram * LoadShader(const std::string &vertexShaderFilepath, const std::string &fragShaderFilepath);
+	extern ShaderProgram * LoadShader(const std::string &shaderFolder);
 }

@@ -72,7 +72,7 @@ namespace CS418
 		{
 			std::string contents;
 			m_fstream.seekg(0, std::ios::end);
-			contents.resize(m_fstream.tellg());
+			contents.resize((unsigned int)m_fstream.tellg());
 			m_fstream.seekg(0, std::ios::beg);
 			m_fstream.read(&contents[0], contents.size());
 			m_fstream.close();

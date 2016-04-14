@@ -44,7 +44,7 @@ namespace CS418
 		pTextures[4] = pAM->LoadTexture2D(arguments.at(0) + "/back.jpg");
 		pTextures[5] = pAM->LoadTexture2D(arguments.at(0) + "/front.jpg");
 
-		ShaderProgram * pSkyboxShader = pAM->LoadShader("assets/shaders/skybox.vert", "assets/shaders/skybox.frag");
+		ShaderProgram * pSkyboxShader = pAM->LoadShader("assets/shaders/skybox");
 		Mesh * pSkyboxMesh = pAM->LoadMesh("assets/models/cube.cs418mesh");
 
 		pSC->Initialize(pTextures, pSkyboxShader, pSkyboxMesh);

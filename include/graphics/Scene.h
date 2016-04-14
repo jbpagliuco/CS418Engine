@@ -19,17 +19,17 @@ namespace CS418
 		virtual const std::vector<GameObject*> & GetVisibleGameObjects()const;
 
 		virtual void AddGameObject(GameObject *gameObject);
-		virtual void AddCamera(CameraComponent * pCameraComponent);
+		virtual void SetCamera(CameraComponent * pCameraComponent);
 		virtual void AddLight(LightComponent * pLight);
 
 		virtual void Update(const GameTimer *gameTimer);
 
-		virtual std::vector<CameraComponent*> GetCameras()const;
+		virtual CameraComponent* GetCamera()const;
 		virtual std::vector<LightComponent*> GetLights()const;
 		
 	private:
 		std::vector<GameObject*> m_gameObjects;
-		std::vector<CameraComponent*> m_pCameras;
+		CameraComponent* m_pCamera;
 		std::vector<LightComponent*> m_pLights;
 
 		typedef std::vector<GameObject*>::iterator GO_It;

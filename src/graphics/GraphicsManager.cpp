@@ -11,6 +11,8 @@ namespace CS418
 		m_hWnd = nullptr;
 		m_hDC = nullptr;
 		m_hRC = nullptr;
+
+		m_isPostProcessing = false;
 	}
 
 	GraphicsManager::~GraphicsManager()
@@ -158,6 +160,16 @@ namespace CS418
 	void GraphicsManager::SetClearColor(const std::string &color)
 	{
 		m_renderer.SetClearColor(color);
+	}
+
+	void GraphicsManager::EnablePostProcessing()
+	{
+		m_isPostProcessing = true;
+	}
+
+	bool GraphicsManager::IsPostProcessing()const
+	{
+		return m_isPostProcessing;
 	}
 
 	void GraphicsManager::createWindow(Engine * pEngine)

@@ -25,10 +25,10 @@ namespace CS418
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		glPointSize(4.0f);
 
+		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
 		glFrontFace(GL_CW);
-		glEnable(GL_DEPTH);
 		glDepthFunc(GL_LESS);
 
 		glewInit();
@@ -36,14 +36,17 @@ namespace CS418
 		Vector2<U32> dim = gfxManager->GetWindowDimensions();
 		glViewport(0, 0, dim.X, dim.Y);
 
-		m_isPostProcessing = true;
+		m_shadowShader = *(pAM->LoadShader("assets/shaders/shadow"));
+		//m_shadowBuffer.Initialize(1024, 1024, true);
+
+		m_isPostProcessing = gfxManager->IsPostProcessing();
 		if (m_isPostProcessing)
 		{
-			m_post.Initialize(dim.X, dim.Y);
+			m_post.Initialize(dim.X, dim.Y, false);
 
 			Mesh quad = CreateQuad();
 			Material postMat;
-			postMat.Initialize(pAM->LoadShader("assets/shaders/postprocessing.vert", "assets/shaders/postprocessing.frag"));
+			postMat.Initialize(pAM->LoadShader("assets/shaders/postprocessing"));
 
 			m_postRC.Initialize(&quad, postMat);
 		}
@@ -69,18 +72,15 @@ namespace CS418
 	{
 		if (m_pScene)
 		{
-			std::vector<CameraComponent*> pCameras = m_pScene->GetCameras();
-			for (std::vector<CameraComponent*>::const_iterator camera = pCameras.begin(); camera != pCameras.end(); camera++)
-			{
-				(*camera)->Resize(width, height);
-			}
+			CameraComponent* pCamera = m_pScene->GetCamera();
+			pCamera->Resize(width, height);
 		}
 
 		if (m_isPostProcessing)
 			m_post.Resize(width, height);
 	}
 
-	void Renderer::Draw()const
+	void Renderer::Draw()
 	{
 		if (m_pScene)
 		{
@@ -89,18 +89,13 @@ namespace CS418
 				glBindFramebuffer(GL_FRAMEBUFFER, m_post.GetID());
 			}
 
-			// Reset scene
-			glEnable(GL_DEPTH_TEST);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			glDepthMask(GL_TRUE);
-			glDepthFunc(GL_LESS);
-			glCullFace(GL_BACK);
 
 			const std::vector<GameObject*> gameObjects = m_pScene->GetVisibleGameObjects();
-			std::vector<CameraComponent*> cameras = m_pScene->GetCameras();
+			CameraComponent* pCamera = m_pScene->GetCamera();
 			const std::vector<LightComponent*> lights = m_pScene->GetLights();
 
-			drawScene(gameObjects, cameras, lights);
+			drawScene(gameObjects, pCamera, lights);
 
 			if (m_isPostProcessing)
 			{
@@ -108,33 +103,34 @@ namespace CS418
 				glDisable(GL_DEPTH_TEST);
 
 				glUseProgram(m_postRC.m_material.GetShaderProgram()->m_shaderProgram);
+				//glActiveTexture(GL_TEXTURE0);
+				//glBindTexture(GL_TEXTURE_2D, m_post.GetColorMap());
 				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, m_post.GetColorMap());
+				glBindTexture(GL_TEXTURE_2D, m_post.GetDepthMap());
 
 				glBindVertexArray(m_postRC.m_inputLayout);
 				glDrawElements(GL_TRIANGLES, m_postRC.m_indicesCount, GL_UNSIGNED_INT, 0);
+
+				glEnable(GL_DEPTH_TEST);
 			}
 		}
 	}
 
-	void Renderer::drawScene(std::vector<GameObject*> gameObjects, std::vector<CameraComponent*> pCameras, std::vector<LightComponent*> lights)const
+	void Renderer::drawScene(std::vector<GameObject*> gameObjects, CameraComponent* pCamera, std::vector<LightComponent*> lights)const
 	{
-		for (std::vector<CameraComponent*>::const_iterator camera = pCameras.begin(); camera != pCameras.end(); camera++)
+		if (pCamera->Enabled)
 		{
-			if ((*camera)->Enabled)
-			{
-				Viewport vp = (*camera)->GetViewport();
-				glViewport((I32)vp.TopLeftX, (I32)vp.TopLeftY, (U32)vp.Width, (U32)vp.Height);
+			Viewport vp = pCamera->GetViewport();
+			glViewport((I32)vp.TopLeftX, (I32)vp.TopLeftY, (U32)vp.Width, (U32)vp.Height);
 
-				glClear(GL_DEPTH_BUFFER_BIT);
+			glClear(GL_DEPTH_BUFFER_BIT);
 
-				Matrix mViewProj = (*camera)->buildMatrix();
+			Matrix mViewProj = pCamera->buildMatrix();
 
-				for (std::vector<GameObject*>::const_iterator gameObject = gameObjects.begin(); gameObject != gameObjects.end(); gameObject++)
-					drawObject((*gameObject), (*camera), lights, mViewProj);
-				drawSkyboxComponent((*camera), mViewProj);
-			}
-		}	
+			for (std::vector<GameObject*>::const_iterator gameObject = gameObjects.begin(); gameObject != gameObjects.end(); gameObject++)
+				drawObject((*gameObject), pCamera, lights, mViewProj);
+			drawSkyboxComponent(pCamera, mViewProj);
+		}
 	}
 
 	void Renderer::drawObject(GameObject *pGO, CameraComponent * pCamera, std::vector<LightComponent*> lights, Matrix & mViewProj)const
@@ -196,7 +192,7 @@ namespace CS418
 		if (pSC->Enabled)
 		{
 			glDepthFunc(GL_LEQUAL);
-			glDepthMask(GL_FALSE);
+			glDepthMask(GL_TRUE);
 			glCullFace(GL_FRONT);
 
 			glUseProgram(pSC->GetRenderingComponent().m_material.GetShaderProgram()->m_shaderProgram);
@@ -207,6 +203,48 @@ namespace CS418
 			pSC->GetRenderingComponent().m_material.setValuesInShader();
 			glBindVertexArray(pSC->GetRenderingComponent().m_inputLayout);
 			glDrawElements(GL_TRIANGLES, pSC->GetRenderingComponent().m_indicesCount, GL_UNSIGNED_INT, 0);
+
+			// Reset scene
+			glDepthFunc(GL_LESS);
+			glDepthMask(GL_TRUE);
+			glCullFace(GL_BACK);
+		}
+	}
+
+	void Renderer::drawSceneFromLight(const std::vector<GameObject*> gameObjects, const Light &light)
+	{
+		Matrix lightView, lightProj;
+		lightView = MatrixLookAtLH(Vector(light.direction).negate(), Vector(0.0f, 0.0f, 0.0f, 1.0f), Vector(0.0f, 1.0f, 0.0f, 0.0f));
+		lightProj = MatrixOrthoLH(10.0f, 10.0f, 0.1f, 100.0f);
+		glUseProgram(m_shadowShader.m_shaderProgram);
+		m_shadowShader.SetMatrix4x4("_LightSpaceMatrix", lightProj * lightView);
+
+		// Reset scene
+		glEnable(GL_DEPTH_TEST);
+		glDepthMask(GL_TRUE);
+		glDepthFunc(GL_LESS);
+		glCullFace(GL_BACK);
+
+		glViewport(0.0f, 0.0f, 1024.0f, 1024.0f);
+		glBindFramebuffer(GL_FRAMEBUFFER, m_shadowBuffer.GetID());
+		glClear(GL_DEPTH_BUFFER_BIT);
+
+		for (std::vector<GameObject*>::const_iterator gameObject = gameObjects.begin(); gameObject != gameObjects.end(); gameObject++)
+		{
+			GameObject * pGO = (*gameObject);
+			const std::vector<RenderingComponent*> &renderables = pGO->GetComponentsOfType<RenderingComponent>("RenderingComponent");
+
+			for (std::vector<RenderingComponent*>::const_iterator renderable = renderables.begin(); renderable != renderables.end(); renderable++)
+			{
+				RenderingComponent *pRC = (*renderable);
+				glUseProgram(pRC->m_material.GetShaderProgram()->m_shaderProgram);
+
+				Matrix m = pGO->GetTransform()->CreateWorldMatrix();
+				m_shadowShader.SetMatrix4x4("_World", m);
+
+				glBindVertexArray(pRC->m_inputLayout);
+				glDrawElements(GL_TRIANGLES, pRC->m_indicesCount, GL_UNSIGNED_INT, 0);
+			}
 		}
 	}
 }

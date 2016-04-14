@@ -20,19 +20,24 @@ namespace CS418
 		void SetClearColor(const VECTOR4F &color);
 		void SetClearColor(const std::string &color);
 
-		virtual void Draw()const;
+		virtual void Draw();
 
 		virtual void Resize(U32 width, U32 height);
 
 	private:
-		void drawScene(std::vector<GameObject*> gameObjects, std::vector<CameraComponent*> pCameras, std::vector<LightComponent*> lights)const;
+		void drawScene(std::vector<GameObject*> gameObjects, CameraComponent* pCamera, std::vector<LightComponent*> lights)const;
 		void drawObject(GameObject *pGO, CameraComponent * pCamera, std::vector<LightComponent*> lights, Matrix & mViewProj)const;
 		void drawRenderingComponents(GameObject * pGO, CameraComponent * pCamera, Matrix &mViewProj, std::vector<LightComponent*> lights)const;
 		void drawTerrainComponents(GameObject * pGO, CameraComponent * pCamera, Matrix &mViewProj, std::vector<LightComponent*> lights)const;
 		void drawSkyboxComponent(CameraComponent * pCamera, Matrix &mViewProj)const;
 
+		void drawSceneFromLight(const std::vector<GameObject*> gameObjects, const Light &light);
+
 	private:
 		VECTOR4F m_clearColor;
+
+		ShaderProgram m_shadowShader;
+		FrameBuffer m_shadowBuffer;
 
 		FrameBuffer m_post;
 		bool m_isPostProcessing;

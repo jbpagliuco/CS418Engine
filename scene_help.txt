@@ -9,11 +9,10 @@ Transform						| Vector3f: Position
 								| ## Transform (10.0 5.0 10.0),(PI 0.0 PI),(1.0 1.0 2.0)
 								| ## Types of PI: PI, 2PI, PIDIV2, PIDIV3, PIDIV4, PIDIV6, 3PIDIV2
 --------------------------------|-------------------------------------------------------------------------------------	
-RenderingComponent				| string: Mesh filepath
-								| string: Vertex shader filepath
-								| string: Fragment shader filepath
+RenderingComponent				| string: Mesh filepath. Can be Engine resource, ie Engine:Quad, Engine:Sphere(1.0,32,32)
+								| string: Folder name with shaders in them: vertexShader.vert, fragShader.frag
 								| [ Key/Value: Variables ]
-								| ## RenderingComponent assets/Mesh.obj,assets/vs.vert,assets/fr.frag,(Color:Color:Blue),(DiffuseMap:Texture2D:assets/textures/brickwall.png REPEAT REPEAT LINEAR LINEAR)
+								| ## RenderingComponent assets/Mesh.obj,assets/basic,(Color:Color:Blue),(DiffuseMap:Texture2D:assets/textures/brickwall.png REPEAT REPEAT LINEAR LINEAR)
 								| ## All shaders will have the transform matrix already, so there is no need to specify that here
 --------------------------------|-------------------------------------------------------------------------------------	
 ScriptComponent					| string: Script filepath
@@ -43,7 +42,7 @@ ParallelLightComponent			| Vector3f: Direction
 								| Color: Diffuse color
 								| Color: Specular color
 								| F32: Intensity
-								| ## PointLightComponent (-5.0 -5.0 -5.0),(0.1 0.1 0.1 1.0),(0.7 0.7 0.7 1.0),White,0.5
+								| ## ParallelLightComponent (-5.0 -5.0 -5.0),(0.1 0.1 0.1 1.0),(0.7 0.7 0.7 1.0),White,0.5
 --------------------------------|-------------------------------------------------------------------------------------	
 PointLightComponent				| Color: Ambient color
 								| Color: Diffuse color

@@ -75,6 +75,14 @@ namespace CS418
 				// This is a game component for the object.
 				if (pGO)
 				{
+					char c = stream.peek();
+					while ((c = stream.peek()) != '-' && (c != '\n') && (c != '\0'))
+					{
+						std::string temp;
+						std::getline(stream, temp);
+						line += temp;
+					}
+
 					GameComponent * gc = LoadComponent(pGO, pAssetManager, line.substr(2), pLuaManager, pGfxManager);
 					if (line.find("- Transform") == 0)
 					{
@@ -85,9 +93,9 @@ namespace CS418
 						pGO->AddComponent(gc); // No hyphen or space
 
 					if (gc->GetType() == "CameraComponent")
-						pScene->AddCamera((CameraComponent*)gc);
+						pScene->SetCamera((CameraComponent*)gc);
 					if (gc->GetType() == "SkyboxComponent")
-						pScene->GetCameras().at(pScene->GetCameras().size() - 1)->SetSkybox((SkyboxComponent*)gc);
+						pScene->GetCamera()->SetSkybox((SkyboxComponent*)gc);
 					if (gc->GetType() == "LightComponent")
 						pScene->AddLight((LightComponent*)gc);
 				}
@@ -115,6 +123,11 @@ namespace CS418
 		{
 			std::string args = line.substr(line.find(' ') + 1);
 			arguments = SplitString(args, ",");
+		}
+
+		for (std::vector<std::string>::iterator it = arguments.begin(); it != arguments.end(); it++)
+		{
+			RemoveCapWhitespace((*it));
 		}
 
 		if (componentType == "Transform")

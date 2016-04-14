@@ -528,6 +528,23 @@ namespace CS418
 		return mProj;
 	}
 
+	Matrix MatrixOrthoLH(F32 width, F32 height, F32 near, F32 far)
+	{
+		Matrix mOrtho;
+
+		_declspec(align(16)) F32 col0[4] = { 2.0f / width, 0.0f, 0.0f, 0.0f };
+		_declspec(align(16)) F32 col1[4] = { 0.0f, 2.0f / height, 0.0f, 0.0f };
+		_declspec(align(16)) F32 col2[4] = { 0.0f, 0.0f, 1.0f / (far - near), near / (near - far) };
+		_declspec(align(16)) F32 col3[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+
+		mOrtho.m_cols[0] = _mm_load_ps(col0);
+		mOrtho.m_cols[1] = _mm_load_ps(col1);
+		mOrtho.m_cols[2] = _mm_load_ps(col2);
+		mOrtho.m_cols[3] = _mm_load_ps(col3);
+
+		return mOrtho;
+	}
+
 	Matrix MatrixTranslation(const Vector &translation)
 	{
 		Matrix mTrans;

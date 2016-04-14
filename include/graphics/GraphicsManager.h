@@ -51,6 +51,9 @@ namespace CS418
 		void SetFullscreen(bool fullscreen);
 		bool IsFullscreen()const;
 
+		void EnablePostProcessing();
+		bool IsPostProcessing()const;
+
 		void SetWindowTitle(const std::string &title);
 		std::string GetWindowTitle()const;
 
@@ -71,6 +74,8 @@ namespace CS418
 		U32 m_wPosX, m_wPosY;
 		bool m_fullscreen;
 		std::string m_wWindowTitle;
+
+		bool m_isPostProcessing;
 
 		Scene * m_pScene;
 

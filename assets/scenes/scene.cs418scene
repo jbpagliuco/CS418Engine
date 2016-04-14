@@ -1,0 +1,50 @@
+Main_Camera
+- Transform
+- CameraComponent (10.0 0.0 10.0),(0.0 0.0 0.0),(0.0 1.0 0.0),PIDIV4,(0 0 -1 -1 0.1 100.0),True
+- SkyboxComponent assets/textures/skybox,True
+- ScriptComponent assets/scripts/moveInCircle.lua,True,speed:F32:0.0,radius:F32:30.0,theta:F32:0.0
+
+Floor
+- Transform (0.0 -10.0 0.0),(-PIDIV2 0.0 0.0),(10.0 20.0 1.0)
+- RenderingComponent Engine:Quad,
+					 assets/shaders/texture,
+					 (DiffuseMap:Texture2D:assets/textures/floor_diffuse.dds),
+					 (SpecularMap:Texture2D:assets/textures/defaultspec.dds),
+					 (Scale:Vector2f:(2.0 2.0))
+
+Sphere
+- Transform (0.0 0.0 0.0),(0.0 0.0 0.0),(1.0 1.0 1.0)
+- RenderingComponent Engine:Sphere(2.0 32 32),
+					 assets/shaders/texture,
+					 (DiffuseMap:Texture2D:assets/textures/marble.jpg),
+					 (SpecularMap:Texture2D:assets/textures/defaultspec.dds),
+					 (Scale:Vector2f:(1.0 1.0))
+
+Wall_Left
+- Transform (0.0 0.0 -20.0),(0.0 PI 0.0),(10.0 10.0 1.0)
+- RenderingComponent Engine:Quad,
+					 assets/shaders/texture,
+					 (DiffuseMap:Texture2D:assets/textures/bricks_diffuse.dds),
+					 (SpecularMap:Texture2D:assets/textures/defaultspec.dds),
+					 (Scale:Vector2f:(1.0 1.0))
+
+Wall_Back
+- Transform (-10.0 0.0 0.0),(0.0 PIDIV2 0.0),(20.0 10.0 1.0)
+- RenderingComponent Engine:Quad,
+					 assets/shaders/texture,
+					 (DiffuseMap:Texture2D:assets/textures/bricks_diffuse.dds),
+					 (SpecularMap:Texture2D:assets/textures/defaultspec.dds),
+					 (Scale:Vector2f:(2.0 1.0))	
+
+Wall_Right
+- Transform (0.0 0.0 20.0),(0.0 0.0 0.0),(10.0 10.0 1.0)
+- RenderingComponent Engine:Quad,
+					 assets/shaders/texture,
+					 (DiffuseMap:Texture2D:assets/textures/bricks_diffuse.dds),
+					 (SpecularMap:Texture2D:assets/textures/defaultspec.dds),
+					 (Scale:Vector2f:(1.0 1.0))
+
+Light
+- Transform (0.0 0.0 0.0),(0.0 0.0 0.0),(1.0 1.0 1.0)
+- ParallelLightComponent (-10.0 -20.0 -10.0),(0.1 0.1 0.1 1.0),Grey,White,1.0
+

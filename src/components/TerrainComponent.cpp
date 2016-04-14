@@ -147,7 +147,7 @@ namespace CS418
 		F32 size = StringToFloat(arguments.at(0));
 		F32 maxHeight = StringToFloat(arguments.at(1));
 
-		ShaderProgram * pColorShader = pAM->LoadShader("assets/shaders/color.vert", "assets/shaders/color.frag");
+		ShaderProgram * pColorShader = pAM->LoadShader("assets/shaders/color");
 
 		TerrainComponent * pTC = new TerrainComponent;
 		pTC->Initialize((U32)size, (U32)maxHeight, pColorShader);

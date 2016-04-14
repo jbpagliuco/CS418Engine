@@ -112,6 +112,7 @@ namespace CS418
 		friend Matrix MatrixIdentity();
 		friend Matrix MatrixLookAtLH(const Vector &position, const Vector &target, const Vector &up);
 		friend Matrix MatrixPerspectiveFOVLH(F32 fieldOfView, F32 aspectRatio, F32 near, F32 far);
+		friend Matrix MatrixOrthoLH(F32 width, F32 height, F32 near, F32 far);
 		friend Matrix MatrixTranslation(const Vector &translation);
 		friend Matrix MatrixScaling(const Vector &scaling);
 		friend Matrix MatrixRotationX(F32 angle);
@@ -129,6 +130,8 @@ namespace CS418
 	extern Matrix MatrixLookAtLH(const Vector &position, const Vector &target, const Vector &up);
 	// Creates a left handed perspective field of view matrix.
 	extern Matrix MatrixPerspectiveFOVLH(F32 fieldOfView, F32 aspectRatio, F32 near, F32 far);
+	// Creates a left handed perspective field of view matrix.
+	extern Matrix MatrixOrthoLH(F32 width, F32 height, F32 near, F32 far);
 
 	// Creates a translation matrix.
 	extern Matrix MatrixTranslation(const Vector &translation);

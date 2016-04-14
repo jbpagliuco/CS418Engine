@@ -4,15 +4,15 @@
 
 namespace CS418
 {
-	ShaderProgram * LoadShader(const std::string &vertexShaderFilepath, const std::string &fragShaderFilepath)
+	ShaderProgram * LoadShader(const std::string &shaderFolder)
 	{
 		FileReader fileReader;
 		
-		fileReader.Open(vertexShaderFilepath);
+		fileReader.Open(shaderFolder + "/vertexShader.vert");
 		std::string vertexShaderData = fileReader.FileAsString();
 		fileReader.Close();
 		
-		fileReader.Open(fragShaderFilepath);
+		fileReader.Open(shaderFolder + "/fragShader.frag");
 		std::string fragShaderData = fileReader.FileAsString();
 		fileReader.Close();
 
