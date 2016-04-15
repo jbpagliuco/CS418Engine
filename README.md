@@ -1,32 +1,6 @@
-CS 418 - MP3 Teapot
-
-Joe Pagliuco (jpagli2)
-
-
 ***********************************************************************************************
 *** DISCLAIMER: THIS PROJECT ONLY WORKS ON WINDOWS MACHINES ***********************************
 ***********************************************************************************************
-
-Video Link: https://www.youtube.com/watch?v=1jn3LBo4Y8E
-
-
-What this project is:
-	- This MP is built on top of a game engine I've been working on over this semester. The repository is located on my
-		github: https://github.com/jbpagliuco/CS418Engine
-	- The only files necessary to create specifically this MP (not the engine) are in the assets folder, namely scripts/cameraMovement.lua and scenes/scene.cs418scene
-	- The engine itself contains all OpenGL drawing calls, this can be seen in graphics/Renderer.cpp
-	- Any project using the current state of the engine can be creating using lua scripts, and a scene file; No recompilation is required.
-	- The .exe file to run is called Engine.exe
-	
-	
-	
-MP Controls and Configuration:
-	- You can rotate the teapot by holding the space key.
-	- The camera will move in a circle about the origin by holding the left/right arrow keys
-	- The light source (Cube) can be moved up and down with the w/s keys
-	- The teapot can be lowered or raised by using the q/e keys
-	- The camera's radius can be changed by using the up/arrow keys
-
 
 Basic Information:
 	1. PLATFORM: Windows
