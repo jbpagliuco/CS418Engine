@@ -120,11 +120,6 @@ namespace CS418
 			offset += (4 * sizeof(F32));
 			count++;
 		}
-
-		glGenVertexArrays(1, &m_posInputLayout);
-		glBindVertexArray(m_posInputLayout);
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, vertexStride, 0);
 		
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);

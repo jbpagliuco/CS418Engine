@@ -22,7 +22,6 @@ namespace CS418
 		U32 m_VB;
 		U32 m_IB;
 		U32 m_inputLayout;
-		U32 m_posInputLayout; // For shadows
 		U32 m_indicesCount;
 
 		Material m_material;

@@ -39,7 +39,7 @@ namespace CS418
 		glViewport(0, 0, dim.X, dim.Y);
 
 		m_shadowShader = *(pAM->LoadShader("assets/shaders/shadow"));
-		m_shadowBuffer.Initialize(1024, 1024, true);
+		m_shadowBuffer.Initialize(2048, 2048, true);
 
 		m_isPostProcessing = gfxManager->IsPostProcessing();
 		if (m_isPostProcessing)
@@ -99,46 +99,34 @@ namespace CS418
 			CameraComponent* pCamera = m_pScene->GetCamera();
 			const std::vector<LightComponent*> lights = m_pScene->GetLights();
 
-			//drawSceneFromLight(gameObjects, lights.at(0)->m_light);
+			drawSceneFromLight(gameObjects, lights.at(0)->m_light);
+
+			Viewport vp = pCamera->GetViewport();
+			glViewport((I32)vp.TopLeftX, (I32)vp.TopLeftY, (U32)vp.Width, (U32)vp.Height);
+			if (m_isPostProcessing)
+			{
+				glBindFramebuffer(GL_FRAMEBUFFER, m_post.GetID());
+			}
+			else
+			{
+				glBindFramebuffer(GL_FRAMEBUFFER, 0);
+			}
 
 			drawScene(gameObjects, pCamera, lights);
 
 			if (m_isPostProcessing)
 			{
-				Viewport vp = pCamera->GetViewport();
-				glViewport((I32)vp.TopLeftX, (I32)vp.TopLeftY, (U32)vp.Width, (U32)vp.Height);
-
 				glBindFramebuffer(GL_FRAMEBUFFER, 0);
 				glDisable(GL_DEPTH_TEST);
 
 				glUseProgram(m_postRC.m_material.GetShaderProgram()->m_shaderProgram);
 				glActiveTexture(GL_TEXTURE0);
-				//glBindTexture(GL_TEXTURE_2D, m_post.GetColorMap());
-				glBindTexture(GL_TEXTURE_2D, m_post.GetDepthMap());
+				glBindTexture(GL_TEXTURE_2D, m_post.GetColorMap());
 
 				glBindVertexArray(m_postRC.m_inputLayout);
 				glDrawElements(GL_TRIANGLES, m_postRC.m_indicesCount, GL_UNSIGNED_INT, 0);
 
 				glEnable(GL_DEPTH_TEST);
-
-				int x = 1920;
-				int y = 1080;
-				long imageSize = x * y * 3;
-				unsigned char *data = new unsigned char[imageSize];
-				glReadPixels(0, 0, x, y, GL_BGR, GL_UNSIGNED_BYTE, data);// split x and y sizes into bytes
-				glGetTextureImage(m_post.GetDepthMap(), 0.0f, GL_BGR, GL_UNSIGNED_BYTE, imageSize, data);
-				int xa = x % 256;
-				int xb = (x - xa) / 256;int ya = y % 256;
-				int yb = (y - ya) / 256;//assemble the header
-				unsigned char header[18] = { 0,0,2,0,0,0,0,0,0,0,0,0,(char)xa,(char)xb,(char)ya,(char)yb,24,0 };
-				// write header and data to file
-				std::fstream File("test.tga", std::ios::out | std::ios::binary);
-				File.write(reinterpret_cast<char *>(header), sizeof(char) * 18);
-				File.write(reinterpret_cast<char *>(data), sizeof(char)*imageSize);
-				File.close();
-
-				delete[] data;
-				data = NULL;
 			}
 		}
 	}
@@ -168,6 +156,13 @@ namespace CS418
 
 	void Renderer::drawRenderingComponents(GameObject * pGO, CameraComponent * pCamera, Matrix &mViewProj, std::vector<LightComponent*> lights)const
 	{
+		Matrix lightView, lightProj;
+		Light light = lights.at(0)->m_light;
+		Vector lightPos = Vector(light.direction).negate();
+		lightPos = Vector(lightPos.getX(), lightPos.getY(), lightPos.getZ(), 1.0f);
+		lightView = MatrixLookAtLH(lightPos, Vector(0.0f, 0.0f, 0.0f, 1.0f), Vector(0.0f, 1.0f, 0.0f, 0.0f));
+		lightProj = MatrixOrthoLH(100.0f, 100.0f, 0.1f, 100.0f);
+
 		const std::vector<RenderingComponent*> &renderables = pGO->GetComponentsOfType<RenderingComponent>("RenderingComponent");
 
 		for (std::vector<RenderingComponent*>::const_iterator renderable = renderables.begin(); renderable != renderables.end(); renderable++)
@@ -182,6 +177,10 @@ namespace CS418
 			pRC->m_material.SetMatrix4x4("_World", m);
 			pRC->m_material.SetVec3f("_CameraPos", pCamera->m_pGameObject->GetTransform()->Position);
 			pRC->m_material.SetU32("_NumLights", lights.size());
+			Texture2DGL shadowmap;
+			shadowmap.m_id = m_shadowBuffer.GetDepthMap();
+			pRC->m_material.SetTexture2D("_ShadowMap", shadowmap);
+			pRC->m_material.SetMatrix4x4("_LightSpaceMatrix", lightProj * lightView);
 			
 			for (size_t i = 0; i < lights.size(); i++)
 				pRC->m_material.SetLight("_Lights[" + std::to_string(i) + "]", lights.at(i)->m_light);
@@ -244,7 +243,7 @@ namespace CS418
 		Vector lightPos = Vector(light.direction).negate();
 		lightPos = Vector(lightPos.getX(), lightPos.getY(), lightPos.getZ(), 1.0f);
 		lightView = MatrixLookAtLH(lightPos, Vector(0.0f, 0.0f, 0.0f, 1.0f), Vector(0.0f, 1.0f, 0.0f, 0.0f));
-		lightProj = MatrixOrthoLH(10.0f, 10.0f, 0.1f, 100.0f);
+		lightProj = MatrixOrthoLH(100.0f, 100.0f, 0.1f, 100.0f);
 		glUseProgram(m_shadowShader.m_shaderProgram);
 		m_shadowShader.SetMatrix4x4("_LightSpaceMatrix", lightProj * lightView);
 
@@ -254,7 +253,7 @@ namespace CS418
 		glDepthFunc(GL_LESS);
 		glCullFace(GL_BACK);
 
-		glViewport(0.0f, 0.0f, 1024.0f, 1024.0f);
+		glViewport(0.0f, 0.0f, 2048, 2048);
 		glBindFramebuffer(GL_FRAMEBUFFER, m_shadowBuffer.GetID());
 		glClear(GL_DEPTH_BUFFER_BIT);
 

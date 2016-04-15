@@ -19,5 +19,5 @@ void main()
 {
     float c = LinearizeDepth(vout_texCoords);
     fout_color = vec4(c, c, c, 1.0);
-	//fout_color = texture(_DepthMap, vout_texCoords);
+	fout_color = texture(_DepthMap, vout_texCoords);
 }

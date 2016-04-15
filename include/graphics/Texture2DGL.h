@@ -48,5 +48,7 @@ namespace CS418
 
 	private:
 		U32 m_id;
+
+		friend class Renderer;
 	};
 }
