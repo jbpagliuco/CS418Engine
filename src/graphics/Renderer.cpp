@@ -112,7 +112,6 @@ namespace CS418
 				glUseProgram(m_postRC.m_material.GetShaderProgram()->m_shaderProgram);
 				glActiveTexture(GL_TEXTURE0);
 				//glBindTexture(GL_TEXTURE_2D, m_post.GetColorMap());
-				//glActiveTexture(GL_TEXTURE0);
 				glBindTexture(GL_TEXTURE_2D, m_post.GetDepthMap());
 
 				glBindVertexArray(m_postRC.m_inputLayout);
