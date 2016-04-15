@@ -37,7 +37,7 @@ namespace CS418
 		glViewport(0, 0, dim.X, dim.Y);
 
 		m_shadowShader = *(pAM->LoadShader("assets/shaders/shadow"));
-		//m_shadowBuffer.Initialize(1024, 1024, true);
+		m_shadowBuffer.Initialize(1024, 1024, true);
 
 		m_isPostProcessing = gfxManager->IsPostProcessing();
 		if (m_isPostProcessing)
@@ -78,6 +78,8 @@ namespace CS418
 
 		if (m_isPostProcessing)
 			m_post.Resize(width, height);
+
+		m_shadowBuffer.Resize(width, height);
 	}
 
 	void Renderer::Draw()
@@ -95,18 +97,23 @@ namespace CS418
 			CameraComponent* pCamera = m_pScene->GetCamera();
 			const std::vector<LightComponent*> lights = m_pScene->GetLights();
 
-			drawScene(gameObjects, pCamera, lights);
+			drawSceneFromLight(gameObjects, lights.at(0)->m_light);
+
+			//drawScene(gameObjects, pCamera, lights);
 
 			if (m_isPostProcessing)
 			{
+				Viewport vp = pCamera->GetViewport();
+				glViewport((I32)vp.TopLeftX, (I32)vp.TopLeftY, (U32)vp.Width, (U32)vp.Height);
+
 				glBindFramebuffer(GL_FRAMEBUFFER, 0);
 				glDisable(GL_DEPTH_TEST);
 
 				glUseProgram(m_postRC.m_material.GetShaderProgram()->m_shaderProgram);
-				//glActiveTexture(GL_TEXTURE0);
-				//glBindTexture(GL_TEXTURE_2D, m_post.GetColorMap());
 				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, m_post.GetDepthMap());
+				//glBindTexture(GL_TEXTURE_2D, m_post.GetColorMap());
+				//glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, m_shadowBuffer.GetDepthMap());
 
 				glBindVertexArray(m_postRC.m_inputLayout);
 				glDrawElements(GL_TRIANGLES, m_postRC.m_indicesCount, GL_UNSIGNED_INT, 0);
@@ -214,7 +221,9 @@ namespace CS418
 	void Renderer::drawSceneFromLight(const std::vector<GameObject*> gameObjects, const Light &light)
 	{
 		Matrix lightView, lightProj;
-		lightView = MatrixLookAtLH(Vector(light.direction).negate(), Vector(0.0f, 0.0f, 0.0f, 1.0f), Vector(0.0f, 1.0f, 0.0f, 0.0f));
+		Vector lightPos = Vector(light.direction).negate();
+		lightPos = Vector(lightPos.getX(), lightPos.getY(), lightPos.getZ(), 1.0f);
+		lightView = MatrixLookAtLH(lightPos, Vector(0.0f, 0.0f, 0.0f, 1.0f), Vector(0.0f, 1.0f, 0.0f, 0.0f));
 		lightProj = MatrixOrthoLH(10.0f, 10.0f, 0.1f, 100.0f);
 		glUseProgram(m_shadowShader.m_shaderProgram);
 		m_shadowShader.SetMatrix4x4("_LightSpaceMatrix", lightProj * lightView);
@@ -237,12 +246,11 @@ namespace CS418
 			for (std::vector<RenderingComponent*>::const_iterator renderable = renderables.begin(); renderable != renderables.end(); renderable++)
 			{
 				RenderingComponent *pRC = (*renderable);
-				glUseProgram(pRC->m_material.GetShaderProgram()->m_shaderProgram);
 
 				Matrix m = pGO->GetTransform()->CreateWorldMatrix();
 				m_shadowShader.SetMatrix4x4("_World", m);
 
-				glBindVertexArray(pRC->m_inputLayout);
+				glBindVertexArray(pRC->m_posInputLayout);
 				glDrawElements(GL_TRIANGLES, pRC->m_indicesCount, GL_UNSIGNED_INT, 0);
 			}
 		}

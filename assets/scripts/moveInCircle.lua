@@ -34,6 +34,6 @@ function Update(gameTimer)
 	local up = Vector3f(0.0, 1.0, 0.0)
 	camera:SetViewMatrix(Vector.FromVector3f(pos), Vector.FromVector3f(target), Vector.FromVector3f(up))
 	
-	print(pos.x, ", ", pos.y, ", ", pos.z);
+	--print(pos.x, ", ", pos.y, ", ", pos.z);
 	
 end

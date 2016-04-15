@@ -4,6 +4,11 @@
 
 namespace CS418
 {
+	FrameBuffer::FrameBuffer()
+	{
+		m_bufferID = m_colorMapID = m_depthMapID = -1;
+	}
+
 	FrameBuffer::~FrameBuffer()
 	{
 		glDeleteFramebuffers(1, &m_bufferID);
@@ -29,9 +34,11 @@ namespace CS418
 
 	void FrameBuffer::Resize(U32 width, U32 height)
 	{
-		glDeleteFramebuffers(1, &m_bufferID);
-
-		Initialize(width, height, m_depthOnly);
+		if (m_bufferID != -1)
+		{
+			glDeleteFramebuffers(1, &m_bufferID);
+			Initialize(width, height, m_depthOnly);
+		}
 	}
 
 	U32 FrameBuffer::GetID()const

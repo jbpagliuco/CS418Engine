@@ -7,6 +7,7 @@ namespace CS418
 	class FrameBuffer
 	{
 	public:
+		FrameBuffer();
 		virtual ~FrameBuffer();
 
 		void Initialize(U32 width, U32 height, bool depthOnly);
