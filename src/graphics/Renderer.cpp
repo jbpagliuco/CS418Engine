@@ -97,9 +97,9 @@ namespace CS418
 			CameraComponent* pCamera = m_pScene->GetCamera();
 			const std::vector<LightComponent*> lights = m_pScene->GetLights();
 
-			drawSceneFromLight(gameObjects, lights.at(0)->m_light);
+			//drawSceneFromLight(gameObjects, lights.at(0)->m_light);
 
-			//drawScene(gameObjects, pCamera, lights);
+			drawScene(gameObjects, pCamera, lights);
 
 			if (m_isPostProcessing)
 			{
@@ -113,7 +113,7 @@ namespace CS418
 				glActiveTexture(GL_TEXTURE0);
 				//glBindTexture(GL_TEXTURE_2D, m_post.GetColorMap());
 				//glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, m_shadowBuffer.GetDepthMap());
+				glBindTexture(GL_TEXTURE_2D, m_post.GetDepthMap());
 
 				glBindVertexArray(m_postRC.m_inputLayout);
 				glDrawElements(GL_TRIANGLES, m_postRC.m_indicesCount, GL_UNSIGNED_INT, 0);
@@ -250,7 +250,7 @@ namespace CS418
 				Matrix m = pGO->GetTransform()->CreateWorldMatrix();
 				m_shadowShader.SetMatrix4x4("_World", m);
 
-				glBindVertexArray(pRC->m_posInputLayout);
+				glBindVertexArray(pRC->m_inputLayout);
 				glDrawElements(GL_TRIANGLES, pRC->m_indicesCount, GL_UNSIGNED_INT, 0);
 			}
 		}
