@@ -1,4 +1,4 @@
-#include "components/LightingComponent.h"
+#include "components/LightComponent.h"
 
 #include "util/Convert.h"
 
@@ -19,9 +19,14 @@ namespace CS418
 		m_light = light;
 	}
 
-	Light & LightComponent::GetLight()
+	Light LightComponent::GetLight()const
 	{
 		return m_light;
+	}
+
+	void LightComponent::SetLight(Light light)
+	{
+		m_light = light;
 	}
 
 	LightComponent * CreateParallelLight(std::vector<std::string> arguments)

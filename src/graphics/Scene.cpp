@@ -19,7 +19,21 @@ namespace CS418
 
 	const std::vector<GameObject*> & Scene::GetVisibleGameObjects()const
 	{
+		// Kappa
+		// TODO:
+		// Make this actually return only visible objects
 		return m_gameObjects;
+	}
+
+	GameObject * Scene::GetGameObjectByName(const std::string &name)const
+	{
+		for (GO_Const_It it = m_gameObjects.begin(); it != m_gameObjects.end(); it++)
+		{
+			if ((*it)->GetName() == name)
+				return (*it);
+		}
+
+		return nullptr;
 	}
 
 	void Scene::AddGameObject(GameObject *gameObject)
@@ -50,6 +64,7 @@ namespace CS418
 	void Scene::Update(const GameTimer *gameTimer)
 	{
 		m_pLuaManager->Push("camera", *(m_pCamera));
+		m_pLuaManager->Push("scene", *this);
 
 		for (GO_It it = m_gameObjects.begin(); it != m_gameObjects.end(); it++)
 		{

@@ -11,7 +11,7 @@
 #include "components/CameraComponent.h"
 #include "components/SkyboxComponent.h"
 #include "components/TerrainComponent.h"
-#include "components/LightingComponent.h"
+#include "components/LightComponent.h"
 
 #include "graphics/Viewport.h"
 

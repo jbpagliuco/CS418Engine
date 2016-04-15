@@ -24,6 +24,11 @@ namespace CS418
 			FreeAlignedMemory(m_pTransform);
 	}
 
+	std::string GameObject::GetName()const
+	{
+		return m_name;
+	}
+
 	void GameObject::AddComponent(GameComponent *component)
 	{
 		m_pComponents.push_back(component);

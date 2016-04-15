@@ -3,7 +3,7 @@
 #include "game/GameObject.h"
 #include "util/GameTimer.h"
 #include "components/CameraComponent.h"
-#include "components/LightingComponent.h"
+#include "components/LightComponent.h"
 
 #include "engine/LuaManager.h"
 
@@ -17,6 +17,7 @@ namespace CS418
 		virtual void Initialize(LuaManager * pLuaManager);
 
 		virtual const std::vector<GameObject*> & GetVisibleGameObjects()const;
+		virtual GameObject * GetGameObjectByName(const std::string &name)const;
 
 		virtual void AddGameObject(GameObject *gameObject);
 		virtual void SetCamera(CameraComponent * pCameraComponent);

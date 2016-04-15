@@ -99,6 +99,9 @@ namespace CS418
 			CameraComponent* pCamera = m_pScene->GetCamera();
 			const std::vector<LightComponent*> lights = m_pScene->GetLights();
 
+			// TODO:
+			// Have variable in light that defines whether or not it casts shadows
+			// Allow for multiple lights to cast shadows
 			drawSceneFromLight(gameObjects, lights.at(0)->m_light);
 
 			Viewport vp = pCamera->GetViewport();
@@ -117,11 +120,17 @@ namespace CS418
 			if (m_isPostProcessing)
 			{
 				glBindFramebuffer(GL_FRAMEBUFFER, 0);
+				glClear(GL_COLOR_BUFFER_BIT);
 				glDisable(GL_DEPTH_TEST);
 
+				Texture2DGL cmap, dmap;
+				cmap.m_id = m_post.GetColorMap();
+				dmap.m_id = m_post.GetDepthMap();
+
 				glUseProgram(m_postRC.m_material.GetShaderProgram()->m_shaderProgram);
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, m_post.GetColorMap());
+				m_postRC.m_material.SetTexture2D("_ColorMap", cmap);
+
+				m_postRC.m_material.setValuesInShader();
 
 				glBindVertexArray(m_postRC.m_inputLayout);
 				glDrawElements(GL_TRIANGLES, m_postRC.m_indicesCount, GL_UNSIGNED_INT, 0);
@@ -156,6 +165,9 @@ namespace CS418
 
 	void Renderer::drawRenderingComponents(GameObject * pGO, CameraComponent * pCamera, Matrix &mViewProj, std::vector<LightComponent*> lights)const
 	{
+		// TODO:
+		// Make this more flexible, actually have a position for it, so it doesn't always have to be looking at (0, 0, 0)
+		// And the other hard coded values..
 		Matrix lightView, lightProj;
 		Light light = lights.at(0)->m_light;
 		Vector lightPos = Vector(light.direction).negate();

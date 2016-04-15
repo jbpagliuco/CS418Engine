@@ -10,7 +10,9 @@ using namespace luabridge;
 #include "components/Behaviour.h"
 #include "components/ScriptComponent.h"
 #include "components/CameraComponent.h"
+#include "components/LightComponent.h"
 
+#include "graphics/Scene.h"
 #include "components/RenderingComponent.h"
 
 #include "util/GameTimer.h"
@@ -186,6 +188,24 @@ namespace CS418
 			.endClass();
 
 		getGlobalNamespace(m_pLuaState)
+			.beginClass<Light>("Light")
+				.addData("ambient", &Light::ambient)
+				.addData("diffuse", &Light::diffuse)
+				.addData("specular", &Light::specular)
+				.addData("position", &Light::position)
+				.addData("direction", &Light::direction)
+				.addData("range", &Light::range)
+				.addData("intensity", &Light::intensity)
+				.addData("att", &Light::att)
+			.endClass();
+
+		getGlobalNamespace(m_pLuaState)
+			.beginClass<Scene>("Scene")
+				.addFunction("GetGameObjectByName", &Scene::GetGameObjectByName)
+			.endClass();
+
+
+		getGlobalNamespace(m_pLuaState)
 			.beginClass<GameComponent>("GameComponent")
 			.endClass()
 			.beginClass<GameObject>("GameObject")
@@ -195,6 +215,7 @@ namespace CS418
 
 				.addFunction("GetRenderingComponents", &GameObject::Lua_GetComponentsOfType<RenderingComponent>)
 				.addFunction("GetScriptComponents", &GameObject::Lua_GetComponentsOfType<ScriptComponent>)
+				.addFunction("GetLightComponents", &GameObject::Lua_GetComponentsOfType<LightComponent>)
 
 				.addProperty("transform", &GameObject::Lua_GetTransform, &GameObject::Lua_SetTransform)
 			.endClass()
@@ -214,6 +235,9 @@ namespace CS418
 				.addProperty("right", &CameraComponent::GetRight)
 				.addProperty("rotationMatrix", &CameraComponent::GetRotationMatrix)
 				.addFunction("SetViewMatrix", &CameraComponent::SetViewMatrix)
+			.endClass()
+			.deriveClass<LightComponent, Behaviour>("LightComponent")
+				.addProperty("light", &LightComponent::GetLight, &LightComponent::SetLight)
 			.endClass();
 
 		getGlobalNamespace(m_pLuaState)

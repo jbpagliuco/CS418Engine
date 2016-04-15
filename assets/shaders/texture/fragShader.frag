@@ -39,6 +39,10 @@ uniform sampler2D DiffuseMap;
 uniform sampler2D SpecularMap;
 uniform vec2 Scale;
 
+const float SMAP_SIZE = 2048.0f;
+const float SMAP_DX = 1.0f / SMAP_SIZE;
+const float SMAP_EPSILON = 0.01f;
+
 float CalcShadowFactor(vec4 fragPosLightSpace)
 {
 	vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
@@ -55,16 +59,16 @@ float CalcShadowFactor(vec4 fragPosLightSpace)
 	float depth = projCoords.z;
 	
 	float s0 = texture(_ShadowMap, projCoords.xy).r;
-	float s1 = texture(_ShadowMap, projCoords.xy + vec2(1.0f / 1024.0f, 0.0f)).r;
-	float s2 = texture(_ShadowMap, projCoords.xy + vec2(0.0f, 1.0f / 1024.0f)).r;
-	float s3 = texture(_ShadowMap, projCoords.xy + vec2(1.0f / 1024.0f, 1.0f / 1024.0f)).r;
+	float s1 = texture(_ShadowMap, projCoords.xy + vec2(SMAP_DX, 0.0f)).r;
+	float s2 = texture(_ShadowMap, projCoords.xy + vec2(0.0f, SMAP_DX)).r;
+	float s3 = texture(_ShadowMap, projCoords.xy + vec2(SMAP_DX, SMAP_DX)).r;
 	
-	float result0 = float(depth <= (s0 + 0.01f));
-	float result1 = float(depth <= (s1 + 0.01f));
-	float result2 = float(depth <= (s2 + 0.01f));
-	float result3 = float(depth <= (s3 + 0.01f));
+	float result0 = float(depth <= (s0 + SMAP_EPSILON));
+	float result1 = float(depth <= (s1 + SMAP_EPSILON));
+	float result2 = float(depth <= (s2 + SMAP_EPSILON));
+	float result3 = float(depth <= (s3 + SMAP_EPSILON));
 	
-	vec2 texelPos = 1024.0f * projCoords.xy;
+	vec2 texelPos = SMAP_SIZE * projCoords.xy;
 	vec2 t = fract(texelPos);
 	
 	float shadow = mix(mix(result0, result1, t.x),

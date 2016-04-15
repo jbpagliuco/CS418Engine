@@ -133,7 +133,7 @@
     <ClInclude Include="include\components\Behaviour.h" />
     <ClInclude Include="include\components\CameraComponent.h" />
     <ClInclude Include="include\components\GameComponent.h" />
-    <ClInclude Include="include\components\LightingComponent.h" />
+    <ClInclude Include="include\components\LightComponent.h" />
     <ClInclude Include="include\components\RenderingComponent.h" />
     <ClInclude Include="include\components\ScriptComponent.h" />
     <ClInclude Include="include\components\SkyboxComponent.h" />

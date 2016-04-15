@@ -5,7 +5,7 @@ Main_Camera
 - ScriptComponent assets/scripts/moveInCircle.lua,True,speed:F32:0.0,radius:F32:30.0,theta:F32:0.0
 
 Floor
-- Transform (0.0 -10.0 0.0),(-PIDIV2 0.0 0.0),(10.0 20.0 1.0)
+- Transform (0.0 -10.0 0.0),(-PIDIV2 0.0 0.0),(15.0 30.0 1.0)
 - RenderingComponent Engine:Quad,
 					 assets/shaders/texture,
 					 (DiffuseMap:Texture2D:assets/textures/floor_diffuse.dds),
@@ -20,8 +20,24 @@ Sphere
 					 (SpecularMap:Texture2D:assets/textures/defaultspec.dds),
 					 (Scale:Vector2f:(1.0 1.0))
 
+Sphere2
+- Transform (5.0 -3.0 10.0),(0.0 0.0 0.0),(1.0 1.0 1.0)
+- RenderingComponent Engine:Sphere(2.0 32 32),
+					 assets/shaders/texture,
+					 (DiffuseMap:Texture2D:assets/textures/marble.jpg),
+					 (SpecularMap:Texture2D:assets/textures/defaultspec.dds),
+					 (Scale:Vector2f:(1.0 1.0))
+
+Sphere3
+- Transform (-3.0 -3.0 -5.0),(0.0 0.0 0.0),(1.0 1.0 1.0)
+- RenderingComponent Engine:Sphere(2.0 32 32),
+					 assets/shaders/texture,
+					 (DiffuseMap:Texture2D:assets/textures/marble.jpg),
+					 (SpecularMap:Texture2D:assets/textures/defaultspec.dds),
+					 (Scale:Vector2f:(1.0 1.0))
+
 Wall_Left
-- Transform (0.0 0.0 -20.0),(0.0 PI 0.0),(10.0 10.0 1.0)
+- Transform (0.0 5.0 -30.0),(0.0 PI 0.0),(15.0 15.0 1.0)
 - RenderingComponent Engine:Quad,
 					 assets/shaders/texture,
 					 (DiffuseMap:Texture2D:assets/textures/bricks_diffuse.dds),
@@ -29,7 +45,7 @@ Wall_Left
 					 (Scale:Vector2f:(1.0 1.0))
 
 Wall_Back
-- Transform (-10.0 0.0 0.0),(0.0 PIDIV2 0.0),(20.0 10.0 1.0)
+- Transform (-15.0 5.0 0.0),(0.0 PIDIV2 0.0),(30.0 15.0 1.0)
 - RenderingComponent Engine:Quad,
 					 assets/shaders/texture,
 					 (DiffuseMap:Texture2D:assets/textures/bricks_diffuse.dds),
@@ -37,7 +53,7 @@ Wall_Back
 					 (Scale:Vector2f:(2.0 1.0))	
 
 Wall_Right
-- Transform (0.0 0.0 20.0),(0.0 0.0 0.0),(10.0 10.0 1.0)
+- Transform (0.0 5.0 30.0),(0.0 0.0 0.0),(15.0 15.0 1.0)
 - RenderingComponent Engine:Quad,
 					 assets/shaders/texture,
 					 (DiffuseMap:Texture2D:assets/textures/bricks_diffuse.dds),

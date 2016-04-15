@@ -18,6 +18,8 @@ namespace CS418
 		GameObject(std::string name);
 		virtual ~GameObject();
 
+		std::string GetName()const;
+
 		void AddComponent(GameComponent *component);
 		void RemoveComponent(GameComponent *component);
 
