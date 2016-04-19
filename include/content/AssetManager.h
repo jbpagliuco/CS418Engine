@@ -10,7 +10,7 @@
 #include "graphics/Scene.h"
 #include "graphics/Mesh.h"
 #include "graphics/ShaderProgram.h"
-#include "graphics/Texture2D.h"
+#include "graphics/textures/Texture2D.h"
 
 #include "engine/LuaManager.h"
 #include "graphics/GraphicsManager.h"

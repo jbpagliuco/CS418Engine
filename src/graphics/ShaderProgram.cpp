@@ -27,80 +27,97 @@ namespace CS418
 
 	void ShaderProgram::SetU32(const std::string &name, U32 value)
 	{
-		if (m_uniforms.find(name) != m_uniforms.end())
-			glUniform1i(m_uniforms.find(name)->second, value);
+		std::string uniName = StringWithoutArray(name);
+		if (m_uniforms.find(uniName) != m_uniforms.end())
+			glUniform1i(m_uniforms.find(uniName)->second + StringArrayIndex(name), value);
 	}
 
 	void ShaderProgram::SetF32(const std::string &name, F32 value)
 	{
-		if (m_uniforms.find(name) != m_uniforms.end())
-			glUniform1f(m_uniforms.find(name)->second, value);
+		std::string uniName = StringWithoutArray(name);
+		if (m_uniforms.find(uniName) != m_uniforms.end())
+			glUniform1f(m_uniforms.find(uniName)->second + StringArrayIndex(name), value);
 	}
 
 	void ShaderProgram::SetVec2f(const std::string &name, VECTOR2F value)
 	{
-		if (m_uniforms.find(name) != m_uniforms.end())
-			glUniform2f(m_uniforms.find(name)->second, value.x, value.y);
+		std::string uniName = StringWithoutArray(name);
+		if (m_uniforms.find(uniName) != m_uniforms.end())
+			glUniform2f(m_uniforms.find(uniName)->second + StringArrayIndex(name), value.x, value.y);
 	}
 
 	void ShaderProgram::SetVec3f(const std::string &name, VECTOR3F value)
 	{
-		if (m_uniforms.find(name) != m_uniforms.end())
-			glUniform3f(m_uniforms.find(name)->second, value.x, value.y, value.z);
+		std::string uniName = StringWithoutArray(name);
+		if (m_uniforms.find(uniName) != m_uniforms.end())
+			glUniform3f(m_uniforms.find(uniName)->second + StringArrayIndex(name), value.x, value.y, value.z);
 	}
 
 	void ShaderProgram::SetVec4f(const std::string &name, VECTOR4F value)
 	{
-		if (m_uniforms.find(name) != m_uniforms.end())
-			glUniform4f(m_uniforms.find(name)->second, value.x, value.y, value.z, value.w);
+		std::string uniName = StringWithoutArray(name);
+		if (m_uniforms.find(uniName) != m_uniforms.end())
+			glUniform4f(m_uniforms.find(uniName)->second + StringArrayIndex(name), value.x, value.y, value.z, value.w);
 	}
 
 	void ShaderProgram::SetMatrix4x4(const std::string &name, const Matrix &value)
 	{
-		if (m_uniforms.find(name) != m_uniforms.end())
-			glUniformMatrix4fv(m_uniforms.find(name)->second, 1, GL_FALSE, &(value.AsFloatArray().at(0)));
+		std::string uniName = StringWithoutArray(name);
+		if (m_uniforms.find(uniName) != m_uniforms.end())
+			glUniformMatrix4fv(m_uniforms.find(uniName)->second + StringArrayIndex(name), 1, GL_FALSE, &(value.AsFloatArray().at(0)));
 	}
 
 	void ShaderProgram::SetTexture2D(const std::string &name, const Texture2DGL &tex2D, U32 index)
 	{
-		glActiveTexture(GL_TEXTURE0 + index);
-		glBindTexture(GL_TEXTURE_2D, tex2D.GetID());
-		if (m_uniforms.find(name) != m_uniforms.end())
-			glUniform1i(m_uniforms.find(name)->second, index);
+		std::string uniName = StringWithoutArray(name);
+		if (m_uniforms.find(uniName) != m_uniforms.end() && m_uniforms.find(uniName)->second != -1)
+		{
+			U32 arrayIndex = StringArrayIndex(name);
+			glActiveTexture(GL_TEXTURE0 + index);
+			glBindTexture(GL_TEXTURE_2D, tex2D.GetID());
+			U32 s = glGetUniformLocation(m_shaderProgram, name.c_str());
+			glUniform1i(s, index);
+		}
 	}
 
 	void ShaderProgram::SetTextureCube(const std::string &name, const TextureCube &texCube, U32 index)
 	{
-		glActiveTexture(GL_TEXTURE0 + index);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, texCube.GetID());
-		if (m_uniforms.find(name) != m_uniforms.end())
-			glUniform1i(m_uniforms.find(name)->second, index);
+		std::string uniName = StringWithoutArray(name);
+		if (m_uniforms.find(uniName) != m_uniforms.end())
+		{
+			U32 arrayIndex = StringArrayIndex(name);
+			glActiveTexture(GL_TEXTURE0 + index);
+			glBindTexture(GL_TEXTURE_CUBE_MAP, texCube.GetID());
+			glUniform1i(m_uniforms.find(uniName)->second + arrayIndex, index);
+		}
 	}
 
-	void ShaderProgram::SetLight(const std::string &name, const Light &pointLight)
+	void ShaderProgram::SetLight(const std::string &name, const Light &light)
 	{
 		GLuint loc = glGetUniformLocation(m_shaderProgram, (name + ".ambient").c_str());
-		glUniform4f(loc, pointLight.ambient.x, pointLight.ambient.y, pointLight.ambient.z, pointLight.ambient.w);
+		glUniform4f(loc, light.ambient.x, light.ambient.y, light.ambient.z, light.ambient.w);
 		loc = glGetUniformLocation(m_shaderProgram, (name + ".diffuse").c_str());
-		glUniform4f(loc, pointLight.diffuse.x, pointLight.diffuse.y, pointLight.diffuse.z, pointLight.diffuse.w);
+		glUniform4f(loc, light.diffuse.x, light.diffuse.y, light.diffuse.z, light.diffuse.w);
 		loc = glGetUniformLocation(m_shaderProgram, (name + ".specular").c_str());
-		glUniform4f(loc, pointLight.specular.x, pointLight.specular.y, pointLight.specular.z, pointLight.specular.w);
+		glUniform4f(loc, light.specular.x, light.specular.y, light.specular.z, light.specular.w);
 
 		loc = glGetUniformLocation(m_shaderProgram, (name + ".position").c_str());
-		glUniform3f(loc, pointLight.position.x, pointLight.position.y, pointLight.position.z);
+		glUniform3f(loc, light.position.x, light.position.y, light.position.z);
 		loc = glGetUniformLocation(m_shaderProgram, (name + ".direction").c_str());
-		glUniform3f(loc, pointLight.direction.x, pointLight.direction.y, pointLight.direction.z);
+		glUniform3f(loc, light.direction.x, light.direction.y, light.direction.z);
 
 		loc = glGetUniformLocation(m_shaderProgram, (name + ".att").c_str());
-		glUniform3f(loc, pointLight.att.x, pointLight.att.y, pointLight.att.z);
+		glUniform3f(loc, light.att.x, light.att.y, light.att.z);
 
 		loc = glGetUniformLocation(m_shaderProgram, (name + ".range").c_str());
-		glUniform1f(loc, pointLight.range);
+		glUniform1f(loc, light.range);
 		loc = glGetUniformLocation(m_shaderProgram, (name + ".intensity").c_str());
-		glUniform1f(loc, pointLight.intensity);
+		glUniform1f(loc, light.intensity);
 
 		loc = glGetUniformLocation(m_shaderProgram, (name + ".type").c_str());
-		glUniform1i(loc, pointLight.type);
+		glUniform1i(loc, light.type);
+		loc = glGetUniformLocation(m_shaderProgram, (name + ".castsShadows").c_str());
+		glUniform1i(loc, light.castsShadows);
 	}
 
 	VertexDesc ShaderProgram::GetVertexDesc()const
@@ -201,6 +218,7 @@ namespace CS418
 			{
 				ss >> type >> type; // type now holds name of variable
 				type = type.substr(0, type.length() - 1);
+				type = SplitString(type, "[").at(0);
 				U32 id = glGetUniformLocation(m_shaderProgram, type.c_str());
 				m_uniforms[type] = id;
 			}
@@ -219,6 +237,7 @@ namespace CS418
 			{
 				ss >> type >> type; // type now holds name of variable
 				type = type.substr(0, type.length() - 1);
+				type = SplitString(type, "[").at(0);
 				U32 id = glGetUniformLocation(m_shaderProgram, type.c_str());
 				m_uniforms[type] = id;
 			}

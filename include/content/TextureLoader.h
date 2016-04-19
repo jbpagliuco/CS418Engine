@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include "graphics/Texture2D.h"
+#include "graphics/textures/Texture2D.h"
 #include "math/Vector.h"
 
 namespace CS418

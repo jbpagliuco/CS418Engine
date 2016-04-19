@@ -18,10 +18,10 @@ function Update(gameTimer)
 		dir = 1.0
 	end
 	if input:IsPressed(KEY.UP) then
-		radius = radius - 0.1
+		radius = radius - 0.2
 	end
 	if input:IsPressed(KEY.DOWN) then
-		radius = radius + 0.1
+		radius = radius + 0.2
 	end
 	
 	theta = theta + gameTimer.elapsedTimeSeconds * dir
@@ -33,7 +33,5 @@ function Update(gameTimer)
 	local target = Vector3f(0.0, 0.0, 0.0)
 	local up = Vector3f(0.0, 1.0, 0.0)
 	camera:SetViewMatrix(Vector.FromVector3f(pos), Vector.FromVector3f(target), Vector.FromVector3f(up))
-	
-	--print(pos.x, ", ", pos.y, ", ", pos.z);
 	
 end

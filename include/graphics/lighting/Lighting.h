@@ -19,5 +19,6 @@ namespace CS418
 		F32 intensity;
 		VECTOR3F att;
 		U32 type;
+		bool castsShadows;
 	};
 }

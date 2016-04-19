@@ -3,6 +3,8 @@
 #include "Scene.h"
 #include "FrameBuffer.h"
 
+#define CS418_MAX_SHADOW_LIGHTS 4
+
 namespace CS418
 {
 	class AssetManager;
@@ -31,13 +33,13 @@ namespace CS418
 		void drawTerrainComponents(GameObject * pGO, CameraComponent * pCamera, Matrix &mViewProj, std::vector<LightComponent*> lights)const;
 		void drawSkyboxComponent(CameraComponent * pCamera, Matrix &mViewProj)const;
 
-		void drawSceneFromLight(const std::vector<GameObject*> gameObjects, const Light &light);
+		void drawSceneFromLight(const std::vector<GameObject*> gameObjects, const Light &light, size_t index);
 
 	private:
 		VECTOR4F m_clearColor;
 
 		ShaderProgram m_shadowShader;
-		FrameBuffer m_shadowBuffer;
+		FrameBuffer m_shadowBuffers[CS418_MAX_SHADOW_LIGHTS];
 
 		FrameBuffer m_post;
 		bool m_isPostProcessing;

@@ -4,8 +4,8 @@
 #include "math/Vector.h"
 #include "math/Quaternion.h"
 #include "graphics/Viewport.h"
-#include "graphics/Texture2DGL.h"
-#include "graphics/TextureCube.h"
+#include "graphics/textures/Texture2DGL.h"
+#include "graphics/textures/TextureCube.h"
 #include "graphics/Mesh.h"
 #include "graphics/BasicMeshes.h"
 
@@ -186,4 +186,18 @@ namespace CS418
 
 		return Mesh();
 	}
+
+	std::string StringWithoutArray(const std::string &s)
+	{
+		return SplitString(s, "[").at(0);
+	}
+
+	U32 StringArrayIndex(const std::string &s)
+	{
+		std::vector<std::string> split = SplitString(s, "[");
+		if (split.size() == 1)
+			return 0;
+		return atoi(SplitString(split.at(1), "]").at(0).c_str());
+	}
+
 }

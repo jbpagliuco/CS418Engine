@@ -7,8 +7,8 @@
 
 #include "math/Vector.h"
 #include "math/Matrix.h"
-#include "graphics/Texture2DGL.h"
-#include "graphics/TextureCube.h"
+#include "graphics/textures/Texture2DGL.h"
+#include "graphics/textures/TextureCube.h"
 #include "graphics/lighting/Lighting.h"
 
 namespace CS418

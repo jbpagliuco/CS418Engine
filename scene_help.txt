@@ -42,7 +42,8 @@ ParallelLightComponent			| Vector3f: Direction
 								| Color: Diffuse color
 								| Color: Specular color
 								| F32: Intensity
-								| ## ParallelLightComponent (-5.0 -5.0 -5.0),(0.1 0.1 0.1 1.0),(0.7 0.7 0.7 1.0),White,0.5
+								| Boolean: Casts shadows
+								| ## ParallelLightComponent (-5.0 -5.0 -5.0),(0.1 0.1 0.1 1.0),(0.7 0.7 0.7 1.0),White,0.5,True
 --------------------------------|-------------------------------------------------------------------------------------	
 PointLightComponent				| Color: Ambient color
 								| Color: Diffuse color
@@ -50,7 +51,8 @@ PointLightComponent				| Color: Ambient color
 								| Vector3f: Attenuation
 								| F32: Range
 								| F32: Intensity
-								| ## PointLightComponent (0.1 0.1 0.1 1.0),(0.7 0.7 0.7 1.0),White,(0.0 0.1 0.0),50.0,1.0
+								| Boolean: Casts shadows
+								| ## PointLightComponent (0.1 0.1 0.1 1.0),(0.7 0.7 0.7 1.0),White,(0.0 0.1 0.0),50.0,1.0,True
 								
 								
 Types:

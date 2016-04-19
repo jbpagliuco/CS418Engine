@@ -4,7 +4,7 @@
 
 namespace CS418
 {
-	LightComponent::LightComponent(const std::string &type) : Behaviour(type)
+	LightComponent::LightComponent(const std::string &type) : Behaviour("LightComponent")
 	{
 		Enabled = true;
 	}
@@ -37,6 +37,7 @@ namespace CS418
 		light.diffuse = StringToColor(arguments.at(2));
 		light.specular = StringToColor(arguments.at(3));
 		light.intensity = StringToFloat(arguments.at(4));
+		light.castsShadows = StringToBoolean(arguments.at(5));
 		light.type = LIGHT_TYPE_PARALLEL;
 
 		LightComponent * pLC = new LightComponent;
@@ -56,6 +57,7 @@ namespace CS418
 		light.att = StringToVector3f(arguments.at(3));
 		light.range = StringToFloat(arguments.at(4));
 		light.intensity = StringToFloat(arguments.at(5));
+		light.castsShadows = StringToBoolean(arguments.at(6));
 		light.type = LIGHT_TYPE_POINT;
 
 		LightComponent * pLC = new LightComponent;

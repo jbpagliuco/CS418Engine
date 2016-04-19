@@ -10,12 +10,10 @@ out VS_OUT {
 	vec3 Position;
 	vec3 Normal;
 	vec2 TexCoords;
-	vec4 FragPosLightSpace;
 } vs_out;
 
 uniform mat4 _WVP;
 uniform mat4 _World;
-uniform mat4 _LightSpaceMatrix;
 
 void main()
 {
@@ -24,5 +22,4 @@ void main()
 	vs_out.Position = vec3(_World * vec4(position, 1.0f));
 	vs_out.Normal = transpose(inverse(mat3(_World))) * normal;
 	vs_out.TexCoords = vec2(texCoord.x, 1.0f - texCoord.y);
-	vs_out.FragPosLightSpace = _LightSpaceMatrix * vec4(vs_out.Position, 1.0f);
 }

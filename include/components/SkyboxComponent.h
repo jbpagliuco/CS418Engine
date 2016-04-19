@@ -2,7 +2,7 @@
 
 #include "Behaviour.h"
 
-#include "graphics/TextureCube.h"
+#include "graphics/textures/TextureCube.h"
 #include "RenderingComponent.h"
 
 namespace CS418

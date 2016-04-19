@@ -18,8 +18,8 @@
 #include "util/Convert.h"
 #include "util/Memory.h"
 
-#include "graphics/Texture2D.h"
-#include "graphics/Texture2DGL.h"
+#include "graphics/textures/Texture2D.h"
+#include "graphics/textures/Texture2DGL.h"
 
 namespace CS418
 {

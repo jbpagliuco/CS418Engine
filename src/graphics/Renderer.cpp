@@ -8,11 +8,13 @@
 #include "components/TerrainComponent.h"
 
 #include <Windows.h>
+#include <fstream>
 
 #include "util/ColorDefs.h"
 #include "graphics/BasicMeshes.h"
 
-#include <fstream>
+#define CS418_SHADOW_BUFFER_WIDTH 2048
+#define CS418_SHADOW_BUFFER_HEIGHT CS418_SHADOW_BUFFER_WIDTH
 
 namespace CS418
 {
@@ -39,7 +41,8 @@ namespace CS418
 		glViewport(0, 0, dim.X, dim.Y);
 
 		m_shadowShader = *(pAM->LoadShader("assets/shaders/shadow"));
-		m_shadowBuffer.Initialize(2048, 2048, true);
+		for (int i = 0; i < CS418_MAX_SHADOW_LIGHTS; i++)
+			m_shadowBuffers[i].Initialize(CS418_SHADOW_BUFFER_WIDTH, CS418_SHADOW_BUFFER_HEIGHT, true);
 
 		m_isPostProcessing = gfxManager->IsPostProcessing();
 		if (m_isPostProcessing)
@@ -80,8 +83,6 @@ namespace CS418
 
 		if (m_isPostProcessing)
 			m_post.Resize(width, height);
-
-		m_shadowBuffer.Resize(width, height);
 	}
 
 	void Renderer::Draw()
@@ -99,21 +100,8 @@ namespace CS418
 			CameraComponent* pCamera = m_pScene->GetCamera();
 			const std::vector<LightComponent*> lights = m_pScene->GetLights();
 
-			// TODO:
-			// Have variable in light that defines whether or not it casts shadows
-			// Allow for multiple lights to cast shadows
-			drawSceneFromLight(gameObjects, lights.at(0)->m_light);
-
 			Viewport vp = pCamera->GetViewport();
 			glViewport((I32)vp.TopLeftX, (I32)vp.TopLeftY, (U32)vp.Width, (U32)vp.Height);
-			if (m_isPostProcessing)
-			{
-				glBindFramebuffer(GL_FRAMEBUFFER, m_post.GetID());
-			}
-			else
-			{
-				glBindFramebuffer(GL_FRAMEBUFFER, 0);
-			}
 
 			drawScene(gameObjects, pCamera, lights);
 
@@ -128,14 +116,41 @@ namespace CS418
 				dmap.m_id = m_post.GetDepthMap();
 
 				glUseProgram(m_postRC.m_material.GetShaderProgram()->m_shaderProgram);
-				m_postRC.m_material.SetTexture2D("_ColorMap", cmap);
-
-				m_postRC.m_material.setValuesInShader();
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, m_post.GetColorMap());
+				U32 loc = glGetUniformLocation(m_postRC.m_material.GetShaderProgram()->m_shaderProgram, "_ColorMap");
+				glUniform1i(loc, 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, m_post.GetDepthMap());
+				loc = glGetUniformLocation(m_postRC.m_material.GetShaderProgram()->m_shaderProgram, "_DepthMap");
+				glUniform1i(loc, 1);
 
 				glBindVertexArray(m_postRC.m_inputLayout);
 				glDrawElements(GL_TRIANGLES, m_postRC.m_indicesCount, GL_UNSIGNED_INT, 0);
 
 				glEnable(GL_DEPTH_TEST);
+				
+				/*
+				{
+					int x = 1920;
+					int y = 1080;
+					long imageSize = x * y * 3;
+					unsigned char *data = new unsigned char[imageSize];
+					glReadPixels(0, 0, x, y, GL_BGR, GL_UNSIGNED_BYTE, data);// split x and y sizes into bytes
+					glGetTextureImage(cmap.m_id, 0, GL_BGR, GL_UNSIGNED_BYTE, imageSize, data);
+					int xa = x % 256;
+					int xb = (x - xa) / 256;int ya = y % 256;
+					int yb = (y - ya) / 256;//assemble the header
+					unsigned char header[18] = { 0,0,2,0,0,0,0,0,0,0,0,0,(char)xa,(char)xb,(char)ya,(char)yb,24,0 };
+					// write header and data to file
+					std::fstream File("colorbuffer.tga", std::ios::out | std::ios::binary);
+					File.write(reinterpret_cast<char *>(header), sizeof(char) * 18);
+					File.write(reinterpret_cast<char *>(data), sizeof(char)*imageSize);
+					File.close();
+
+					delete[] data;
+					data = NULL;
+				}*/
 			}
 		}
 	}
@@ -147,7 +162,7 @@ namespace CS418
 			Viewport vp = pCamera->GetViewport();
 			glViewport((I32)vp.TopLeftX, (I32)vp.TopLeftY, (U32)vp.Width, (U32)vp.Height);
 
-			glClear(GL_DEPTH_BUFFER_BIT);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			Matrix mViewProj = pCamera->buildMatrix();
 
@@ -165,16 +180,6 @@ namespace CS418
 
 	void Renderer::drawRenderingComponents(GameObject * pGO, CameraComponent * pCamera, Matrix &mViewProj, std::vector<LightComponent*> lights)const
 	{
-		// TODO:
-		// Make this more flexible, actually have a position for it, so it doesn't always have to be looking at (0, 0, 0)
-		// And the other hard coded values..
-		Matrix lightView, lightProj;
-		Light light = lights.at(0)->m_light;
-		Vector lightPos = Vector(light.direction).negate();
-		lightPos = Vector(lightPos.getX(), lightPos.getY(), lightPos.getZ(), 1.0f);
-		lightView = MatrixLookAtLH(lightPos, Vector(0.0f, 0.0f, 0.0f, 1.0f), Vector(0.0f, 1.0f, 0.0f, 0.0f));
-		lightProj = MatrixOrthoLH(100.0f, 100.0f, 0.1f, 100.0f);
-
 		const std::vector<RenderingComponent*> &renderables = pGO->GetComponentsOfType<RenderingComponent>("RenderingComponent");
 
 		for (std::vector<RenderingComponent*>::const_iterator renderable = renderables.begin(); renderable != renderables.end(); renderable++)
@@ -187,15 +192,9 @@ namespace CS418
 			Matrix wvp = mViewProj * m;
 			pRC->m_material.SetMatrix4x4("_WVP", wvp);
 			pRC->m_material.SetMatrix4x4("_World", m);
-			pRC->m_material.SetVec3f("_CameraPos", pCamera->m_pGameObject->GetTransform()->Position);
-			pRC->m_material.SetU32("_NumLights", lights.size());
-			Texture2DGL shadowmap;
-			shadowmap.m_id = m_shadowBuffer.GetDepthMap();
-			pRC->m_material.SetTexture2D("_ShadowMap", shadowmap);
-			pRC->m_material.SetMatrix4x4("_LightSpaceMatrix", lightProj * lightView);
+			pRC->m_material.SetVec3f("_CameraPos", pCamera->m_pGameObject->GetTransform()->Position);			
+			pRC->m_material.SetLight("_Light", lights.at(0)->m_light);
 			
-			for (size_t i = 0; i < lights.size(); i++)
-				pRC->m_material.SetLight("_Lights[" + std::to_string(i) + "]", lights.at(i)->m_light);
 			pRC->m_material.setValuesInShader();
 
 			glBindVertexArray(pRC->m_inputLayout);
@@ -249,7 +248,7 @@ namespace CS418
 		}
 	}
 
-	void Renderer::drawSceneFromLight(const std::vector<GameObject*> gameObjects, const Light &light)
+	void Renderer::drawSceneFromLight(const std::vector<GameObject*> gameObjects, const Light &light, size_t index)
 	{
 		Matrix lightView, lightProj;
 		Vector lightPos = Vector(light.direction).negate();
@@ -265,8 +264,8 @@ namespace CS418
 		glDepthFunc(GL_LESS);
 		glCullFace(GL_BACK);
 
-		glViewport(0.0f, 0.0f, 2048, 2048);
-		glBindFramebuffer(GL_FRAMEBUFFER, m_shadowBuffer.GetID());
+		glViewport(0.0f, 0.0f, CS418_SHADOW_BUFFER_WIDTH, CS418_SHADOW_BUFFER_HEIGHT);
+		glBindFramebuffer(GL_FRAMEBUFFER, m_shadowBuffers[index].GetID());
 		glClear(GL_DEPTH_BUFFER_BIT);
 
 		for (std::vector<GameObject*>::const_iterator gameObject = gameObjects.begin(); gameObject != gameObjects.end(); gameObject++)

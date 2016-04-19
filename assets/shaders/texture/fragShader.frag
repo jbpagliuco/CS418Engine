@@ -11,6 +11,7 @@ struct Light
 	float intensity;
 	vec3 att;
 	int type;
+	bool castsShadows;
 };
 
 struct SurfaceInfo
@@ -25,25 +26,19 @@ in VS_OUT {
 	vec3 Position;
 	vec3 Normal;
 	vec2 TexCoords;
-	vec4 FragPosLightSpace;
 } fs_in;
 
 out vec4 fout_color;
 
+uniform Light _Light;
 uniform vec3 _CameraPos;
-uniform int _NumLights;
-uniform Light _Lights[4]; // Max of 4 lights
-uniform sampler2D _ShadowMap;
 
 uniform sampler2D DiffuseMap;
 uniform sampler2D SpecularMap;
 uniform vec2 Scale;
 
-const float SMAP_SIZE = 2048.0f;
-const float SMAP_DX = 1.0f / SMAP_SIZE;
-const float SMAP_EPSILON = 0.01f;
-
-float CalcShadowFactor(vec4 fragPosLightSpace)
+/*
+float CalcShadowFactor(sampler2D shadowMap, vec4 fragPosLightSpace)
 {
 	vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
 	
@@ -51,17 +46,15 @@ float CalcShadowFactor(vec4 fragPosLightSpace)
 		projCoords.y < -1.0f || projCoords.y > 1.0f ||
 		projCoords.z < 0.0f)
 		return 0.0f; 
-		
-	//projCoords.x = +0.5f * projCoords.x + 0.5f;
-	//projCoords.y = -0.5f * projCoords.y + 0.5f;
+	
 	projCoords = 0.5f * projCoords + 0.5f;
 	
 	float depth = projCoords.z;
 	
-	float s0 = texture(_ShadowMap, projCoords.xy).r;
-	float s1 = texture(_ShadowMap, projCoords.xy + vec2(SMAP_DX, 0.0f)).r;
-	float s2 = texture(_ShadowMap, projCoords.xy + vec2(0.0f, SMAP_DX)).r;
-	float s3 = texture(_ShadowMap, projCoords.xy + vec2(SMAP_DX, SMAP_DX)).r;
+	float s0 = texture(shadowMap, projCoords.xy).r;
+	float s1 = texture(shadowMap, projCoords.xy + vec2(SMAP_DX, 0.0f)).r;
+	float s2 = texture(shadowMap, projCoords.xy + vec2(0.0f, SMAP_DX)).r;
+	float s3 = texture(shadowMap, projCoords.xy + vec2(SMAP_DX, SMAP_DX)).r;
 	
 	float result0 = float(depth <= (s0 + SMAP_EPSILON));
 	float result1 = float(depth <= (s1 + SMAP_EPSILON));
@@ -76,9 +69,9 @@ float CalcShadowFactor(vec4 fragPosLightSpace)
 	
 	return shadow;
 }
+*/
 	
-
-vec3 CalcLightColor(Light light, SurfaceInfo v, float shadowFactor)
+vec3 CalcLightColor(Light light, SurfaceInfo v)
 {
 	vec3 color;
 	vec3 lightVector;
@@ -86,8 +79,7 @@ vec3 CalcLightColor(Light light, SurfaceInfo v, float shadowFactor)
 	
 	if (light.type == 0)
 	{
-		lightVector = -light.direction;
-		d = length(lightVector);
+		lightVector = normalize(-light.direction);
 	}
 	else if (light.type == 1)
 	{
@@ -95,9 +87,9 @@ vec3 CalcLightColor(Light light, SurfaceInfo v, float shadowFactor)
 		d = length(lightVector);
 		if (d > light.range)
 			return vec3(0.0f, 0.0f, 0.0f);
+		lightVector /= d;
 	}
 	
-	lightVector /= d;
 	color += vec3(v.diffuse * light.ambient);
 	
 	float diffuseFactor = dot(lightVector, v.normal);
@@ -108,22 +100,13 @@ vec3 CalcLightColor(Light light, SurfaceInfo v, float shadowFactor)
 		vec3 R = reflect(-lightVector, v.normal);
 		float specularFactor = pow(max(dot(R, eyeVector), 0.0f), specularPower);
 		
-		color += vec3(diffuseFactor * v.diffuse * light.diffuse * shadowFactor);
-		color += vec3(specularFactor * v.spec * light.specular * shadowFactor);
+		color += vec3(diffuseFactor * v.diffuse * light.diffuse);
+		color += vec3(specularFactor * v.spec * light.specular);
 	}
 	
 	if (light.type == 1)
 		color = color / dot(light.att, vec3(1.0f, d, d*d));
 	return light.intensity * color;
-}
-
-vec3 CalcLights(SurfaceInfo v, float shadowFactor)
-{
-	vec3 color = vec3(0.0f, 0.0f, 0.0f);
-	for (int i = 0; i < _NumLights; i++)
-		color += CalcLightColor(_Lights[i], v, shadowFactor);
-		
-	return color;
 }
 
 void main()
@@ -137,9 +120,6 @@ void main()
 	
 	// Interpolating normal can make it not be of unit length so normalize it.
     vec3 normalW = normalize(fs_in.Normal);
-	
-	// Shadows
-	float shadow = CalcShadowFactor(fs_in.FragPosLightSpace);
     
 	// Compute the lit color for this pixel.
     SurfaceInfo v;
@@ -147,7 +127,5 @@ void main()
     v.normal = normalW;
     v.diffuse = diffuse;
     v.spec = spec;
-	fout_color = vec4(CalcLights(v, shadow), diffuse.a);
-	
-	//fout_color = vec4(shadow, shadow, shadow, 1.0f);
+	fout_color = vec4(CalcLightColor(_Light, v), diffuse.a);
 }

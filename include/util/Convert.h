@@ -33,4 +33,7 @@ namespace CS418
 
 	Texture2DGL StringToTexture2D(const std::string &line, AssetManager * pAM);
 	TextureCube StringToTextureCube(const std::string &line, AssetManager * pAM);
+
+	std::string StringWithoutArray(const std::string &s);
+	U32 StringArrayIndex(const std::string &s);
 }
