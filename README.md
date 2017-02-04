@@ -1,3 +1,6 @@
+Youtube playlist: https://www.youtube.com/playlist?list=PLe27dA7aKQtUqdCtAziwOvw7A41XrDR40
+
+
 ***********************************************************************************************
 *** DISCLAIMER: THIS PROJECT ONLY WORKS ON WINDOWS MACHINES ***********************************
 ***********************************************************************************************
